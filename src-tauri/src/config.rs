@@ -4,14 +4,14 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use std::fs;
 
-pub struct ConfigBuilder {
+pub struct ConfigGenerator {
     config_dir: String,
     base_dirs: BaseDirs,
 }
 
-impl ConfigBuilder {
-    pub fn new(config_dir: &str) -> ConfigBuilder {
-        ConfigBuilder {
+impl ConfigGenerator {
+    pub fn new(config_dir: &str) -> ConfigGenerator {
+        ConfigGenerator {
             config_dir: config_dir.to_string(),
             base_dirs: BaseDirs::new().expect("Could not found path to base directories"),
         }
@@ -77,7 +77,7 @@ mod test {
         let base_dir = BaseDirs::new().unwrap();
         let config_dir = base_dir.config_dir();
 
-        let config = ConfigBuilder::new(TARGET_NAME);
+        let config = ConfigGenerator::new(TARGET_NAME);
         config.create_config_dir();
         let config_path_exist = config_dir.join(TARGET_NAME).exists();
 
@@ -95,7 +95,7 @@ mod test {
 
         fs::create_dir(config_dir.join(TARGET_NAME)).unwrap();
 
-        let config = ConfigBuilder::new(TARGET_NAME);
+        let config = ConfigGenerator::new(TARGET_NAME);
         config.create_config_dir();
 
         fs::remove_dir(config_dir.join(TARGET_NAME)).unwrap();
@@ -110,7 +110,7 @@ mod test {
 
         fs::create_dir(config_dir.join(TARGET_NAME)).unwrap();
 
-        let config = ConfigBuilder::new(TARGET_NAME);
+        let config = ConfigGenerator::new(TARGET_NAME);
         config.remove_config_dir();
 
         let config_path_exist = config_dir.join(TARGET_NAME).exists();
@@ -125,7 +125,7 @@ mod test {
         let base_dir = BaseDirs::new().unwrap();
         let config_dir = base_dir.config_dir().join(TARGET_NAME);
 
-        let config = ConfigBuilder::new(TARGET_NAME);
+        let config = ConfigGenerator::new(TARGET_NAME);
         config.create_config_dir();
 
         #[derive(Serialize)]
