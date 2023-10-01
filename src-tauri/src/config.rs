@@ -3,6 +3,7 @@ use directories::BaseDirs;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::fs;
+use std::path::Path;
 
 pub struct ConfigGenerator {
     config_dir: String,
@@ -62,6 +63,16 @@ impl ConfigGenerator {
             serde_json::to_string(content).expect("Could not parse the structure to a string");
 
         fs::write(path, content).expect("Could not write the configuration file");
+    }
+
+    pub fn add_config_dir(&self, name: &str) {
+        let path = self
+            .base_dirs
+            .config_dir()
+            .join(self.config_dir.as_str())
+            .join(name);
+
+        fs::create_dir(path).expect("Could not create the dir");
     }
 }
 

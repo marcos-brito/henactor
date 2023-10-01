@@ -1,7 +1,7 @@
 use super::ConfigGenerator;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
-use std::fs;
+use std::{env, fs};
 
 #[derive(Serialize, Deserialize)]
 struct Colors {
@@ -38,6 +38,19 @@ pub struct Fonts {
     big_text: String,
     regular_title: String,
     big_title: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Icons {
+    directory: String,
+    file: String,
+    settings: String,
+    view: String,
+    sort: String,
+    filter: String,
+    search: String,
+    close: String,
+    add: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -81,9 +94,66 @@ pub fn generate_default_config() -> () {
         big_title: "2.5rem".to_string(),
     };
 
+    let path = CONFIG
+        .base_dirs
+        .config_dir()
+        .join(CONFIG.config_dir.as_str())
+        .join("icons")
+        .to_str()
+        .unwrap()
+        .to_owned();
+
+    let default_icons = Icons {
+        directory: path.to_owned() + "/directory.svg",
+        file: path.to_owned() + "/file.svg",
+        settings: path.to_owned() + "/settings.svg",
+        view: path.to_owned() + "/view.svg",
+        sort: path.to_owned() + "/sort.svg",
+        filter: path.to_owned() + "/filter.svg",
+        search: path.to_owned() + "/search.svg",
+        close: path.to_owned() + "/close.svg",
+        add: path.to_owned() + "/add.svg",
+    };
+
     CONFIG.create_config_dir();
     CONFIG.add_config_file("theme.json", &default_theme);
     CONFIG.add_config_file("fonts.json", &default_fonts);
+    CONFIG.add_config_file("icons.json", &default_icons);
+    copy_icons();
+}
+
+fn copy_icons() -> () {
+    // CONFIG.add_config_dir("icons");
+    let destination = CONFIG
+        .base_dirs
+        .config_dir()
+        .join(CONFIG.config_dir.as_str())
+        .join("icons");
+    let source = env::current_dir().unwrap().join("default_icons");
+    let dir_entrys = fs::read_dir(source).unwrap();
+    for entry in dir_entrys {
+        let entry = entry.unwrap();
+        fs::write(
+            destination.join(entry.file_name().to_str().unwrap()),
+            fs::read(entry.path()).unwrap(),
+        )
+        .unwrap();
+        println!("{:?}", entry.path());
+    }
+}
+
+#[tauri::command]
+pub fn get_icons_file() -> Icons {
+    let path = CONFIG
+        .base_dirs
+        .config_dir()
+        .join(CONFIG.config_dir.as_str())
+        .join("icons.json");
+
+    let file_content = fs::read_to_string(path).unwrap();
+    let icons: Icons = serde_json::from_str(file_content.as_str()).unwrap();
+
+    icons
 }
 
 //TODO: Error handling
