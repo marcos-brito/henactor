@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ContentGridContainer = styled.section`
+export const GridContainer = styled.section`
     width: 90 vw;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -9,7 +9,7 @@ export const ContentGridContainer = styled.section`
     grid-row-gap: 56px;
 `;
 
-export const ContentListContainer = styled.section`
+export const ListContainer = styled.section`
     display: flex;
     flex-direction: column;
     gap: 32px;

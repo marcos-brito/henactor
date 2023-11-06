@@ -1,33 +1,31 @@
-import { invoke } from "@tauri-apps/api";
-import { useState, useEffect, ChangeEvent, useContext } from "react";
-import { DirectoryEntry } from "@/type.ts";
+import { useState, useEffect, useContext } from "react";
+import { getDirEntries } from "@services/file_system.ts";
+import { FileSystemEntry } from "@/type.ts";
 import DirEntry from "@components/molecules/DirEntry/DirEntry.tsx";
-import {
-    ContentGridContainer,
-    ContentListContainer,
-} from "./DirContent.styles.tsx";
+import { GridContainer, ListContainer } from "./DirContent.styles.tsx";
 import { pathContext } from "@/context/PathContext.tsx";
 import { viewContext, ViewMode } from "@context/ViewContext.tsx";
 
 function DirContent() {
     const { path, setPath } = useContext(pathContext);
     const { viewMode } = useContext(viewContext);
-    const [currentContent, setCurrentContent] = useState(Array<DirectoryEntry>);
+    const [currentContent, setCurrentContent] = useState(
+        Array<FileSystemEntry>,
+    );
+
+    async function updateContent(path: string) {
+        let entries: Array<FileSystemEntry>;
+        try {
+            entries = await getDirEntries(path);
+            setCurrentContent(entries);
+        } catch (e) {
+            return <div>aaaaaa</div>;
+        }
+    }
 
     useEffect(() => {
-        async function updateContent(path: string) {
-            setCurrentContent(await get_content(path));
-        }
-
         updateContent(path);
     }, [path]);
-
-    async function get_content(path: string): Promise<Array<DirectoryEntry>> {
-        let content: Array<DirectoryEntry> = await invoke("get_content", {
-            path: path,
-        });
-        return content;
-    }
 
     // This is passed to the childrens
     function onEntryClick(path: string): void {
@@ -37,7 +35,7 @@ function DirContent() {
     if (viewMode === ViewMode.GRID) {
         return (
             <>
-                <ContentGridContainer>
+                <GridContainer>
                     {currentContent.map((entry) => {
                         return (
                             <DirEntry
@@ -48,7 +46,7 @@ function DirContent() {
                             ></DirEntry>
                         );
                     })}
-                </ContentGridContainer>
+                </GridContainer>
             </>
         );
     }
@@ -56,7 +54,7 @@ function DirContent() {
     if (viewMode === ViewMode.LIST) {
         return (
             <>
-                <ContentListContainer>
+                <ListContainer>
                     {currentContent.map((entry) => {
                         return (
                             <DirEntry
@@ -67,7 +65,7 @@ function DirContent() {
                             ></DirEntry>
                         );
                     })}
-                </ContentListContainer>
+                </ListContainer>
             </>
         );
     }

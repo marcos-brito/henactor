@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
     EntryContainer,
     EntryContainerInline,
@@ -5,11 +6,12 @@ import {
     EntryData,
     MockedIcon,
 } from "./DirEntry.style.tsx";
-import { DirectoryEntry } from "@/type.ts";
+import { FileSystemEntry } from "@/type.ts";
+import { formatTimeStamp } from "@utils/date.ts";
 
 interface Props {
-    inline: Boolean;
-    metadata: DirectoryEntry;
+    inline: boolean;
+    metadata: FileSystemEntry;
     onDoubleClick: any;
 }
 
@@ -26,8 +28,20 @@ function DirEntry(props: Props) {
                     <p>{props.metadata.name}</p>
                 </Entry>
                 <EntryData>
-                    <p>fadfas</p>
-                    <p>fadfas</p>
+                    <p>
+                        {props.metadata.createad
+                            ? formatTimeStamp(
+                                  props.metadata.createad.secs_since_epoch,
+                              )
+                            : "---"}
+                    </p>
+                    <p>
+                        {props.metadata.modified
+                            ? formatTimeStamp(
+                                  props.metadata.modified.secs_since_epoch,
+                              )
+                            : "---"}
+                    </p>
                     <p>...</p>
                 </EntryData>
             </EntryContainerInline>

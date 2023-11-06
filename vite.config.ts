@@ -10,6 +10,7 @@ export default defineConfig(async () => ({
             "@components": path.resolve(__dirname, "./src/components"),
             "@services": path.resolve(__dirname, "./src/services"),
             "@context": path.resolve(__dirname, "./src/context/"),
+            "@utils": path.resolve(__dirname, "./src/utils/"),
         },
     },
     plugins: [react()],
