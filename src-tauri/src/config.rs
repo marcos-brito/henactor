@@ -31,6 +31,7 @@ pub struct Theme {
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Config {
     title: String,
+    auto_reload: bool,
     save_on_change: bool,
     current_theme: String,
     pins: Vec<Pin>,
@@ -56,6 +57,7 @@ impl Default for Config {
         Config {
             title: "Henactor".to_string(),
             save_on_change: false,
+            auto_reload: true,
             current_theme: "default".to_string(),
             pins,
             tabs: vec![],

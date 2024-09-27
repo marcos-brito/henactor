@@ -29,6 +29,19 @@ export class ConfigBuilder {
         return this;
     }
 
+    public async watch(): Promise<ConfigBuilder> {
+        await commands.watch(this.configPath);
+        events.watchEvent.listen(async () => {
+            const newConfig = await commands.loadConfig(this.configPath);
+            const newThemes = await commands.findThemes(this.configPath);
+
+            this.config!.set(newConfig);
+            this.themes!.set(newThemes);
+        });
+
+        return this;
+    }
+
     public async saveOnChange(): Promise<ConfigBuilder> {
         this.config!.subscribe(async (config) => {
             await commands.saveConfig(this.configPath, config);
