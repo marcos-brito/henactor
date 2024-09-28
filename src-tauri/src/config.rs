@@ -14,6 +14,7 @@ const THEME_FILE: &str = "theme.css";
 pub struct Pin {
     alias: String,
     target: PathBuf,
+    icon: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -25,17 +26,19 @@ pub struct Tab {
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Theme {
     name: String,
-    css: PathBuf,
+    path: PathBuf,
+    css_file: PathBuf,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Config {
     title: String,
+    download_icons: bool,
     auto_reload: bool,
     save_on_change: bool,
     current_theme: String,
     pins: Vec<Pin>,
-    tabs: Vec<Pin>,
+    tabs: Vec<Tab>,
 }
 
 impl Default for Config {
@@ -49,6 +52,7 @@ impl Default for Config {
                         .and_then(|name| Some(name.to_string_lossy().to_string()))
                         .unwrap_or("Home".to_string()),
                     target: dirs.home_dir().to_path_buf(),
+                    icon: Some("🏠".to_string()),
                 }]
             }
             None => vec![],
@@ -56,6 +60,7 @@ impl Default for Config {
 
         Config {
             title: "Henactor".to_string(),
+            download_icons: true,
             save_on_change: false,
             auto_reload: true,
             current_theme: "default".to_string(),
@@ -84,7 +89,8 @@ pub fn find_themes(config_dir: PathBuf) -> Vec<Theme> {
             if css_file.exists() {
                 return Some(Theme {
                     name: entry.file_name().to_string_lossy().to_string(),
-                    css: css_file,
+                    path: entry.path(),
+                    css_file,
                 });
             }
 

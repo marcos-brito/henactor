@@ -1,3 +1,4 @@
+pub mod cache;
 pub mod config;
 pub mod fs;
 
@@ -30,6 +31,12 @@ pub enum Error {
         #[from]
         confy::ConfyError,
     ),
+    #[error("")]
+    Req(
+        #[serde(skip)]
+        #[from]
+        reqwest::Error,
+    ),
 }
 
 impl Serialize for Error {
@@ -53,6 +60,7 @@ pub fn run() {
             config::load_config,
             fs::watch,
             fs::read_file
+            cache::download_or_find
         ])
         .events(collect_events![fs::WatchEvent])
         .error_handling(ErrorHandlingMode::Throw);
