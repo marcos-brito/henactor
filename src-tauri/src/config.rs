@@ -3,12 +3,29 @@ use directories::UserDirs;
 use log::warn;
 use serde::{Deserialize, Serialize};
 use specta::Type;
+use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
 const CONFIG_FILE: &str = "henactor.toml";
 const THEMES_DIR: &str = "themes";
 const THEME_FILE: &str = "theme.css";
+
+#[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub enum Command {
+    HalfPageUp,
+    HalfPageDown,
+    Down,
+    Up,
+    Left,
+    Right,
+    Confirm,
+    FocusSidebar,
+    FocusTabs,
+    FocusExplorer,
+}
+
+pub type KeyBindings = HashMap<Command, Vec<String>>;
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Pin {
@@ -39,6 +56,7 @@ pub struct Config {
     current_theme: String,
     pins: Vec<Pin>,
     tabs: Vec<Tab>,
+    keybindings: KeyBindings,
 }
 
 impl Default for Config {
@@ -66,6 +84,25 @@ impl Default for Config {
             current_theme: "default".to_string(),
             pins,
             tabs: vec![],
+            keybindings: HashMap::from([
+                (Command::Confirm, vec!["Enter".to_string()]),
+                (Command::HalfPageUp, vec!["Control+u".to_string()]),
+                (Command::HalfPageDown, vec!["Control+d".to_string()]),
+                (Command::Up, vec!["k".to_string(), "ArrowUp".to_string()]),
+                (Command::FocusSidebar, vec!["Control+h".to_string()]),
+                (
+                    Command::Down,
+                    vec!["j".to_string(), "ArrowDown".to_string()],
+                ),
+                (
+                    Command::Left,
+                    vec!["h".to_string(), "ArrowLeft".to_string()],
+                ),
+                (
+                    Command::Right,
+                    vec!["l".to_string(), "ArrowRight".to_string()],
+                ),
+            ]),
         }
     }
 }
