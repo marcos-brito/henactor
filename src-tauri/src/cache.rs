@@ -1,31 +1,61 @@
 use super::Result;
 use base64ct::{Base64Url, Encoding};
-use reqwest::blocking::get;
+use reqwest::blocking::{get, Response};
 use sha2::{Digest, Sha256};
 use std::fs;
 use std::path::PathBuf;
 
 #[tauri::command]
 #[specta::specta]
-// FIX: Currently svg won't render in the client side. It happens because
-// there is no mime types or extension that says to <img/> what to do. Need to find
-// a way to include the file extension here without breaking the lookup.
 pub fn download_or_find(cache_dir: PathBuf, url: String) -> Result<PathBuf> {
     let hash_str = hash_url(&url);
     let file_path = cache_dir.join(&hash_str);
 
-    if file_path.exists() {
-        return Ok(cache_dir.join(&hash_str));
+    if let Some(file) = find_file(&cache_dir, &hash_str) {
+        return Ok(file);
     }
 
     if !cache_dir.exists() {
         fs::create_dir(&cache_dir)?;
     }
 
-    let bytes = get(&url)?.bytes()?;
-    fs::write(&file_path, &bytes)?;
+    let res = get(&url)?;
+    let ext = extract_ext(&res);
+    let bytes = res.bytes()?;
+
+    fs::write(&file_path.with_extension(ext), &bytes)?;
 
     Ok(file_path)
+}
+
+fn extract_ext(res: &Response) -> String {
+    res.headers()
+        .get("content-type")
+        .and_then(|content_type| {
+            let content_type = content_type.to_str().ok()?;
+
+            Some(
+                mime_guess::get_mime_extensions_str(content_type)?
+                    .first()?
+                    .to_string(),
+            )
+        })
+        .unwrap_or("".to_string())
+}
+
+fn find_file(cache_dir: &PathBuf, hash: &str) -> Option<PathBuf> {
+    fs::read_dir(cache_dir).ok()?.find_map(|entry| {
+        let entry = entry.ok()?;
+
+        if entry
+            .path()
+            .file_stem()
+            .is_some_and(|stem| stem.to_string_lossy().to_string() == hash)
+        {
+            return Some(entry.path());
+        }
+        None
+    })
 }
 
 fn hash_url(url: &str) -> String {
