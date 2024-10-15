@@ -54,6 +54,7 @@ pub struct Config {
     auto_reload: bool,
     save_on_change: bool,
     current_theme: String,
+    lang: String,
     pins: Vec<Pin>,
     tabs: Vec<Tab>,
     keybindings: KeyBindings,
@@ -82,6 +83,7 @@ impl Default for Config {
             save_on_change: false,
             auto_reload: true,
             current_theme: "default".to_string(),
+            lang: "en".to_string(),
             pins,
             tabs: vec![],
             keybindings: HashMap::from([
