@@ -1,4 +1,4 @@
-import { commands, events } from "../bindings";
+import { commands, events } from "$lib/bindings";
 import * as path from "@tauri-apps/api/path";
 
 async function createConfig() {
