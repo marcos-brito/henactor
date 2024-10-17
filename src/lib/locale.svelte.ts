@@ -1,4 +1,4 @@
-import { register, init, getLocaleFromNavigator, dictionary as _dictionary, locale as _locale } from 'svelte-i18n';
+import { waitLocale, register, init, getLocaleFromNavigator, dictionary as _dictionary, locale as _locale } from 'svelte-i18n';
 import { fromStore, } from 'svelte/store';
 
 export const locale = fromStore(_locale);
@@ -10,3 +10,5 @@ init({
     fallbackLocale: 'en',
     initialLocale: getLocaleFromNavigator(),
 });
+
+await waitLocale();

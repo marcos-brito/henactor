@@ -3,9 +3,10 @@
     import "../app.css";
     import { config } from "$lib/config.svelte";
     import { convertFileSrc } from "@tauri-apps/api/core";
-    import { waitLocale } from "svelte-i18n";
     import { locale } from "$lib/locale.svelte";
     import type { Snippet } from "svelte";
+    import { commands } from "$lib/bindings";
+
     let {
         children,
     }: {
@@ -13,8 +14,8 @@
     } = $props();
 
     $effect(() => {
-        waitLocale();
         locale.current = config.options.lang;
+        if (config.options.save_on_change) commands.saveConfig(config.configPath, config.options);
         if (config.currentTheme)
             document.querySelector("html")?.setAttribute("data-theme", config.currentTheme.name);
     });

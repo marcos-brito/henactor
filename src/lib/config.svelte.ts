@@ -7,7 +7,6 @@ async function createConfig() {
     let themes = $state(await commands.findThemes(configPath));
     let currentTheme = $derived(themes.find((t) => t.name == options.current_theme))
 
-    if (options.save_on_change) await commands.saveConfig(configPath, options);
     if (options.auto_reload) {
         await commands.watch(configPath);
         events.watchEvent.listen(async () => {
