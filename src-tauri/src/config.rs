@@ -10,6 +10,7 @@ use std::path::PathBuf;
 const CONFIG_FILE: &str = "henactor.toml";
 const THEMES_DIR: &str = "themes";
 const THEME_FILE: &str = "theme.css";
+const ICONS_FILE: &str = "icons.toml";
 
 #[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
 pub enum Command {
@@ -38,6 +39,17 @@ pub struct Pin {
 pub struct Tab {
     name: String,
     dir: PathBuf,
+#[derive(Debug, Serialize, Deserialize, Type)]
+pub struct Icons {
+    sort: Option<String>,
+    filter: Option<String>,
+    directory: Option<String>,
+    x: Option<String>,
+    plus: Option<String>,
+    file: Option<String>,
+    search: Option<String>,
+    grid_view: Option<String>,
+    list_view: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -45,6 +57,7 @@ pub struct Theme {
     name: String,
     path: PathBuf,
     css_file: PathBuf,
+    icons: Option<Icons>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -124,15 +137,23 @@ pub fn find_themes(config_dir: PathBuf) -> Vec<Theme> {
         .filter_map(|entry| {
             let entry = entry.ok()?;
             let css_file = entry.path().join(THEME_FILE);
+            let icons = fs::read_to_string(entry.path().join(ICONS_FILE))
+                .ok()
+                .and_then(|content| toml::from_str::<Icons>(&content).ok());
 
             if css_file.exists() {
                 return Some(Theme {
                     name: entry.file_name().to_string_lossy().to_string(),
                     path: entry.path(),
+                    icons,
                     css_file,
                 });
             }
 
+            warn!(
+                "No css file found for theme \"{}\"",
+                entry.file_name().to_string_lossy().to_string()
+            );
             None
         })
         .collect::<Vec<Theme>>()

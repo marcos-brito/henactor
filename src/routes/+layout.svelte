@@ -3,6 +3,7 @@
     import "../app.css";
     import { config } from "$lib/config.svelte";
     import { convertFileSrc } from "@tauri-apps/api/core";
+    import Sidebar from "$lib/components/sidebar.svelte";
     import { locale } from "$lib/locale.svelte";
     import type { Snippet } from "svelte";
     import { commands } from "$lib/bindings";
@@ -29,3 +30,8 @@
         />
     {/if}
 </svelte:head>
+<div class="grid grid-cols-[200px_1fr]">
+    <Sidebar />
+    {@render children()}
+</div>
+

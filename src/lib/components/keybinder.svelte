@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import type { Command } from "../../bindings";
+    import type { Command } from "$lib/bindings";
     import { config } from "$lib/config.svelte";
 
     let {

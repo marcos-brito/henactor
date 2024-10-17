@@ -1,5 +1,5 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
-import { commands } from "../../../bindings";
+import { commands } from "$lib/bindings";
 import { path } from "@tauri-apps/api";
 import { config } from "$lib/config.svelte";
 
