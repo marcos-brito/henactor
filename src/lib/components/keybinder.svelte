@@ -1,20 +1,18 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
     import type { Command } from "$lib/bindings";
     import { config } from "$lib/config.svelte";
 
     let {
         actions,
-        container = $bindable(),
-        children,
+        element,
     }: {
-        actions?: Partial<Record<Command, () => void>>;
-        container?: HTMLElement;
-        children: Snippet;
+        element: HTMLElement;
+        actions: Partial<Record<Command, () => void>>;
     } = $props();
 
     let holding = $state<Array<String>>([]);
     let fullBinding = $derived(holding.join("+"));
+    $inspect(element);
 
     function handleKeyDown(e: KeyboardEvent): void {
         holding.push(e.key);
@@ -30,8 +28,11 @@
     function handleKeyUp(e: KeyboardEvent): void {
         holding = holding.filter((key) => key != e.key);
     }
-</script>
 
-<div bind:this={container} tabindex="-1" onkeyup={handleKeyUp} onkeydown={handleKeyDown}>
-    {@render children()}
-</div>
+    $effect(() => {
+        if (element) {
+            element.addEventListener("keydown", handleKeyDown);
+            element.addEventListener("keyup", handleKeyUp);
+        }
+    });
+</script>
