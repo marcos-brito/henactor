@@ -5,6 +5,7 @@
     import SettingsCheck from "./settings-check.svelte";
     import SettingsSelect from "./settings-select.svelte";
     import SettingsKey from "./settings-key.svelte";
+    import { type Command } from "$lib/bindings";
     import type { Snippet } from "svelte";
 
     const pages: Record<string, Snippet> = {
@@ -60,9 +61,14 @@
 {/snippet}
 
 {#snippet pins()}
+    <p>a</p>
 {/snippet}
 
 {#snippet keybinds()}
+    {#each Object.keys(config.keybinds) as cmd}
+        <SettingsKey name={cmd} desc="" bind:value={config.keybinds[cmd as Command]} />
+        <div class="divider my-0"></div>
+    {/each}
 {/snippet}
 
 <section class="mt-4 grid grid-cols-[200px_1fr]">
