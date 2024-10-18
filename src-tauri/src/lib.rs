@@ -26,6 +26,18 @@ pub enum Error {
         std::io::Error,
     ),
     #[error("")]
+    ReadConfig(
+        #[serde(skip)]
+        #[from]
+        toml::ser::Error,
+    ),
+    #[error("")]
+    WriteCofig(
+        #[serde(skip)]
+        #[from]
+        toml::de::Error,
+    ),
+    #[error("")]
     Config(
         #[serde(skip)]
         #[from]
@@ -55,9 +67,9 @@ pub struct AppState {
 pub fn run() {
     let builder = Builder::<tauri::Wry>::new()
         .commands(collect_commands![
-            config::find_themes,
-            config::save_config,
             config::load_config,
+            config::save_config,
+            config::default_config,
             fs::watch,
             fs::read_file
             cache::download_or_find

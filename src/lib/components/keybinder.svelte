@@ -5,9 +5,11 @@
     let {
         actions,
         element,
+        element = $bindable(),
     }: {
         element: HTMLElement;
         actions: Partial<Record<Command, () => void>>;
+        element: HTMLElement;
     } = $props();
 
     let holding = $state<Array<String>>([]);
@@ -19,6 +21,8 @@
 
         for (const [cmd, keys] of Object.entries(config.options.keybindings)) {
             if (keys.includes(fullBinding) && actions) {
+        for (const [cmd, keys] of Object.entries(config.keybinds)) {
+            if (keys.includes(fullBinding)) {
                 const action = actions[cmd as Command];
                 if (action) action();
             }
@@ -30,9 +34,8 @@
     }
 
     $effect(() => {
-        if (element) {
-            element.addEventListener("keydown", handleKeyDown);
-            element.addEventListener("keyup", handleKeyUp);
+        element.addEventListener("keydown", handleKeyDown);
+        element.addEventListener("keyup", handleKeyUp);
         }
     });
 </script>

@@ -1,5 +1,4 @@
 use super::Result;
-use directories::UserDirs;
 use log::warn;
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -7,10 +6,13 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
-const CONFIG_FILE: &str = "henactor.toml";
-const THEMES_DIR: &str = "themes";
-const THEME_FILE: &str = "theme.css";
-const ICONS_FILE: &str = "icons.toml";
+pub const OPTIONS_FILE: &str = "options.toml";
+pub const PINS_FILE: &str = "pins.toml";
+pub const TABS_FILE: &str = "tabs.toml";
+pub const KEYBINDS_FILE: &str = "keys.toml";
+pub const THEMES_DIR: &str = "themes";
+pub const THEME_FILE: &str = "theme.css";
+pub const ICONS_FILE: &str = "icons.toml";
 
 #[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
 pub enum Command {
@@ -26,7 +28,15 @@ pub enum Command {
     FocusExplorer,
 }
 
-pub type KeyBindings = HashMap<Command, Vec<String>>;
+#[derive(Debug, Serialize, Deserialize, Type)]
+pub struct KeyBindings(HashMap<Command, Vec<String>>);
+
+impl Default for KeyBindings {
+    fn default() -> Self {
+        KeyBindings(HashMap::from([
+        ]))
+    }
+}
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Pin {
@@ -35,10 +45,12 @@ pub struct Pin {
     icon: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Type)]
+#[derive(Debug, Serialize, Deserialize, Type, PartialEq, Eq, Hash)]
 pub struct Tab {
     name: String,
-    dir: PathBuf,
+    path: PathBuf,
+}
+
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Icons {
     sort: Option<String>,
@@ -61,23 +73,43 @@ pub struct Theme {
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
-pub struct Config {
+pub struct Options {
     title: String,
     download_icons: bool,
     auto_reload: bool,
     save_on_change: bool,
     current_theme: String,
     lang: String,
-    pins: Vec<Pin>,
+}
+
+impl Default for Options {
+    fn default() -> Self {
+        Options {
+            title: "Henactor".to_string(),
+            download_icons: true,
+            save_on_change: false,
+            auto_reload: true,
+            key_interval: 200,
+            current_theme: "default".to_string(),
+            lang: "en".to_string(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Type)]
+pub struct Config {
+    options: Options,
+    keybinds: KeyBindings,
     tabs: Vec<Tab>,
-    keybindings: KeyBindings,
+    themes: Vec<Theme>,
+    pins: Vec<Pin>,
 }
 
 impl Default for Config {
     fn default() -> Self {
-        let pins = match UserDirs::new() {
-            Some(dirs) => {
-                vec![Pin {
+        let pins = directories::BaseDirs::new()
+            .and_then(|dirs| {
+                Some(vec![Pin {
                     alias: dirs
                         .home_dir()
                         .file_name()
@@ -85,46 +117,49 @@ impl Default for Config {
                         .unwrap_or("Home".to_string()),
                     target: dirs.home_dir().to_path_buf(),
                     icon: Some("🏠".to_string()),
-                }]
-            }
-            None => vec![],
-        };
+                }])
+            })
+            .unwrap_or(vec![]);
 
         Config {
-            title: "Henactor".to_string(),
-            download_icons: true,
-            save_on_change: false,
-            auto_reload: true,
-            current_theme: "default".to_string(),
-            lang: "en".to_string(),
-            pins,
+            options: Options::default(),
+            keybinds: KeyBindings::default(),
+            themes: vec![],
             tabs: vec![],
-            keybindings: HashMap::from([
-                (Command::Confirm, vec!["Enter".to_string()]),
-                (Command::HalfPageUp, vec!["Control+u".to_string()]),
-                (Command::HalfPageDown, vec!["Control+d".to_string()]),
-                (Command::Up, vec!["k".to_string(), "ArrowUp".to_string()]),
-                (Command::FocusSidebar, vec!["Control+h".to_string()]),
-                (
-                    Command::Down,
-                    vec!["j".to_string(), "ArrowDown".to_string()],
-                ),
-                (
-                    Command::Left,
-                    vec!["h".to_string(), "ArrowLeft".to_string()],
-                ),
-                (
-                    Command::Right,
-                    vec!["l".to_string(), "ArrowRight".to_string()],
-                ),
-            ]),
+            pins,
         }
     }
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn find_themes(config_dir: PathBuf) -> Vec<Theme> {
+pub fn default_config() -> Config {
+    Config::default()
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn load_config(config_dir: PathBuf) -> Result<Config> {
+    Ok(Config {
+        themes: find_themes(&config_dir),
+        options: read_config_file(config_dir.join(OPTIONS_FILE))?,
+        pins: read_config_file(config_dir.join(PINS_FILE))?,
+        tabs: read_config_file(config_dir.join(TABS_FILE))?,
+        keybinds: read_config_file(config_dir.join(KEYBINDS_FILE))?,
+    })
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn save_config(config_dir: PathBuf, config: Config) -> Result<()> {
+    write_config_file(config.options, config_dir.join(OPTIONS_FILE))?;
+    write_config_file(config.keybinds, config_dir.join(KEYBINDS_FILE))?;
+    write_config_file(config.tabs, config_dir.join(TABS_FILE))?;
+    write_config_file(config.pins, config_dir.join(PINS_FILE))?;
+    Ok(())
+}
+
+pub fn find_themes(config_dir: &PathBuf) -> Vec<Theme> {
     let entries = match fs::read_dir(config_dir.join(THEMES_DIR)) {
         Ok(entries) => entries,
         Err(err) => {
@@ -159,24 +194,18 @@ pub fn find_themes(config_dir: PathBuf) -> Vec<Theme> {
         .collect::<Vec<Theme>>()
 }
 
-#[tauri::command]
-#[specta::specta]
-pub fn save_config(config_dir: PathBuf, config: Config) -> Result<()> {
-    Ok(confy::store_path(config_dir.join(CONFIG_FILE), config)?)
+pub fn write_config_file<T>(config: T, path: PathBuf) -> Result<()>
+where
+    T: Serialize,
+{
+    let content = toml::to_string(&config)?;
+    Ok(fs::write(&path, content)?)
 }
 
-#[tauri::command]
-#[specta::specta]
-pub fn load_config(config_dir: PathBuf) -> Config {
-    match confy::load_path(&config_dir.join(CONFIG_FILE)) {
-        Ok(config) => config,
-        Err(e) => {
-            warn!(
-                "Failed to load config from {}: {e}. Using default.",
-                config_dir.display()
-            );
-
-            Config::default()
-        }
-    }
+pub fn read_config_file<T>(path: PathBuf) -> Result<T>
+where
+    T: serde::de::DeserializeOwned,
+{
+    let content = fs::read_to_string(&path)?;
+    Ok(toml::from_str::<T>(&content)?)
 }

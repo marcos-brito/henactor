@@ -6,7 +6,6 @@
     import Sidebar from "$lib/components/sidebar.svelte";
     import { locale } from "$lib/locale.svelte";
     import type { Snippet } from "svelte";
-    import { commands } from "$lib/bindings";
 
     let {
         children,
@@ -16,7 +15,8 @@
 
     $effect(() => {
         locale.current = config.options.lang;
-        if (config.options.save_on_change) commands.saveConfig(config.configPath, config.options);
+        // config.options.auto_reload ? config.watch() : config.unwatch();
+        // if (config.options.save_on_change) config.save();
         if (config.currentTheme)
             document.querySelector("html")?.setAttribute("data-theme", config.currentTheme.name);
     });
