@@ -10,13 +10,12 @@
     } = $props();
 
     const iconType = identifyIcon(icon);
-    let _size = $derived(size || 20);
 </script>
 
 {#if iconType == IconType.Text}
-    <p class={`text-[${_size}px]`}>{icon}</p>
+    <p class={`text-[${size || 20}px]`}>{icon}</p>
 {:else}
     {#await resolve(icon, iconType) then src}
-        <img {src} class={`size-[${_size}px]`} alt="icon" />
+        <img {src} class={`size-[${size || 20}px]`} alt="icon" />
     {/await}
 {/if}

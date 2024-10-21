@@ -1,6 +1,6 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { commands } from "$lib/bindings";
-import { path } from "@tauri-apps/api";
+import { path as pathApi } from "@tauri-apps/api";
 import { app } from "$lib/app.svelte";
 
 // prefix:name:hexColor
@@ -15,6 +15,7 @@ export enum IconType {
     Text,
 }
 
+
 export function identifyIcon(icon: string): IconType {
     if (icon.startsWith(".")) return IconType.RelativePath;
     if (icon.startsWith("/")) return IconType.AbsolutePath;
@@ -24,17 +25,17 @@ export function identifyIcon(icon: string): IconType {
     return IconType.Text;
 }
 
-export async function resolve(iconString: string, iconType: IconType): Promise<string> {
+export async function resolve(iconString: string, iconType: IconType, themeName: string | undefined = undefined): Promise<string> {
     let resolution = iconString;
 
     if (iconType == IconType.Text) return resolution;
 
     if (iconType == IconType.Icon) resolution = buildIconifyUri(iconString);
 
-    if (iconType == IconType.RelativePath) resolution = await buildRelativeUri(iconString);
+    if (iconType == IconType.RelativePath) resolution = await buildRelativeUri(iconString, themeName);
 
     if (shouldDownload(iconType)) {
-        const cacheDir = await path.appCacheDir();
+        const cacheDir = await pathApi.appCacheDir();
         resolution = await commands.downloadOrFind(cacheDir, resolution);
     }
 
@@ -59,7 +60,8 @@ function buildIconifyUri(iconString: string): string {
     return `${url}/${prefix}/${icon}.svg`;
 }
 
-async function buildRelativeUri(iconString: string): Promise<string> {
-    const configDir = await path.appConfigDir();
-    return await path.join(configDir, iconString);
+async function buildRelativeUri(iconString: string, themeName: string | undefined): Promise<string> {
+    const configDir = await pathApi.appConfigDir();
+    if (themeName) return await pathApi.join("themes", themeName, iconString);
+    return await pathApi.join(configDir, iconString);
 }
