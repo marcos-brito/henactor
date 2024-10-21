@@ -1,4 +1,3 @@
 // work around for the webkit bug
-import * as _config from "$lib/config.svelte";
-import * as _icon from "$lib/icon"
-import * as _key from "$lib/keybindings"
+import * as _app from "$lib/app.svelte";
+import * as _locale from "$lib/locale.svelte"
