@@ -1,7 +1,7 @@
 <script lang="ts">
+    import { app } from "$lib/app.svelte";
     import "$lib/locale.svelte";
     import "../app.css";
-    import { config } from "$lib/config.svelte";
     import { convertFileSrc } from "@tauri-apps/api/core";
     import Sidebar from "$lib/components/sidebar.svelte";
     import { locale } from "$lib/locale.svelte";
@@ -14,19 +14,20 @@
     } = $props();
 
     $effect(() => {
-        locale.current = config.options.lang;
-        // config.options.auto_reload ? config.watch() : config.unwatch();
-        // if (config.options.save_on_change) config.save();
-        if (config.currentTheme)
-            document.querySelector("html")?.setAttribute("data-theme", config.currentTheme.name);
+        locale.current = app.options.lang;
+        app.options.auto_reload ? app.watch() : app.unwatch();
+        if (app.tabs._.length == 0) app.tabs.add();
+        if (app.options.save_on_change) app.save();
+        if (app.currentTheme)
+            document.querySelector("html")?.setAttribute("data-theme", app.currentTheme.name);
     });
 </script>
 
 <svelte:head>
-    {#if config.currentTheme}
+    {#if app.currentTheme}
         <link
             rel="stylesheet"
-            href={`${convertFileSrc(config.currentTheme.css_file)}?${Date.now()}`}
+            href={`${convertFileSrc(app.currentTheme.css_file)}?${Date.now()}`}
         />
     {/if}
 </svelte:head>

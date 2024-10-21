@@ -1,7 +1,7 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { commands } from "$lib/bindings";
 import { path } from "@tauri-apps/api";
-import { config } from "$lib/config.svelte";
+import { app } from "$lib/app.svelte";
 
 // prefix:name:hexColor
 // ":hexColor" is optional
@@ -43,7 +43,7 @@ export async function resolve(iconString: string, iconType: IconType): Promise<s
 
 function shouldDownload(iconType: IconType): boolean {
     return (
-        config.options.download_icons && (iconType == IconType.Url || iconType == IconType.Icon)
+        app.options.download_icons && (iconType == IconType.Url || iconType == IconType.Icon)
     );
 }
 

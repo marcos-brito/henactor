@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Command } from "$lib/bindings";
-    import { config } from "$lib/config.svelte";
+    import { app } from "$lib/app.svelte";
 
     let {
         actions,
@@ -19,9 +19,7 @@
     function handleKeyDown(e: KeyboardEvent): void {
         holding.push(e.key);
 
-        for (const [cmd, keys] of Object.entries(config.options.keybindings)) {
-            if (keys.includes(fullBinding) && actions) {
-        for (const [cmd, keys] of Object.entries(config.keybinds)) {
+        for (const [cmd, keys] of Object.entries(app.keybinds)) {
             if (keys.includes(fullBinding)) {
                 const action = actions[cmd as Command];
                 if (action) action();
