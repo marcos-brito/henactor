@@ -5,16 +5,13 @@
     let {
         actions,
         element,
-        element = $bindable(),
     }: {
-        element: HTMLElement;
         actions: Partial<Record<Command, () => void>>;
         element: HTMLElement;
     } = $props();
 
     let holding = $state<Array<String>>([]);
     let fullBinding = $derived(holding.join("+"));
-    $inspect(element);
 
     function handleKeyDown(e: KeyboardEvent): void {
         holding.push(e.key);
@@ -36,4 +33,11 @@
         element.addEventListener("keyup", handleKeyUp);
         }
     });
+    element.addEventListener("keydown", handleKeyDown);
+    element.addEventListener("keyup", handleKeyUp);
+
+    if (windowActions) {
+        window.addEventListener("keydown", handleWidowKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
+    }
 </script>

@@ -26,6 +26,7 @@ pub enum Command {
     FocusSidebar,
     FocusTabs,
     FocusExplorer,
+    OpenDetails,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]

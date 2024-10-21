@@ -1,6 +1,8 @@
 <script lang="ts">
     import { clickOutside } from "$lib/utils";
     import type { Snippet } from "svelte";
+    import Keybinder from "../keybinder.svelte";
+
     let {
         children,
         trigger,
@@ -35,11 +37,18 @@
         openAt(e.clientX, e.clientY);
     }
 
+    function handleOpenKeyPressed(): void {
+        openAt(trigger.getBoundingClientRect().left, trigger.getBoundingClientRect().top);
+    }
+
     trigger.addEventListener("contextmenu", handleClick);
 </script>
 
+<Keybinder element={trigger} actions={{ OpenDetails: handleOpenKeyPressed }} />
+
 {#if isActive}
     <ul
+        tabindex="-1"
         bind:this={menu}
         use:clickOutside={() => (isActive = false)}
         onclick={() => (isActive = false)}
