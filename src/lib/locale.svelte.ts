@@ -11,4 +11,4 @@ init({
     initialLocale: getLocaleFromNavigator(),
 });
 
-await waitLocale();
+waitLocale().catch((e) => console.log(`error loading locales: ${e}`));
