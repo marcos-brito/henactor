@@ -26,7 +26,13 @@ pub enum Command {
     FocusSidebar,
     FocusTabs,
     FocusExplorer,
+    QuitKeyGrabber,
+    Delete,
+    Edit,
+    Accept,
+    Create,
     OpenDetails,
+    OpenConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -35,6 +41,33 @@ pub struct KeyBindings(HashMap<Command, Vec<String>>);
 impl Default for KeyBindings {
     fn default() -> Self {
         KeyBindings(HashMap::from([
+            (Command::Confirm, vec!["Enter".to_string()]),
+            (Command::HalfPageUp, vec!["Control+u".to_string()]),
+            (Command::HalfPageDown, vec!["Control+d".to_string()]),
+            (Command::Up, vec!["k".to_string(), "ArrowUp".to_string()]),
+            (Command::FocusSidebar, vec!["Control+h".to_string()]),
+            (Command::Edit, vec!["c+c".to_string()]),
+            (Command::Accept, vec!["Enter".to_string()]),
+            (Command::Create, vec!["o".to_string()]),
+            (Command::OpenDetails, vec!["i".to_string()]),
+            (Command::OpenConfig, vec!["Contro+o".to_string()]),
+            (Command::QuitKeyGrabber, vec!["Control+Enter".to_string()]),
+            (
+                Command::Delete,
+                vec!["Delete".to_string(), "d+d".to_string()],
+            ),
+            (
+                Command::Down,
+                vec!["j".to_string(), "ArrowDown".to_string()],
+            ),
+            (
+                Command::Left,
+                vec!["h".to_string(), "ArrowLeft".to_string()],
+            ),
+            (
+                Command::Right,
+                vec!["l".to_string(), "ArrowRight".to_string()],
+            ),
         ]))
     }
 }
@@ -50,6 +83,16 @@ pub struct Pin {
 pub struct Tab {
     name: String,
     path: PathBuf,
+    view: Option<View>,
+    grid_size: Option<u8>,
+    query: Option<String>,
+}
+
+#[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub enum View {
+    Grid,
+    List,
+    Tree,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]

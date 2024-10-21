@@ -6,6 +6,7 @@
     import Sidebar from "$lib/components/sidebar.svelte";
     import { locale } from "$lib/locale.svelte";
     import type { Snippet } from "svelte";
+    import Tabs from "$lib/components/tab/tabs.svelte";
 
     let {
         children,
@@ -33,6 +34,8 @@
 </svelte:head>
 <div class="grid grid-cols-[200px_1fr]">
     <Sidebar />
-    {@render children()}
+    <div class="flex flex-col gap-4">
+        <Tabs />
+        {@render children()}
+    </div>
 </div>
-

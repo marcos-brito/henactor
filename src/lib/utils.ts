@@ -5,7 +5,6 @@ export function clickOutside(node: HTMLElement, callback: () => void) {
             callback();
         }
     };
-
     document.addEventListener("click", handleClick, true);
     document.addEventListener("contextmenu", handleClick, true);
 
