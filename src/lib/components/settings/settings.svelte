@@ -1,5 +1,6 @@
 <script lang="ts">
     import { _, dictionary } from "svelte-i18n";
+    import { _ } from "svelte-i18n";
     import { app } from "$lib/app.svelte";
     import SettingsInput from "./settings-input.svelte";
     import SettingsCheck from "./settings-check.svelte";
@@ -7,6 +8,7 @@
     import SettingsKey from "./settings-key.svelte";
     import { type Command } from "$lib/bindings";
     import type { Snippet } from "svelte";
+    import { dictionary } from "$lib/locale.svelte";
 
     const pages: Record<string, Snippet> = {
         general: general,
@@ -22,37 +24,37 @@
     <SettingsSelect
         bind:value={app.options.lang}
         options={Object.keys(dictionary.current)}
-        name={$_("config.general.lang")}
-        desc={$_("config.general.lang.desc")}
+        name={$_("settings.general.lang")}
+        desc={$_("settings.general.lang.desc")}
     />
     <SettingsCheck
         bind:checked={app.options.download_icons}
-        name={$_("config.general.download_icons")}
-        desc={$_("config.general.download_icons.desc")}
+        name={$_("settings.general.download_icons")}
+        desc={$_("settings.general.download_icons.desc")}
     />
     <SettingsCheck
         bind:checked={app.options.auto_reload}
-        name={$_("config.general.auto_reload")}
-        desc={$_("config.general.auto_reload.desc")}
+        name={$_("settings.general.auto_reload")}
+        desc={$_("settings.general.auto_reload.desc")}
     />
     <SettingsCheck
         bind:checked={app.options.save_on_change}
-        name={$_("config.general.save_on_change")}
-        desc={$_("config.general.save_on_change.desc")}
+        name={$_("settings.general.save_on_change")}
+        desc={$_("settings.general.save_on_change.desc")}
     />
 {/snippet}
 
 {#snippet appearance()}
     <SettingsInput
         bind:value={app.options.title}
-        name={$_("config.general.title")}
-        desc={$_("config.general.title.desc")}
+        name={$_("settings.general.title")}
+        desc={$_("settings.general.title.desc")}
     />
     <SettingsSelect
         bind:value={app.options.current_theme}
         options={app.themes.map((t) => t.name)}
-        name={$_("config.appearance.theme")}
-        desc={$_("config.appearance.theme.desc")}
+        name={$_("settings.appearance.theme")}
+        desc={$_("settings.appearance.theme.desc")}
     />
 {/snippet}
 
@@ -74,7 +76,7 @@
                 <li>
                     <button
                         class={page == currentPage ? "active" : ""}
-                        onclick={() => (currentPage = page)}>{$_(`config.${page}`)}</button
+                        onclick={() => (currentPage = page)}>{$_(`settings.${page}`)}</button
                     >
                 </li>
             {/each}
