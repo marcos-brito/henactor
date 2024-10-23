@@ -9,6 +9,31 @@ use std::collections::HashMap;
 use std::sync::Mutex;
 use tauri_specta::{collect_commands, collect_events, Builder, ErrorHandlingMode};
 
+type CmdResult<T> = std::result::Result<T, _Error>;
+
+#[derive(Debug, specta::Type, Serialize)]
+pub struct _Error {
+    err: String,
+    causes: Vec<String>,
+}
+
+impl std::error::Error for _Error {}
+
+impl std::fmt::Display for _Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:#}", self)
+    }
+}
+
+impl From<anyhow::Error> for _Error {
+    fn from(value: anyhow::Error) -> Self {
+        Self {
+            err: value.to_string(),
+            causes: value.chain().map(|err| err.to_string()).collect(),
+        }
+    }
+}
+
 type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, thiserror::Error, specta::Type)]
