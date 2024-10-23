@@ -1,15 +1,13 @@
-use super::Result;
-use log::warn;
+use super::CmdResult;
+use anyhow::Context;
+use log::{error, warn};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
-pub const OPTIONS_FILE: &str = "options.toml";
-pub const PINS_FILE: &str = "pins.toml";
-pub const TABS_FILE: &str = "tabs.toml";
-pub const KEYBINDS_FILE: &str = "keys.toml";
+pub const CONFIG_FILE: &str = "henactor.toml";
 pub const THEMES_DIR: &str = "themes";
 pub const THEME_FILE: &str = "theme.css";
 pub const ICONS_FILE: &str = "icons.toml";
@@ -123,6 +121,7 @@ pub struct Options {
     auto_reload: bool,
     save_on_change: bool,
     current_theme: String,
+    key_interval: u8,
     lang: String,
 }
 
@@ -145,7 +144,6 @@ pub struct Config {
     options: Options,
     keybinds: KeyBindings,
     tabs: Vec<Tab>,
-    themes: Vec<Theme>,
     pins: Vec<Pin>,
 }
 
@@ -168,7 +166,6 @@ impl Default for Config {
         Config {
             options: Options::default(),
             keybinds: KeyBindings::default(),
-            themes: vec![],
             tabs: vec![],
             pins,
         }
@@ -183,27 +180,46 @@ pub fn default_config() -> Config {
 
 #[tauri::command]
 #[specta::specta]
-pub fn load_config(config_dir: PathBuf) -> Result<Config> {
-    Ok(Config {
-        themes: find_themes(&config_dir),
-        options: read_config_file(config_dir.join(OPTIONS_FILE))?,
-        pins: read_config_file(config_dir.join(PINS_FILE))?,
-        tabs: read_config_file(config_dir.join(TABS_FILE))?,
-        keybinds: read_config_file(config_dir.join(KEYBINDS_FILE))?,
-    })
+pub fn load_config(config_dir: PathBuf) -> CmdResult<Config> {
+    let path = config_dir.join(CONFIG_FILE);
+
+    match fs::read_to_string(&path)
+        .context(format!("Failed to read {}", path.display()))
+        .and_then(|contents| {
+            Ok(toml::from_str::<Config>(&contents)
+                .context(format!("Failed to parse {}", path.display()))?)
+        }) {
+        Ok(config) => Ok(config),
+        Err(e) => {
+            error!("Failed to load config from {}: {}", path.display(), e);
+            Err(e.into())
+        }
+    }
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn save_config(config_dir: PathBuf, config: Config) -> Result<()> {
-    write_config_file(config.options, config_dir.join(OPTIONS_FILE))?;
-    write_config_file(config.keybinds, config_dir.join(KEYBINDS_FILE))?;
-    write_config_file(config.tabs, config_dir.join(TABS_FILE))?;
-    write_config_file(config.pins, config_dir.join(PINS_FILE))?;
+pub fn save_config(config_dir: PathBuf, config: Config) -> CmdResult<()> {
+    let path = config_dir.join(CONFIG_FILE);
+
+    if let Err(e) = toml::to_string(&config)
+        // This should not happen at all
+        .context("Failed to parse config to a string")
+        .and_then(|config| {
+            Ok(fs::write(&path, config)
+                .context(format!("Failed to write config to {}", path.display()))?)
+        })
+    {
+        error!("Failed to write config to {}: {}", path.display(), e);
+        return Err(e.into());
+    }
+
     Ok(())
 }
 
-pub fn find_themes(config_dir: &PathBuf) -> Vec<Theme> {
+#[tauri::command]
+#[specta::specta]
+pub fn find_themes(config_dir: PathBuf) -> Vec<Theme> {
     let entries = match fs::read_dir(config_dir.join(THEMES_DIR)) {
         Ok(entries) => entries,
         Err(err) => {
@@ -236,20 +252,4 @@ pub fn find_themes(config_dir: &PathBuf) -> Vec<Theme> {
             None
         })
         .collect::<Vec<Theme>>()
-}
-
-pub fn write_config_file<T>(config: T, path: PathBuf) -> Result<()>
-where
-    T: Serialize,
-{
-    let content = toml::to_string(&config)?;
-    Ok(fs::write(&path, content)?)
-}
-
-pub fn read_config_file<T>(path: PathBuf) -> Result<T>
-where
-    T: serde::de::DeserializeOwned,
-{
-    let content = fs::read_to_string(&path)?;
-    Ok(toml::from_str::<T>(&content)?)
 }
