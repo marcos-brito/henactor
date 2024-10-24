@@ -49,6 +49,7 @@
             toast: "rounded bg-base-200 border-none",
             title: "font-bold",
             default: "text-base-content",
+            info: "text-info",
             error: "text-error",
             warning: "text-warning",
             cancelButton: "!btn",

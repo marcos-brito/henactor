@@ -5,6 +5,8 @@
     "sort": "Sort",
     "view.grid": "Grid view",
     "view.list": "List view",
+    "messages.reload_config.title": "Configuration reloaded",
+    "messages.error.reload_config.title": "Configuration reload failed",
     "messages.error.load_config.title": "Configuration error",
     "messages.error.load_config.desc": "Configuration falled back to default because an error was encountered.",
     "settings.general": "General",

@@ -1,4 +1,5 @@
 import { commands, events, type Config, type Error, type Tab, type View } from "$lib/bindings";
+import { type UnlistenFn } from "@tauri-apps/api/event";
 import * as pathApi from "@tauri-apps/api/path";
 import { _ } from "svelte-i18n";
 import { toast } from "svelte-sonner";
@@ -25,24 +26,40 @@ async function createAppStateManager(config: Config) {
     let app = $state(config);
     let themes = $state(await commands.findThemes(configPath))
     let currentTheme = $derived(themes.find((t) => t.name == app.options.current_theme))
+    let unlisten = $state<UnlistenFn | null>(null)
+    const watcher = await commands.watch(configPath);
+
     async function save(): Promise<void> {
-        await commands.saveConfig(path, config);
+        unwatch();
+        await commands.saveConfig(configPath, app);
+        if (app.options.auto_reload) await watch()
     }
 
-    async function watch() {
-        if (configWatcher) return;
-        configWatcher = await commands.watch(path);
-        // this listener will always exist, but once the fs watcher is removed it will never trigger again
-        events.watchEvent.listen(async (e) => {
-            if (configWatcher && e.payload.includes(configWatcher.toString())) {
-                config = await commands.loadConfig(path);
+    async function watch(): Promise<void> {
+        const t = fromStore(_);
+        if (unlisten || !watcher) return;
+        unlisten = await events.watchEvent.listen(async (e) => {
+            if (e.payload.includes(watcher.toString())) {
+                try {
+                    const [newConfig, newThemes] = await Promise.all([
+                        commands.loadConfig(configPath),
+                        commands.findThemes(configPath)
+                    ])
+                    app = newConfig
+                    themes = newThemes
+                    toast.info(t.current("messages.reload_config.title"))
+                } catch (e) {
+                    toast.error(t.current("messages.error.reload_config.title"))
+                }
             }
         });
     }
 
-    async function unwatch(): Promise<void> {
-        //todo!
-        // commands.removeWatcher
+    function unwatch(): void {
+        if (unlisten) {
+            unlisten();
+            unlisten = null;
+        }
     }
 
     return {
