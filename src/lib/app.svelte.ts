@@ -1,17 +1,30 @@
-import { commands, events, type Tab, type View } from "$lib/bindings";
+import { commands, events, type Config, type Error, type Tab, type View } from "$lib/bindings";
 import * as pathApi from "@tauri-apps/api/path";
+import { _ } from "svelte-i18n";
+import { toast } from "svelte-sonner";
+import { fromStore } from "svelte/store";
 
 export let app: Awaited<ReturnType<typeof createAppStateManager>>;
-createAppStateManager().then((c) => app = c).catch(async (e) => {
-    console.log(`error loading config: ${e}`);
-});
+export let loadingError: Error | null = null;
 
-async function createAppStateManager() {
+readFromFs().then(async (config) => {
+    app = await createAppStateManager(config);
+}).catch(async (error) => {
+    const defaultConfig = await commands.defaultConfig();
+    app = await createAppStateManager(defaultConfig)
+    loadingError = error
+})
+
+async function readFromFs(): Promise<Config> {
     const path = await pathApi.appConfigDir()
-    let config = $state(await commands.loadConfig(path));
-    let configWatcher = $state<number | null>(null);
-    let currentTheme = $derived(config.themes.find((t) => t.name == config.options.current_theme))
+    return await commands.loadConfig(path);
+}
 
+async function createAppStateManager(config: Config) {
+    const configPath = await pathApi.appConfigDir()
+    let app = $state(config);
+    let themes = $state(await commands.findThemes(configPath))
+    let currentTheme = $derived(themes.find((t) => t.name == app.options.current_theme))
     async function save(): Promise<void> {
         await commands.saveConfig(path, config);
     }
@@ -33,12 +46,12 @@ async function createAppStateManager() {
     }
 
     return {
-        get pins() { return config.pins },
-        get options() { return config.options },
-        get themes() { return config.themes },
-        get keybinds() { return config.keybinds },
-        tabs: await createTabsManager(config.tabs),
-        currentTheme,
+        get pins() { return app.pins },
+        get options() { return app.options },
+        get themes() { return themes },
+        get keybinds() { return app.keybinds },
+        tabs: await createTabsManager(app.tabs),
+        get currentTheme() { return currentTheme },
         watch,
         unwatch,
         save,
