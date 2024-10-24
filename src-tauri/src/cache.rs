@@ -1,4 +1,5 @@
 use super::Result;
+use anyhow::Context;
 use base64ct::{Base64Url, Encoding};
 use reqwest::blocking::{get, Response};
 use sha2::{Digest, Sha256};
@@ -16,14 +17,16 @@ pub fn download_or_find(cache_dir: PathBuf, url: String) -> Result<PathBuf> {
     }
 
     if !cache_dir.exists() {
-        fs::create_dir(&cache_dir)?;
+        fs::create_dir(&cache_dir).with_context(|| "Failed to create cache dir")?;
     }
 
-    let res = get(&url)?;
+    let res = get(&url).with_context(|| format!("Request to {url} failed"))?;
     let ext = extract_ext(&res);
-    let bytes = res.bytes()?;
 
-    fs::write(&file_path.with_extension(ext), &bytes)?;
+    res.bytes()
+        .ok()
+        .and_then(|bytes| fs::write(&file_path.with_extension(ext), &bytes).ok())
+        .with_context(|| format!("Failed to write the response of {url} to the cache"))?;
 
     Ok(file_path)
 }

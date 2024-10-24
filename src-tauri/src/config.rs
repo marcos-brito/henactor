@@ -1,4 +1,4 @@
-use super::CmdResult;
+use super::Result;
 use anyhow::Context;
 use log::{error, warn};
 use serde::{Deserialize, Serialize};
@@ -178,7 +178,7 @@ pub fn default_config() -> Config {
 
 #[tauri::command]
 #[specta::specta]
-pub fn load_config(config_dir: PathBuf) -> CmdResult<Config> {
+pub fn load_config(config_dir: PathBuf) -> Result<Config> {
     let path = config_dir.join(CONFIG_FILE);
 
     match fs::read_to_string(&path)
@@ -189,7 +189,7 @@ pub fn load_config(config_dir: PathBuf) -> CmdResult<Config> {
         }) {
         Ok(config) => Ok(config),
         Err(e) => {
-            error!("Failed to load config from {}: {}", path.display(), e);
+            error!("Failed to load config from {}: {:#}", path.display(), e);
             Err(e.into())
         }
     }
@@ -197,7 +197,7 @@ pub fn load_config(config_dir: PathBuf) -> CmdResult<Config> {
 
 #[tauri::command]
 #[specta::specta]
-pub fn save_config(config_dir: PathBuf, config: Config) -> CmdResult<()> {
+pub fn save_config(config_dir: PathBuf, config: Config) -> Result<()> {
     let path = config_dir.join(CONFIG_FILE);
 
     if let Err(e) = toml::to_string(&config)

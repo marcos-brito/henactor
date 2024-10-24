@@ -9,79 +9,31 @@ use std::collections::HashMap;
 use std::sync::Mutex;
 use tauri_specta::{collect_commands, collect_events, Builder, ErrorHandlingMode};
 
-type CmdResult<T> = std::result::Result<T, _Error>;
+type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, specta::Type, Serialize)]
-pub struct _Error {
+pub struct Error {
     err: String,
     causes: Vec<String>,
 }
 
-impl std::error::Error for _Error {}
+impl std::error::Error for Error {}
 
-impl std::fmt::Display for _Error {
+impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{:#}", self)
     }
 }
 
-impl From<anyhow::Error> for _Error {
+// This actually makes required to return anyhow::Error from any command. First I thought
+// it was bad. Now I think it might be good because we want to allow users to see the error details
+// in the UI and without anyhow's context they would get less useful. For now i'm keeping it.
+impl From<anyhow::Error> for Error {
     fn from(value: anyhow::Error) -> Self {
         Self {
             err: value.to_string(),
             causes: value.chain().map(|err| err.to_string()).collect(),
         }
-    }
-}
-
-type Result<T> = std::result::Result<T, Error>;
-
-#[derive(Debug, thiserror::Error, specta::Type)]
-pub enum Error {
-    #[error("")]
-    Watch(
-        #[serde(skip)]
-        #[from]
-        notify::Error,
-    ),
-    #[error("")]
-    Io(
-        #[serde(skip)]
-        #[from]
-        std::io::Error,
-    ),
-    #[error("")]
-    ReadConfig(
-        #[serde(skip)]
-        #[from]
-        toml::ser::Error,
-    ),
-    #[error("")]
-    WriteCofig(
-        #[serde(skip)]
-        #[from]
-        toml::de::Error,
-    ),
-    #[error("")]
-    Config(
-        #[serde(skip)]
-        #[from]
-        confy::ConfyError,
-    ),
-    #[error("")]
-    Req(
-        #[serde(skip)]
-        #[from]
-        reqwest::Error,
-    ),
-}
-
-impl Serialize for Error {
-    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
-    where
-        S: serde::ser::Serializer,
-    {
-        serializer.serialize_str(self.to_string().as_ref())
     }
 }
 
@@ -95,8 +47,8 @@ pub fn run() {
             config::load_config,
             config::save_config,
             config::default_config,
+            config::find_themes,
             fs::watch,
-            fs::read_file
             cache::download_or_find
         ])
         .events(collect_events![fs::WatchEvent])
