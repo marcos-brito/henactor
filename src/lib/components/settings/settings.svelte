@@ -37,11 +37,6 @@
         name={$_("settings.general.auto_reload")}
         desc={$_("settings.general.auto_reload.desc")}
     />
-    <SettingsCheck
-        bind:checked={app.options.save_on_change}
-        name={$_("settings.general.save_on_change")}
-        desc={$_("settings.general.save_on_change.desc")}
-    />
 {/snippet}
 
 {#snippet appearance()}

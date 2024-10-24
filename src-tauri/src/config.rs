@@ -119,7 +119,6 @@ pub struct Options {
     title: String,
     download_icons: bool,
     auto_reload: bool,
-    save_on_change: bool,
     current_theme: String,
     key_interval: u8,
     lang: String,
@@ -130,7 +129,6 @@ impl Default for Options {
         Options {
             title: "Henactor".to_string(),
             download_icons: true,
-            save_on_change: false,
             auto_reload: true,
             key_interval: 200,
             current_theme: "default".to_string(),

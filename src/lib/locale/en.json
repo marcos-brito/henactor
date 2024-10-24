@@ -30,8 +30,6 @@
     "settings.general.download_icons.desc": "Should the icons you set be dowloaded?",
     "settings.general.auto_reload": "Auto reload",
     "settings.general.auto_reload.desc": "Should the app reload whenever config files change?",
-    "settings.general.save_on_change": "Save on change",
-    "settings.general.save_on_change.desc": "Should the app save the config changes instantly? If not they will only be save when quitting",
     "settings.appearance": "Appearance",
     "settings.appearance.theme": "Theme",
     "settings.appearance.theme.desc": "Set the current theme",
