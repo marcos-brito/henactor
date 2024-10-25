@@ -21,10 +21,20 @@
 
     function maybeQuit() {
         for (const quitter of quitters) {
-            if (grabbedStr.endsWith(quitter))
+            if (grabbedStr == quitter) {
+                callback("");
+                return;
+            }
+            if (grabbedStr.endsWith(quitter)) {
                 callback(grabbedStr.slice(0, grabbedStr.length - quitter.length - 1));
+                return;
+            }
         }
-        if (defaultQuitter.length == 0 && grabbedStr.endsWith(defaultQuitter))
+        if (quitters.length == 0 && grabbedStr == defaultQuitter) {
+            callback("");
+            return;
+        }
+        if (quitters.length == 0 && grabbedStr.endsWith(defaultQuitter))
             callback(grabbedStr.slice(0, grabbedStr.length - defaultQuitter.length - 1));
     }
 
