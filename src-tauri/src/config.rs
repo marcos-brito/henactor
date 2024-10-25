@@ -181,18 +181,16 @@ pub fn default_config() -> Config {
 pub fn load_config(config_dir: PathBuf) -> Result<Config> {
     let path = config_dir.join(CONFIG_FILE);
 
-    match fs::read_to_string(&path)
-        .context(format!("Failed to read {}", path.display()))
+    fs::read_to_string(&path)
+        .with_context(|| format!("Failed to read {}", path.display()))
         .and_then(|contents| {
-            Ok(toml::from_str::<Config>(&contents)
-                .context(format!("Failed to parse {}", path.display()))?)
-        }) {
-        Ok(config) => Ok(config),
-        Err(e) => {
-            error!("Failed to load config from {}: {:#}", path.display(), e);
-            Err(e.into())
-        }
-    }
+            toml::from_str::<Config>(&contents)
+                .with_context(|| format!("Failed to parse {}", path.display()))
+        })
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
 }
 
 #[tauri::command]
@@ -200,19 +198,17 @@ pub fn load_config(config_dir: PathBuf) -> Result<Config> {
 pub fn save_config(config_dir: PathBuf, config: Config) -> Result<()> {
     let path = config_dir.join(CONFIG_FILE);
 
-    if let Err(e) = toml::to_string(&config)
-        // This should not happen at all
-        .context("Failed to parse config to a string")
+    toml::to_string(&config)
+        // This should never happen
+        .with_context(|| "Failed to parse config to a string")
         .and_then(|config| {
-            Ok(fs::write(&path, config)
-                .context(format!("Failed to write config to {}", path.display()))?)
+            fs::write(&path, config)
+                .with_context(|| format!("Failed to write config to {}", path.display()))
         })
-    {
-        error!("Failed to write config to {}: {}", path.display(), e);
-        return Err(e.into());
-    }
-
-    Ok(())
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
 }
 
 #[tauri::command]
