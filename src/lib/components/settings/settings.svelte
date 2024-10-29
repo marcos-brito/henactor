@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { _, dictionary } from "svelte-i18n";
     import { _ } from "svelte-i18n";
     import { app } from "$lib/app.svelte";
     import SettingsInput from "./settings-input.svelte";
@@ -9,7 +8,9 @@
     import { type Command } from "$lib/bindings";
     import type { Snippet } from "svelte";
     import { dictionary } from "$lib/locale.svelte";
+    import SettingsPopup from "./settings-popup.svelte";
 
+    const views = ["Grid", "List", "Tree"];
     const pages: Record<string, Snippet> = {
         general: general,
         appearance: appearance,
@@ -37,10 +38,48 @@
         name={$_("settings.general.auto_reload")}
         desc={$_("settings.general.auto_reload.desc")}
     />
+    <SettingsPopup
+        name={$_("settings.general.default_tab")}
+        desc={$_("settings.general.default_tab.desc")}
+    >
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+                <span class="label-text">{$_("settings.general.default_tab.name")}</span>
+            </div>
+            <input
+                class="input input-sm input-bordered"
+                type="text"
+                bind:value={app.options.default_tab.name}
+            />
+        </label>
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+                <span class="label-text">{$_("settings.general.default_tab.path")}</span>
+            </div>
+            <input
+                class="input input-sm input-bordered"
+                type="text"
+                bind:value={app.options.default_tab.path}
+            />
+        </label>
+    </SettingsPopup>
+    <SettingsSelect
+        bind:value={app.options.default_view}
+        options={views}
+        name={$_("settings.general.default_view")}
+        desc={$_("settings.general.default_view.desc")}
+    />
+    <SettingsInput
+        type="number"
+        bind:value={app.options.default_grid_size}
+        name={$_("settings.general.default_grid_size")}
+        desc={$_("settings.general.default_grid_size.desc")}
+    />
 {/snippet}
 
 {#snippet appearance()}
     <SettingsInput
+        type="text"
         bind:value={app.options.title}
         name={$_("settings.general.title")}
         desc={$_("settings.general.title.desc")}

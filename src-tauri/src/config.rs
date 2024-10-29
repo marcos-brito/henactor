@@ -86,6 +86,20 @@ pub struct Tab {
     query: Option<String>,
 }
 
+impl Default for Tab {
+    fn default() -> Self {
+        Self {
+            name: "New".to_string(),
+            path: directories::UserDirs::new()
+                .map(|dirs| dirs.home_dir().to_path_buf())
+                .unwrap_or(PathBuf::from("")),
+            view: None,
+            grid_size: None,
+            query: None,
+        }
+    }
+}
+
 #[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
 pub enum View {
     Grid,
@@ -122,6 +136,9 @@ pub struct Options {
     current_theme: String,
     key_interval: u8,
     lang: String,
+    default_tab: Tab,
+    default_grid_size: u8,
+    default_view: View,
 }
 
 impl Default for Options {
@@ -133,6 +150,9 @@ impl Default for Options {
             key_interval: 200,
             current_theme: "default".to_string(),
             lang: "en".to_string(),
+            default_tab: Tab::default(),
+            default_view: View::Grid,
+            default_grid_size: 4,
         }
     }
 }

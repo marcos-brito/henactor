@@ -1,4 +1,4 @@
-import { commands, events, type Config, type Error, type Tab, type View } from "$lib/bindings";
+import { commands, events, type Config, type Error, type Options, type Tab } from "$lib/bindings";
 import { type UnlistenFn } from "@tauri-apps/api/event";
 import * as pathApi from "@tauri-apps/api/path";
 import { _ } from "svelte-i18n";
@@ -67,7 +67,7 @@ async function createAppStateManager(config: Config) {
         get options() { return app.options },
         get themes() { return themes },
         get keybinds() { return app.keybinds },
-        tabs: await createTabsManager(app.tabs),
+        tabs: createTabsManager(app.tabs, app.options),
         get currentTheme() { return currentTheme },
         watch,
         unwatch,
@@ -76,19 +76,12 @@ async function createAppStateManager(config: Config) {
 
 }
 
-export async function createTabsManager(tabs: Array<Tab>) {
+// FIX: This is not reacting to changes
+export function createTabsManager(tabs: Array<Tab>, options: Options) {
     let currentIdx = $state(tabs.length > 0 ? tabs.length - 1 : 0);
     let current = $derived(tabs.at(currentIdx));
 
-    const defaultTab = {
-        name: "New",
-        path: await pathApi.homeDir(),
-        view: "Grid" as View,
-        query: "",
-        grid_size: 4,
-    };
-
-    function add(tab: Tab = defaultTab): void {
+    function add(tab: Tab = options.default_tab): void {
         tabs.push(tab);
         currentIdx = tabs.length - 1
     }
@@ -128,7 +121,6 @@ export async function createTabsManager(tabs: Array<Tab>) {
         get current() { return current },
         get currentIdx() { return currentIdx },
         set currentIdx(idx: number) { currentIdx = idx },
-        defaultTab,
         setCurrentPath,
         add,
         duplicate,

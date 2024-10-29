@@ -5,13 +5,15 @@
         name,
         desc,
         value = $bindable(),
+        ...props
     }: {
         name: string;
         desc: string;
         value: any;
+        [key: string]: any;
     } = $props();
 </script>
 
 <SettingsField {name} {desc}>
-    <input type="text" bind:value class="input input-sm input-bordered" />
+    <input {...props} bind:value class="input input-sm input-bordered" />
 </SettingsField>
