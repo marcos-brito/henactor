@@ -14,7 +14,7 @@
     let fullBinding = $derived(holding.join("+"));
 
     function handleKeyDown(e: KeyboardEvent): void {
-        holding.push(e.key);
+        if (!e.repeat) holding.push(e.key);
 
         for (const [cmd, keys] of Object.entries(app.keybinds)) {
             if (keys.includes(fullBinding)) {
