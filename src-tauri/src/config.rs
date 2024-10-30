@@ -168,16 +168,16 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         let pins = directories::BaseDirs::new()
-            .and_then(|dirs| {
-                Some(vec![Pin {
+            .map(|dirs| {
+                vec![Pin {
                     alias: dirs
                         .home_dir()
                         .file_name()
-                        .and_then(|name| Some(name.to_string_lossy().to_string()))
+                        .map(|name| name.to_string_lossy().to_string())
                         .unwrap_or("Home".to_string()),
                     target: dirs.home_dir().to_path_buf(),
                     icon: Some("🏠".to_string()),
-                }])
+                }]
             })
             .unwrap_or(vec![]);
 
