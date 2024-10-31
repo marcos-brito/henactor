@@ -78,8 +78,10 @@ async function createAppStateManager(config: Config) {
 
 // FIX: This is not reacting to changes
 export function createTabsManager(tabs: Array<Tab>, options: Options) {
-    let currentIdx = $state(tabs.length > 0 ? tabs.length - 1 : 0);
-    let current = $derived(tabs.at(currentIdx));
+    let currentIdx = $state(0);
+    let current = $derived(tabs[currentIdx]);
+
+    if (tabs.length == 0) tabs.push({ ...options.default_tab })
 
     function add(tab: Tab = { ...options.default_tab }): void {
         tabs.push(tab);
