@@ -77,13 +77,13 @@ pub struct Pin {
     icon: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Type, PartialEq, Eq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Type, PartialEq, Eq)]
 pub struct Tab {
     name: String,
     path: PathBuf,
-    view: Option<View>,
-    grid_size: Option<u8>,
-    query: Option<String>,
+    view: View,
+    grid_size: u8,
+    query: String,
 }
 
 impl Default for Tab {
@@ -93,14 +93,15 @@ impl Default for Tab {
             path: directories::UserDirs::new()
                 .map(|dirs| dirs.home_dir().to_path_buf())
                 .unwrap_or(PathBuf::from("")),
-            view: None,
-            grid_size: None,
-            query: None,
+            view: View::Grid,
+            grid_size: 4,
+            query: "".to_string(),
         }
     }
 }
 
 #[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Type)]
 pub enum View {
     Grid,
     List,
@@ -137,8 +138,6 @@ pub struct Options {
     key_interval: u8,
     lang: String,
     default_tab: Tab,
-    default_grid_size: u8,
-    default_view: View,
 }
 
 impl Default for Options {
@@ -151,8 +150,6 @@ impl Default for Options {
             current_theme: "default".to_string(),
             lang: "en".to_string(),
             default_tab: Tab::default(),
-            default_view: View::Grid,
-            default_grid_size: 4,
         }
     }
 }

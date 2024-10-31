@@ -64,16 +64,16 @@
         </label>
     </SettingsPopup>
     <SettingsSelect
-        bind:value={app.options.default_view}
+        bind:value={app.options.default_tab.view}
         options={views}
-        name={$_("settings.general.default_view")}
-        desc={$_("settings.general.default_view.desc")}
+        name={$_("settings.general.default_tab.view")}
+        desc={$_("settings.general.default_tab.view.desc")}
     />
     <SettingsInput
         type="number"
-        bind:value={app.options.default_grid_size}
-        name={$_("settings.general.default_grid_size")}
-        desc={$_("settings.general.default_grid_size.desc")}
+        bind:value={app.options.default_tab.grid_size}
+        name={$_("settings.general.default_tab.grid_size")}
+        desc={$_("settings.general.default_tab.grid_size.desc")}
     />
 {/snippet}
 

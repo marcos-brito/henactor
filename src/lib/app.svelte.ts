@@ -81,7 +81,7 @@ export function createTabsManager(tabs: Array<Tab>, options: Options) {
     let currentIdx = $state(tabs.length > 0 ? tabs.length - 1 : 0);
     let current = $derived(tabs.at(currentIdx));
 
-    function add(tab: Tab = options.default_tab): void {
+    function add(tab: Tab = { ...options.default_tab }): void {
         tabs.push(tab);
         currentIdx = tabs.length - 1
     }

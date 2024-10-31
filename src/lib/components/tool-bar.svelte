@@ -10,10 +10,9 @@
         LayoutGridIcon,
         LayoutListIcon,
     } from "lucide-svelte";
-    import { app } from "$lib/app.svelte";
     import IconWithFallback from "./icon/icon-with-fallback.svelte";
 
-    let { path = $bindable(), view = $bindable() }: { path: string; view: View | null } = $props();
+    let { path = $bindable(), view = $bindable() }: { path: string; view: View } = $props();
     let viewButtons: Record<View, Snippet> = {
         Grid: grid,
         List: list,
@@ -59,7 +58,7 @@
         </button>
         <div class="dropdown dropdown-end dropdown-bottom">
             <button class="btn btn-ghost font-normal">
-                {@render viewButtons[view || app.options.default_view]()}
+                {@render viewButtons[view]()}
             </button>
             <ul class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow">
                 {#each Object.entries(viewButtons) as [name, viewButton]}
