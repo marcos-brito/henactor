@@ -3,5 +3,7 @@
 @tailwind utilities;
 
 body {
+    height: 100vh;
+    overflow: hidden;
     padding: 32px;
 }
