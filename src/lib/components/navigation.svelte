@@ -35,8 +35,8 @@
 </script>
 
 {#if orientation == "Vertical"}
-    <Keybinder element={parent} actions={{ Down: selectNext, Up: selectPrevious }}></Keybinder>
+    <Keybinder trigger={parent} actions={{ Down: selectNext, Up: selectPrevious }}></Keybinder>
 {/if}
 {#if orientation == "Horizontal"}
-    <Keybinder element={parent} actions={{ Left: selectPrevious, Right: selectNext }}></Keybinder>
+    <Keybinder trigger={parent} actions={{ Left: selectPrevious, Right: selectNext }}></Keybinder>
 {/if}

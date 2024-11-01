@@ -4,10 +4,10 @@
 
     let {
         actions,
-        element,
+        trigger,
     }: {
         actions: Partial<Record<Command, () => void>>;
-        element: HTMLElement;
+        trigger?: HTMLElement;
     } = $props();
 
     let holding = $state<Array<String>>([]);
@@ -24,20 +24,16 @@
         }
     }
 
-    function handleKeyUp(e: KeyboardEvent): void {
-        holding = holding.filter((key) => key != e.key);
+    function handleKeyUp(): void {
+        // filtering makes it buggy and pop makes it wrong. Needs some work.
+        holding.pop();
     }
 
-    $effect(() => {
-        element.addEventListener("keydown", handleKeyDown);
-        element.addEventListener("keyup", handleKeyUp);
-        }
-    });
-    element.addEventListener("keydown", handleKeyDown);
-    element.addEventListener("keyup", handleKeyUp);
-
-    if (windowActions) {
-        window.addEventListener("keydown", handleWidowKeyDown);
+    if (trigger) {
+        trigger.addEventListener("keydown", handleKeyDown);
+        trigger.addEventListener("keyup", handleKeyUp);
+    } else {
+        window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
     }
 </script>

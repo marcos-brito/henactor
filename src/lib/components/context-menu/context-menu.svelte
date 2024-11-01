@@ -45,15 +45,14 @@
     trigger.addEventListener("contextmenu", handleClick);
 </script>
 
-<Keybinder element={trigger} actions={{ OpenDetails: handleOpenKeyPressed }} />
-
+<Keybinder {trigger} actions={{ OpenDetails: handleOpenKeyPressed }} />
 {#if isActive}
     <ul
         tabindex="-1"
         bind:this={menu}
         use:clickOutside={() => (isActive = false)}
         onclick={() => (isActive = false)}
-        class="menu absolute z-10 w-48 rounded-box bg-base-200"
+        class="menu fixed z-10 w-48 rounded-box bg-base-200"
         style:top={`${y}px`}
         style:left={`${x}px`}
     >
