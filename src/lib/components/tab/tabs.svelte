@@ -4,24 +4,48 @@
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import { PlusIcon } from "lucide-svelte";
     import Tab from "./tab.svelte";
-    import Navigation from "../navigation.svelte";
+    import Navigation from "$lib/components/navigation.svelte";
+    import Keybinder from "$lib/components/keybinder.svelte";
 
-    let tabsBar = $state<HTMLElement>();
-    let selectables = $state<Array<HTMLElement>>([]);
+    let ref = $state<HTMLElement>();
+    let childsRef = $state<Array<HTMLElement>>([]);
 </script>
 
-{#if tabsBar}
-    <Navigation parent={tabsBar} bind:childrens={selectables} orientation="Horizontal" />
+{#if ref}
+    <Navigation parent={ref} bind:childrens={childsRef} orientation="Horizontal" />
+    <Keybinder
+        actions={{
+            FocusTabs: () => {
+                if (ref) ref.focus();
+            },
+            NewTab: () => {
+                app.tabs.add();
+            },
+            CloseTab: () => {
+                app.tabs.close(app.tabs.currentIdx);
+            },
+            NextTab: () => {
+                app.tabs.currentIdx += 1;
+            },
+            PreviousTab: () => {
+                app.tabs.currentIdx -= 1;
+            },
+        }}
+    />
 {/if}
-<nav id="tabs" tabindex="-1" class="navbar" bind:this={tabsBar}>
+<nav id="tabs" tabindex="-1" class="navbar p-0" bind:this={ref}>
     <div class="flex flex-col">
         <p class="menu-title self-start">{$_("tabs")}</p>
         <ul class="menu menu-horizontal items-center gap-1 rounded-box">
             {#each app.tabs._ as tabData, id}
-                <Tab {tabData} {id} bind:selectable={selectables[id]} />
+                <Tab {tabData} {id} bind:ref={childsRef[id]} />
             {/each}
             <li>
-                <button onclick={() => app.tabs.add()} class="btn btn-circle btn-ghost btn-xs">
+                <button
+                    bind:this={childsRef[app.tabs._.length]}
+                    onclick={() => app.tabs.add()}
+                    class="btn btn-circle btn-ghost btn-xs"
+                >
                     <IconWithFallback iconName="plus" size={16}>
                         <PlusIcon size="16" />
                     </IconWithFallback>

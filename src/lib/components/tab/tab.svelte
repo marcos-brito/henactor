@@ -7,10 +7,10 @@
     import { _ } from "svelte-i18n";
 
     let {
-        tabData,
         id,
-        selectable: button = $bindable(),
-    }: { tabData: Tab; id: number; selectable: HTMLElement } = $props();
+        tabData,
+        ref = $bindable(),
+    }: { id: number; tabData: Tab; ref: HTMLElement } = $props();
 
     let editMode = $state(false);
     let input = $state<HTMLElement>();
@@ -20,8 +20,8 @@
     });
 </script>
 
-{#if button}
-    <Menu trigger={button}>
+{#if ref}
+    <Menu trigger={ref}>
         <Item onclick={() => app.tabs.add()}>{$_("tab.new")}</Item>
         <Sep />
         <Item onclick={() => app.tabs.close(id)}>{$_("tab.close")}</Item>
@@ -33,11 +33,11 @@
         <Item onclick={() => app.tabs.closeAllExcept(id)}>{$_("tab.close_except")}</Item>
     </Menu>
     <Keybinder
-        element={button}
+        trigger={ref}
         actions={{
             Create: () => app.tabs.add(),
             Delete: () => app.tabs.close(id),
-            Edit: () => (editMode = true),
+            Rename: () => (editMode = true),
         }}
     />
 {/if}
@@ -52,13 +52,14 @@
         />
     {:else}
         <button
-            bind:this={button}
+            bind:this={ref}
             onmousedown={(e) => {
                 if (e.button == 1) app.tabs.close(id);
             }}
             ondblclick={() => (editMode = true)}
             onclick={() => (app.tabs.currentIdx = id)}
-            class={`tooltip tooltip-bottom ${id == app.tabs.currentIdx ? "active" : ""}`}
+            class:active={id == app.tabs.currentIdx}
+            class={"tooltip tooltip-bottom"}
             data-tip={tabData.path}>{tabData.name}</button
         >
     {/if}

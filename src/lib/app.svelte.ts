@@ -122,7 +122,7 @@ export function createTabsManager(tabs: Array<Tab>, options: Options) {
         get _() { return tabs },
         get current() { return current },
         get currentIdx() { return currentIdx },
-        set currentIdx(idx: number) { currentIdx = idx },
+        set currentIdx(idx: number) { if (idx < 0 || idx >= tabs.length) return; currentIdx = idx },
         setCurrentPath,
         add,
         duplicate,
