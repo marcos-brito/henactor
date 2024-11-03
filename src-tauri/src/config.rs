@@ -31,8 +31,10 @@ pub enum Command {
     QuitKeyGrabber,
     Delete,
     Rename,
+    GotoParent,
     Accept,
     Create,
+    Open,
     OpenDetails,
     OpenConfig,
 }
@@ -121,12 +123,16 @@ pub struct Icons {
     sort: Option<String>,
     filter: Option<String>,
     directory: Option<String>,
+    file: Option<String>,
+    link_to_dir: Option<String>,
+    link_to_file: Option<String>,
     x: Option<String>,
     plus: Option<String>,
-    file: Option<String>,
     search: Option<String>,
     grid_view: Option<String>,
     list_view: Option<String>,
+    tree_view: Option<String>,
+    empty_dir: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -145,6 +151,7 @@ pub struct Options {
     current_theme: String,
     key_interval: u8,
     lang: String,
+    truncation_limit: u8,
     default_tab: Tab,
 }
 
@@ -156,6 +163,7 @@ impl Default for Options {
             auto_reload: true,
             key_interval: 200,
             current_theme: "default".to_string(),
+            truncation_limit: 40,
             lang: "en".to_string(),
             default_tab: Tab::default(),
         }

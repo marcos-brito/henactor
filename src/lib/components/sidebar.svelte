@@ -4,7 +4,7 @@
     import Settings from "$lib/components/settings/settings.svelte";
     import Modal from "./modal.svelte";
     import { app } from "$lib/app.svelte";
-    import Navigation from "./navigation.svelte";
+    import Navigation from "$lib/components/navigation/navigation.svelte";
     import Keybinder from "./keybinder.svelte";
 
     let childsRef = $state<Array<HTMLElement>>([]);
@@ -12,7 +12,7 @@
 </script>
 
 {#if ref}
-    <Navigation parent={ref} bind:childrens={childsRef} orientation="Vertical" />
+    <Navigation parent={ref} childrens={childsRef} orientation="Vertical" />
     <Keybinder
         actions={{
             FocusSidebar: () => {

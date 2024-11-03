@@ -81,8 +81,14 @@
     <SettingsInput
         type="text"
         bind:value={app.options.title}
-        name={$_("settings.general.title")}
-        desc={$_("settings.general.title.desc")}
+        name={$_("settings.appearance.title")}
+        desc={$_("settings.appearance.title.desc")}
+    />
+    <SettingsInput
+        type="number"
+        bind:value={app.options.truncation_limit}
+        name={$_("settings.appearance.truncation_limit")}
+        desc={$_("settings.appearance.truncation_limit.desc")}
     />
     <SettingsSelect
         bind:value={app.options.current_theme}

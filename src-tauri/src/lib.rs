@@ -5,6 +5,7 @@ pub mod fs;
 use notify::RecommendedWatcher;
 use serde::Serialize;
 use specta_typescript::Typescript;
+use specta_typescript::{BigIntExportBehavior, Typescript};
 use std::collections::HashMap;
 use std::sync::Mutex;
 use tauri_specta::{collect_commands, collect_events, Builder, ErrorHandlingMode};
@@ -49,6 +50,8 @@ pub fn run() {
             config::default_config,
             config::find_themes,
             fs::watch,
+            fs::list,
+            fs::find_link_target,
             cache::download_or_find
         ])
         .events(collect_events![fs::WatchEvent])
@@ -56,7 +59,11 @@ pub fn run() {
 
     #[cfg(debug_assertions)]
     builder
-        .export(Typescript::default(), "../src/lib/bindings.ts")
+        .export(
+            // Do we mind if it's lossy?
+            Typescript::default().bigint(BigIntExportBehavior::Number),
+            "../src/lib/bindings.ts",
+        )
         .expect("Failed to export typescript bindings");
 
     tauri::Builder::default()

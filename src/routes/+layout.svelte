@@ -57,9 +57,9 @@
         },
     }}
 />
-<div class="grid grid-cols-[200px_1fr]">
+<div class="grid grid-cols-[1fr_80vw]">
     <Sidebar />
-    <div class="flex flex-col gap-4">
+    <div>
         <Tabs />
         {@render children()}
     </div>

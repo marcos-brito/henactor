@@ -4,7 +4,7 @@
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import { PlusIcon } from "lucide-svelte";
     import Tab from "./tab.svelte";
-    import Navigation from "$lib/components/navigation.svelte";
+    import Navigation from "$lib/components/navigation/navigation.svelte";
     import Keybinder from "$lib/components/keybinder.svelte";
 
     let ref = $state<HTMLElement>();
@@ -12,7 +12,7 @@
 </script>
 
 {#if ref}
-    <Navigation parent={ref} bind:childrens={childsRef} orientation="Horizontal" />
+    <Navigation parent={ref} childrens={childsRef} orientation="Horizontal" />
     <Keybinder
         actions={{
             FocusTabs: () => {
