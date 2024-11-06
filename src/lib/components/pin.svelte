@@ -9,7 +9,7 @@
 <li>
     <button class="pin" onclick={() => app.tabs.setCurrentPath(pin.target)} bind:this={ref}>
         {#if pin.icon}
-            <Icon icon={pin.icon} size={40} />
+            <Icon icon={pin.icon} size={16} />
         {/if}
         {pin.alias}
     </button>

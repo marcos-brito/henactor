@@ -4,7 +4,6 @@ pub mod fs;
 
 use notify::RecommendedWatcher;
 use serde::Serialize;
-use specta_typescript::Typescript;
 use specta_typescript::{BigIntExportBehavior, Typescript};
 use std::collections::HashMap;
 use std::sync::Mutex;
@@ -51,6 +50,7 @@ pub fn run() {
             config::find_themes,
             fs::watch,
             fs::list,
+            fs::exists,
             fs::find_link_target,
             cache::download_or_find
         ])
@@ -67,6 +67,7 @@ pub fn run() {
         .expect("Failed to export typescript bindings");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_log::Builder::new().build())
         .plugin(tauri_plugin_cli::init())
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(builder.invoke_handler())
