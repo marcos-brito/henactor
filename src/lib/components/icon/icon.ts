@@ -15,10 +15,9 @@ export enum IconType {
     Text,
 }
 
-
 export function identifyIcon(icon: string): IconType {
     if (icon.startsWith(".")) return IconType.RelativePath;
-    if (icon.startsWith("/")) return IconType.AbsolutePath;
+    if (icon.startsWith(pathApi.sep())) return IconType.AbsolutePath;
     if (icon.match(iconRegex)) return IconType.Icon;
     if (URL.canParse(icon)) return IconType.Url;
 
@@ -26,27 +25,23 @@ export function identifyIcon(icon: string): IconType {
 }
 
 export async function resolve(iconString: string, iconType: IconType, themeName: string | undefined = undefined): Promise<string> {
-    let resolution = iconString;
-
-    if (iconType == IconType.Text) return resolution;
-
-    if (iconType == IconType.Icon) resolution = buildIconifyUri(iconString);
-
-    if (iconType == IconType.RelativePath) resolution = await buildRelativeUri(iconString, themeName);
-
-    if (shouldDownload(iconType)) {
+    if (app.options.download_icons) {
         const cacheDir = await pathApi.appCacheDir();
-        resolution = await commands.downloadOrFind(cacheDir, resolution);
+
+        if (iconType == IconType.Icon)
+            return convertFileSrc(await commands.downloadOrFind(cacheDir, buildIconifyUri(iconString)))
+
+        if (iconType == IconType.Url)
+            return convertFileSrc(await commands.downloadOrFind(cacheDir, iconString))
     }
 
-    return convertFileSrc(resolution);
+    if (iconType == IconType.Icon) return buildIconifyUri(iconString);
+    if (iconType == IconType.RelativePath) convertFileSrc(await buildRelativeUri(iconString, themeName))
+    if (iconType == IconType.AbsolutePath) convertFileSrc(iconString);
+
+    return iconString;
 }
 
-function shouldDownload(iconType: IconType): boolean {
-    return (
-        app.options.download_icons && (iconType == IconType.Url || iconType == IconType.Icon)
-    );
-}
 
 function buildIconifyUri(iconString: string): string {
     const url = "https://api.iconify.design";

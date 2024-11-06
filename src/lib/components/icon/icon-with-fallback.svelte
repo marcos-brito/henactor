@@ -2,7 +2,7 @@
     import { app } from "$lib/app.svelte";
     import type { Icons } from "$lib/bindings";
     import type { Snippet } from "svelte";
-    import { identifyIcon, resolve, IconType } from "./icon";
+    import Icon from "./icon.svelte";
 
     let {
         iconName,
@@ -15,20 +15,14 @@
     } = $props();
 
     let icon = $derived.by(() => {
-        if (app.currentTheme && app.currentTheme.icons) {
-            return app.currentTheme.icons[iconName];
+        if (app.currentTheme?.icons?.icons) {
+            return app.currentTheme.icons.icons[iconName];
         }
     });
 </script>
 
 {#if icon}
-    {#if identifyIcon(icon) == IconType.Text}
-        <p class={`text-[${size || 20}px]`}>{icon}</p>
-    {:else}
-        {#await resolve(icon, identifyIcon(icon), app.currentTheme!.name) then src}
-            <img {src} class={`size-[${size || 20}px]`} alt="icon" />
-        {/await}
-    {/if}
+    <Icon {icon} {size} fromCurrentTheme />
 {:else}
     {@render children()}
 {/if}

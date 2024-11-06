@@ -3,8 +3,26 @@
     import { FolderIcon, FolderSymlinkIcon, FileSymlinkIcon, FileIcon } from "lucide-svelte";
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import { type Snippet } from "svelte";
+    import { app } from "$lib/app.svelte";
+    import mime from "mime";
+    import Icon from "../icon/icon.svelte";
 
     let { entry }: { entry: Entry } = $props();
+    const icon = findIcon();
+
+    function findIcon(): string | null {
+        if (!app.currentTheme?.icons?.rules) return null;
+        const mimeType = mime.getType(entry.path);
+
+        if (mimeType && Object.hasOwn(app.currentTheme.icons.rules, mimeType))
+            return app.currentTheme.icons.rules[mimeType];
+
+        for (const [pattern, icon] of Object.entries(app.currentTheme.icons.rules)) {
+            if (entry.path.match(pattern)) return icon;
+        }
+
+        return null;
+    }
 
     let icons: Record<EntryType, Snippet> = {
         File: file,
@@ -49,4 +67,8 @@
     </IconWithFallback>
 {/snippet}
 
-{@render icons[entry.entry_type]()}
+{#if icon}
+    <Icon {icon} />
+{:else}
+    {@render icons[entry.entry_type]()}
+{/if}
