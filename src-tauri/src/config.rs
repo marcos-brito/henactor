@@ -136,11 +136,17 @@ pub struct Icons {
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
+pub struct IconsFile {
+    icons: Option<Icons>,
+    rules: Option<HashMap<String, String>>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Theme {
     name: String,
     path: PathBuf,
     css_file: PathBuf,
-    icons: Option<Icons>,
+    icons: Option<IconsFile>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -258,24 +264,26 @@ pub fn find_themes(config_dir: PathBuf) -> Vec<Theme> {
     entries
         .filter_map(|entry| {
             let entry = entry.ok()?;
+            let theme_name = entry.file_name().to_string_lossy().to_string();
             let css_file = entry.path().join(THEME_FILE);
             let icons = fs::read_to_string(entry.path().join(ICONS_FILE))
                 .ok()
-                .and_then(|content| toml::from_str::<Icons>(&content).ok());
+                .and_then(|content| toml::from_str::<IconsFile>(&content).ok())
+                .or_else(|| {
+                    warn!("Couldn't read icons file for {theme_name}");
+                    None
+                });
 
             if css_file.exists() {
                 return Some(Theme {
-                    name: entry.file_name().to_string_lossy().to_string(),
+                    name: theme_name,
                     path: entry.path(),
                     icons,
                     css_file,
                 });
             }
 
-            warn!(
-                "No css file found for theme \"{}\"",
-                entry.file_name().to_string_lossy().to_string()
-            );
+            warn!("No css file found for theme {theme_name}",);
             None
         })
         .collect::<Vec<Theme>>()
