@@ -1,7 +1,7 @@
 use super::{AppState, Result};
 use anyhow::Context;
 use fs_extra::dir;
-use log::{error, warn};
+use log::{error, info, warn};
 use notify::{recommended_watcher, EventKind, RecursiveMode, Watcher};
 use rand::random;
 use serde::{Deserialize, Serialize};
@@ -108,7 +108,12 @@ impl From<fs::FileType> for EntryType {
 
 #[tauri::command]
 #[specta::specta]
-pub fn watch(app: AppHandle, state: State<AppState>, path: PathBuf) -> Result<u32> {
+pub fn watch(
+    app: AppHandle,
+    state: State<AppState>,
+    path: PathBuf,
+    recursive: bool,
+) -> Result<u32> {
     let id = random::<u32>();
 
     let mut watcher = recommended_watcher(move |res| match res {
@@ -124,7 +129,13 @@ pub fn watch(app: AppHandle, state: State<AppState>, path: PathBuf) -> Result<u3
     .with_context(|| "Could not create fs watcher")?;
 
     watcher
-        .watch(&path, RecursiveMode::Recursive)
+        .watch(
+            &path,
+            match recursive {
+                true => RecursiveMode::Recursive,
+                false => RecursiveMode::NonRecursive,
+            },
+        )
         .with_context(|| format!("Failed to watch {}", path.display()))?;
 
     state.watchers.lock().unwrap().insert(id, watcher);
@@ -167,4 +178,97 @@ pub fn find_link_target(path: PathBuf) -> Result<Entry> {
             error!("{err}");
             Err(err.into())
         })
+}
+#[tauri::command]
+#[specta::specta]
+pub fn exists(path: PathBuf) -> bool {
+    path.exists()
+}
+
+#[cfg(unix)]
+#[tauri::command]
+#[specta::specta]
+pub fn create_link(original: PathBuf, link: PathBuf) -> Result<()> {
+    std::os::unix::fs::symlink(&original, &link)
+        .with_context(|| format!("Failed to create {}", link.display()))
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
+        .inspect(|_| {
+            info!(
+                "Created link from {} to {}",
+                original.display(),
+                link.display()
+            );
+        })
+}
+
+#[cfg(windows)]
+#[tauri::command]
+#[specta::specta]
+pub fn create_link(original: PathBuf, link: PathBuf) -> Result<()> {
+    match original.is_file() {
+        true => std::os::windows::fs::symlink_file(&original, &link),
+        false => std::os::windows::fs::symlink_dir(&original, &link),
+    }
+    .with_context(|| format!("Failed to create {}", link.display()))
+    .or_else(|err| {
+        error!("{err}");
+        Err(err.into())
+    })
+    .inspect(|_| {
+        info!(
+            "Created link from {} to {}",
+            original.display(),
+            link.display()
+        );
+    })
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn create_file(path: PathBuf) -> Result<()> {
+    fs::write(&path, "")
+        .with_context(|| format!("Failed to create {}", path.display()))
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn create_dir(path: PathBuf) -> Result<()> {
+    fs::create_dir_all(&path)
+        .with_context(|| format!("Failed to create {}", path.display()))
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn rename(from: PathBuf, to: PathBuf) -> Result<()> {
+    fs::rename(&from, &to)
+        .with_context(|| format!("Failed to rename {} to {}", from.display(), to.display()))
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn remove(to_remove: PathBuf) -> Result<()> {
+    match to_remove.is_file() {
+        true => fs::remove_file(&to_remove),
+        false => fs::remove_dir_all(&to_remove),
+    }
+    .with_context(|| format!("Failed to remove {}", to_remove.display()))
+    .or_else(|err| {
+        error!("{err}");
+        Err(err.into())
+    })
 }

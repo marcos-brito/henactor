@@ -51,6 +51,11 @@ pub fn run() {
             fs::watch,
             fs::list,
             fs::exists,
+            fs::rename,
+            fs::remove,
+            fs::create_link,
+            fs::create_dir,
+            fs::create_file,
             fs::find_link_target,
             cache::download_or_find
         ])
