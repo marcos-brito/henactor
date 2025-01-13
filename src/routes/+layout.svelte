@@ -27,7 +27,6 @@
     $effect(() => {
         locale.current = app.options.lang;
         app.options.auto_reload ? app.watch() : app.unwatch();
-        if (app.tabs._.length == 0) app.tabs.add();
         if (app.currentTheme)
             document.querySelector("html")?.setAttribute("data-theme", app.currentTheme.name);
     });

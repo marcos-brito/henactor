@@ -1,7 +1,6 @@
 <script lang="ts">
     import { path as pathApi } from "@tauri-apps/api";
     import { clickOutside } from "$lib/utils";
-    import { app } from "$lib/app.svelte";
 
     let {
         path = $bindable(),
@@ -40,19 +39,13 @@
     {:else}
         <ul ondblclick={() => (editMode = true)}>
             <li>
-                <button
-                    class="btn btn-ghost btn-sm"
-                    onclick={() => app.tabs.setCurrentPath(pathApi.sep())}
-                >
+                <button class="btn btn-ghost btn-sm" onclick={() => (path = pathApi.sep())}>
                     {pathApi.sep()}
                 </button>
             </li>
             {#each parts as part, i}
                 <li>
-                    <button
-                        class="btn btn-ghost btn-sm"
-                        onclick={() => app.tabs.setCurrentPath(buildPathUpTo(i))}
-                    >
+                    <button class="btn btn-ghost btn-sm" onclick={() => (path = buildPathUpTo(i))}>
                         {part}
                     </button>
                 </li>

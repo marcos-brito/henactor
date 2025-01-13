@@ -1,4 +1,4 @@
-import { commands, events, type Config, type Error, type Options, type Tab } from "$lib/bindings";
+import { commands, events, type Config, type Error } from "$lib/bindings";
 import { type UnlistenFn } from "@tauri-apps/api/event";
 import * as pathApi from "@tauri-apps/api/path";
 import { _ } from "svelte-i18n";
@@ -67,69 +67,11 @@ async function createAppStateManager(config: Config) {
         get options() { return app.options },
         get themes() { return themes },
         get keybinds() { return app.keybinds },
-        tabs: createTabsManager(app.tabs, app.options),
+        get tabs() { return app.tabs },
         get currentTheme() { return currentTheme },
         watch,
         unwatch,
         save,
-    }
-
-}
-
-// FIX: This is not reacting to changes
-export function createTabsManager(tabs: Array<Tab>, options: Options) {
-    let currentIdx = $state(0);
-    let current = $derived(tabs[currentIdx]);
-
-    if (tabs.length == 0) tabs.push({ ...options.default_tab })
-
-    function add(tab: Tab = { ...options.default_tab }): void {
-        tabs.push(tab);
-        currentIdx = tabs.length - 1
-    }
-
-    function duplicate(idx: number): void {
-        tabs.splice(idx, 0, tabs[idx]);
-        currentIdx = idx + 1
-    }
-    function close(idx: number): void {
-        tabs.splice(idx, 1);
-        if (currentIdx > 0) currentIdx = idx - 1;
-    }
-
-    function closeAhead(idx: number): void {
-        tabs.splice(idx + 1, tabs.length);
-        currentIdx = idx;
-    }
-
-    function closeBehind(idx: number): void {
-        tabs.splice(0, idx);
-        currentIdx -= idx;
-    }
-
-    function closeAllExcept(idx: number): void {
-        closeAhead(idx);
-        closeBehind(idx);
-        currentIdx = 0;
-    }
-
-    function setCurrentPath(path: string) {
-        tabs[currentIdx].path = path
-    }
-
-
-    return {
-        get _() { return tabs },
-        get current() { return current },
-        get currentIdx() { return currentIdx },
-        set currentIdx(idx: number) { if (idx < 0 || idx >= tabs.length) return; currentIdx = idx },
-        setCurrentPath,
-        add,
-        duplicate,
-        close,
-        closeAhead,
-        closeBehind,
-        closeAllExcept,
     }
 
 }

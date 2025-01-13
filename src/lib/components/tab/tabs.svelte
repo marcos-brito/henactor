@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { app } from "$lib/app.svelte";
     import { _ } from "svelte-i18n";
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import { PlusIcon } from "lucide-svelte";
     import Tab from "./tab.svelte";
     import Navigation from "$lib/components/navigation/navigation.svelte";
     import Keybinder from "$lib/components/keybinder.svelte";
+    import { tabsManager } from "$lib";
 
     let ref = $state<HTMLElement>();
     let childsRef = $state<Array<HTMLElement>>([]);
@@ -19,16 +19,16 @@
                 if (ref) ref.focus();
             },
             NewTab: () => {
-                app.tabs.add();
+                tabsManager.add();
             },
             CloseTab: () => {
-                app.tabs.close(app.tabs.currentIdx);
+                tabsManager.close(tabsManager.currentIdx);
             },
             NextTab: () => {
-                app.tabs.currentIdx += 1;
+                tabsManager.next();
             },
             PreviousTab: () => {
-                app.tabs.currentIdx -= 1;
+                tabsManager.previous();
             },
         }}
     />
@@ -37,13 +37,13 @@
     <div class="flex flex-col">
         <p class="menu-title self-start">{$_("tabs")}</p>
         <ul class="menu menu-horizontal items-center gap-1 rounded-box">
-            {#each app.tabs._ as tabData, id}
+            {#each tabsManager.tabs as tabData, id}
                 <Tab {tabData} {id} bind:ref={childsRef[id]} />
             {/each}
             <li>
                 <button
-                    bind:this={childsRef[app.tabs._.length]}
-                    onclick={() => app.tabs.add()}
+                    bind:this={childsRef[tabsManager.tabs.length]}
+                    onclick={() => tabsManager.add()}
                     class="btn btn-circle btn-ghost btn-xs"
                 >
                     <IconWithFallback iconName="plus" size={16}>
