@@ -1,3 +1,6 @@
+import { commands, type Entry, type ListColumn } from "./bindings";
+import { path as pathApi } from "@tauri-apps/api";
+
 export function clickOutside(node: HTMLElement, callback: () => void) {
     const handleClick = (event: Event) => {
         const target = event.target as HTMLElement;
@@ -13,6 +16,19 @@ export function clickOutside(node: HTMLElement, callback: () => void) {
             document.removeEventListener("click", handleClick, true);
         },
     };
+}
+
+export async function linkIsBroken(entry: Entry): Promise<boolean> {
+    try {
+        await commands.findLinkTarget(entry.path);
+        return false;
+    } catch {
+        return true;
+    }
+}
+
+export function parent(path: string): string {
+    return path.split(pathApi.sep()).slice(0, -1).join(pathApi.sep());
 }
 
 export function trucate(text: string, maxChars: number): string {

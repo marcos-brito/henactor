@@ -13,8 +13,8 @@ describe("TabsManager", () => {
                 query: "",
                 grid_size: 4,
                 view: "Grid",
-                list_columns: []
-            })
+                list_columns: [],
+            });
         }
 
         return tabs;
