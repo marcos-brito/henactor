@@ -1,16 +1,60 @@
 <script lang="ts">
-    import Explorer from "$lib/components/explorer.svelte";
     import Toolbar from "$lib/components/tool-bar.svelte";
     import { tabsManager } from "$lib";
     import { _ } from "svelte-i18n";
+    import { commands, events, type Entry } from "$lib/bindings";
+    import type { UnlistenFn } from "@tauri-apps/api/event";
+    import {
+        ExplorerGrid,
+        ExplorerList,
+        ExplorerTree,
+        ExplorerEmpty,
+    } from "$lib/components/explorer";
+
+    let watcher: number;
+    let unlisten: UnlistenFn;
+    let rawEntries = $state<Array<Entry>>([]);
+    let entries = $state<Array<Entry>>([]);
+
+    async function findEntries(): Promise<void> {
+        const path = tabsManager.current.path;
+
+        rawEntries = await commands.list(path);
+        watcher = await commands.watch(path, false);
+        unlisten = await events.watchEvent.listen(async (event) => {
+            if (event.payload.includes(watcher.toString())) {
+                rawEntries = await commands.list(path);
+            }
+        });
+    }
+
+    $effect(() => {
+        if (tabsManager.current.path) {
+            findEntries();
+        }
+
+        return () => {
+            if (watcher && unlisten) {
+                unlisten();
+                commands.unwatch(watcher);
+            }
+        };
+    });
 </script>
 
 <Toolbar bind:view={tabsManager.current.view} bind:path={tabsManager.current.path} />
 <div class="h-[70vh] overflow-auto p-4">
-    <Explorer
-        path={tabsManager.current.path}
-        bind:gridSize={tabsManager.current.grid_size}
-        bind:view={tabsManager.current.view}
-        bind:query={tabsManager.current.query}
-    />
+    {#if rawEntries.length == 0}
+        <ExplorerEmpty />
+    {:else}
+        {#if tabsManager.current.view === "Grid"}
+            <ExplorerGrid gridSize={tabsManager.current.grid_size} {entries} />
+        {/if}
+        {#if tabsManager.current.view === "List"}
+            <ExplorerList bind:columns={tabsManager.current.list_columns} {entries} />
+        {/if}
+        {#if tabsManager.current.view === "Tree"}
+            <ExplorerTree {entries} />
+        {/if}
+    {/if}
 </div>
