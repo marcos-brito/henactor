@@ -2,18 +2,18 @@ export type GridNavigator = ReturnType<typeof gridNavigator>;
 export type RegularNavigator = ReturnType<typeof regularNavigation>;
 
 export function gridNavigator<T>(childrens: Array<T>, numberOfColumns: number) {
-    const maxrow = Math.ceil(childrens.length / numberOfColumns)
+    const maxrow = Math.ceil(childrens.length / numberOfColumns);
     let col = $state(0);
     let row = $state(0);
-    let selected = $derived((row * numberOfColumns) + col);
+    let selected = $derived(row * numberOfColumns + col);
 
     function right(): void {
-        if (col == numberOfColumns - 1) return
-        if (rightCellIsEmpty()) return
+        if (col == numberOfColumns - 1) return;
+        if (rightCellIsEmpty()) return;
         col++;
     }
     function left(): void {
-        if (col == 0) return
+        if (col == 0) return;
         col--;
     }
 
@@ -25,7 +25,7 @@ export function gridNavigator<T>(childrens: Array<T>, numberOfColumns: number) {
     function down(): void {
         if (row == maxrow - 1) return;
         if (belowCellIsEmpty()) col = 0;
-        row++
+        row++;
     }
 
     function belowCellIsEmpty(): boolean {
@@ -37,7 +37,9 @@ export function gridNavigator<T>(childrens: Array<T>, numberOfColumns: number) {
     }
 
     return {
-        get selected() { return selected },
+        get selected() {
+            return selected;
+        },
         up,
         down,
         left,
@@ -59,7 +61,9 @@ export function regularNavigation<T>(childrens: Array<T>) {
     }
 
     return {
-        get selected() { return selected },
+        get selected() {
+            return selected;
+        },
         previous,
         next,
     };

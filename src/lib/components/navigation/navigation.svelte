@@ -28,8 +28,7 @@
 </script>
 
 {#snippet vertical(navigator: RegularNavigator)}
-    <Keybinder trigger={props.parent} actions={{ Down: navigator.next, Up: navigator.previous }}
-    ></Keybinder>
+    <Keybinder trigger={props.parent} actions={{ Down: navigator.next, Up: navigator.previous }} />
 {/snippet}
 
 {#snippet horizontal(navigator: RegularNavigator)}
@@ -39,7 +38,7 @@
             Right: navigator.next,
             Left: navigator.previous,
         }}
-    ></Keybinder>
+    />
 {/snippet}
 
 {#snippet both(navigator: GridNavigator)}
@@ -51,7 +50,7 @@
             Up: navigator.up,
             Down: navigator.down,
         }}
-    ></Keybinder>
+    />
 {/snippet}
 
 {#if props.orientation == "Both"}
