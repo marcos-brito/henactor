@@ -15,8 +15,8 @@
     } = $props();
 
     let icon = $derived.by(() => {
-        if (app.currentTheme?.icons?.icons) {
-            return app.currentTheme.icons.icons[iconName];
+        if (app.currentTheme?.icons?.ui) {
+            return app.currentTheme.icons.ui[iconName];
         }
     });
 </script>

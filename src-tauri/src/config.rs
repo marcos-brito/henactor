@@ -148,7 +148,7 @@ pub struct Icons {
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct IconsFile {
-    icons: Option<Icons>,
+    ui: Option<Icons>,
     rules: Option<HashMap<String, String>>,
 }
 
