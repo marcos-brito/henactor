@@ -1,18 +1,16 @@
 <script lang="ts">
     import type { Entry } from "$lib/bindings";
     import EntryIcon from "./entry-icon.svelte";
-    import Menu from "./menu.svelte";
-    import { open } from "./entry";
+    import EntryActions from "./entry-actions.svelte";
+    import { open } from "./entry-actions.svelte";
     import { trucate } from "$lib/utils";
     import { app } from "$lib/app.svelte";
-    import Binds from "./binds.svelte";
 
     let { entry, ref = $bindable() }: { entry: Entry; ref: HTMLElement } = $props();
 </script>
 
 {#if ref}
-    <Binds trigger={ref} {entry} />
-    <Menu trigger={ref} {entry} />
+    <EntryActions trigger={ref} {entry} />
 {/if}
 <button
     bind:this={ref}

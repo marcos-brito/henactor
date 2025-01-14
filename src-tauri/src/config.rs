@@ -93,6 +93,7 @@ pub struct Tab {
     path: PathBuf,
     view: View,
     grid_size: u8,
+    list_columns: Vec<ListColumn>,
     query: String,
 }
 
@@ -105,12 +106,22 @@ impl Default for Tab {
                 .unwrap_or(PathBuf::from("")),
             view: View::Grid,
             grid_size: 4,
+            list_columns: vec![],
             query: "".to_string(),
         }
     }
 }
 
-#[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub enum ListColumn {
+    Kind,
+    Created,
+    Modified,
+    Accessed,
+    Size,
+    DetailedKind,
+}
+
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Type)]
 pub enum View {
     Grid,
