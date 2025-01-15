@@ -6,6 +6,7 @@ src/lib/bindings.ts
 .vercel
 /.svelte-kit
 /build
+book
 
 # OS
 .DS_Store
