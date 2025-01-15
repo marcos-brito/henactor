@@ -22,7 +22,7 @@
 </script>
 
 {#if icon}
-    <Icon {icon} {size} fromCurrentTheme />
+    <Icon {icon} {size} />
 {:else}
     {@render children()}
 {/if}
