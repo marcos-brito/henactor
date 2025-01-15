@@ -15,8 +15,8 @@ UNIX based system or `\` on Windows.
 A file system path starting at `./` or `../`. In our context, they
 are resolved by joining it with the absolute path of the theme you're editing.
 
--   `./icon.png` -> `/my/config/henactor/themes/icon.png`
--   `../icon.png` -> `/my/config/henactor/icon.png`
+-   `./icon.png` -> `/my/config/henactor/themes/mytheme/icon.png`
+-   `../icon.png` -> `/my/config/henactor/themes/icon.png`
 
 ### URL
 
@@ -36,7 +36,7 @@ A text following the format of `prefix:icon:color` where
     the whole `:color`
 
 This is "translated" to a resource under `https://api.iconify.design` which is as
-service that provides unified acess to many open-source icon sets. You can
+service that provides unified access to many open-source icon sets. You can
 browse it [here](https://icon-sets.iconify.design/).
 
 > Check them out! [Iconify](https://iconify.design/)
