@@ -5,7 +5,6 @@ pub mod fs;
 use notify::RecommendedWatcher;
 use serde::Serialize;
 use specta_typescript::{BigIntExportBehavior, Typescript};
-use std::collections::HashMap;
 use std::sync::Mutex;
 use tauri_specta::{collect_commands, collect_events, Builder, ErrorHandlingMode};
 
@@ -38,7 +37,7 @@ impl From<anyhow::Error> for Error {
 }
 
 pub struct AppState {
-    watchers: Mutex<HashMap<u32, RecommendedWatcher>>,
+    watcher: Mutex<Option<RecommendedWatcher>>,
 }
 
 pub fn run() {
@@ -48,7 +47,8 @@ pub fn run() {
             config::save_config,
             config::default_config,
             config::find_themes,
-            fs::watch,
+            fs::watch::watch,
+            fs::watch::unwatch,
             fs::list,
             fs::exists,
             fs::rename,
@@ -59,7 +59,7 @@ pub fn run() {
             fs::find_link_target,
             cache::download_or_find
         ])
-        .events(collect_events![fs::WatchEvent])
+        .events(collect_events![fs::watch::WatchEvent])
         .error_handling(ErrorHandlingMode::Throw);
 
     #[cfg(debug_assertions)]
@@ -77,7 +77,7 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(builder.invoke_handler())
         .manage(AppState {
-            watchers: Mutex::new(HashMap::new()),
+            watcher: Mutex::new(None),
         })
         .setup(move |app| {
             builder.mount_events(app);

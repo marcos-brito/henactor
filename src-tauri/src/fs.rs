@@ -1,16 +1,15 @@
-use super::{AppState, Result};
+pub mod watch;
+use crate::Result;
 use anyhow::Context;
 use fs_extra::dir;
 use log::{error, info, warn};
-use notify::{recommended_watcher, EventKind, RecursiveMode, Watcher};
 use rand::random;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::fs;
 use std::path::PathBuf;
-use tauri::{AppHandle, State};
 use std::time::SystemTime;
-use tauri_specta::Event;
+use tauri::{ipc::Channel, AppHandle};
 
 #[derive(Serialize, Deserialize, Debug, Type, Event, Clone)]
 pub struct WatchEvent(String);
@@ -106,49 +105,6 @@ impl From<fs::FileType> for EntryType {
     }
 }
 
-#[tauri::command]
-#[specta::specta]
-pub fn watch(
-    app: AppHandle,
-    state: State<AppState>,
-    path: PathBuf,
-    recursive: bool,
-) -> Result<u32> {
-    let id = random::<u32>();
-
-    let mut watcher = recommended_watcher(move |res| match res {
-        Ok(event) => {
-            if should_emit(&event) {
-                if let Err(e) = WatchEvent(format!("watch::{id}")).emit(&app) {
-                    warn!("Failed to emit watch event: {e}")
-                }
-            }
-        } // what should we do with this?
-        Err(_) => (),
-    })
-    .with_context(|| "Could not create fs watcher")?;
-
-    watcher
-        .watch(
-            &path,
-            match recursive {
-                true => RecursiveMode::Recursive,
-                false => RecursiveMode::NonRecursive,
-            },
-        )
-        .with_context(|| format!("Failed to watch {}", path.display()))?;
-
-    state.watchers.lock().unwrap().insert(id, watcher);
-
-    Ok(id)
-}
-
-fn should_emit(event: &notify::Event) -> bool {
-    match event.kind {
-        EventKind::Create(_) | EventKind::Modify(_) | EventKind::Remove(_) => true,
-        _ => false,
-    }
-}
 #[tauri::command]
 #[specta::specta]
 pub fn list(path: PathBuf) -> Result<Vec<Entry>> {
