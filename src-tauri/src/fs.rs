@@ -1,4 +1,7 @@
+pub mod filter;
+pub mod sort;
 pub mod watch;
+
 use crate::Result;
 use anyhow::Context;
 use fs_extra::dir;
