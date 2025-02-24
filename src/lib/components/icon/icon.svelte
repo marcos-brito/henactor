@@ -16,8 +16,8 @@
     const iconType = identifyIcon(icon);
 
     async function buildBasePath() {
-        if (app.currentTheme) return app.currentTheme.path;
-        return await pathApi.appConfigDir();
+        if (app.currentTheme) return await pathApi.join(app.currentTheme.path);
+        return pathApi.appConfigDir();
     }
 </script>
 
