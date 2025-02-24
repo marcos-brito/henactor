@@ -4,18 +4,12 @@ pub mod watch;
 
 use crate::Result;
 use anyhow::Context;
-use fs_extra::dir;
 use log::{error, info, warn};
-use rand::random;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::fs;
 use std::path::PathBuf;
 use std::time::SystemTime;
-use tauri::{ipc::Channel, AppHandle};
-
-#[derive(Serialize, Deserialize, Debug, Type, Event, Clone)]
-pub struct WatchEvent(String);
 
 #[derive(Serialize, Deserialize, Type)]
 pub struct Entry {

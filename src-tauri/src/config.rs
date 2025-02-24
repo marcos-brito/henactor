@@ -95,16 +95,8 @@ pub struct Tab {
     view: View,
     grid_size: u8,
     list_columns: Vec<ListColumn>,
-<<<<<<< HEAD
     sort_by: SortMethod,
     filter: String,
-=======
-<<<<<<< HEAD
-=======
-    sort_by: SortMethod,
-    filter: String,
->>>>>>> 7430e4c (fixup! feat: create some sorting mechanism)
->>>>>>> 0b63c4b (feat: create some sorting mechanism)
     query: String,
 }
 
@@ -118,16 +110,8 @@ impl Default for Tab {
             view: View::Grid,
             grid_size: 4,
             list_columns: vec![],
-<<<<<<< HEAD
             sort_by: SortMethod::Natural,
             filter: "".to_string(),
-=======
-<<<<<<< HEAD
-=======
-            sort_by: SortMethod::Natural,
-            filter: "".to_string(),
->>>>>>> 7430e4c (fixup! feat: create some sorting mechanism)
->>>>>>> 0b63c4b (feat: create some sorting mechanism)
             query: "".to_string(),
         }
     }
