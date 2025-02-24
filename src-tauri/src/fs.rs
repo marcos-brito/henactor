@@ -84,11 +84,21 @@ impl From<fs::Metadata> for EntryDetails {
 #[derive(Serialize, Deserialize, Type)]
 pub struct Permissions {}
 
-#[derive(Serialize, Deserialize, Type)]
+#[derive(Serialize, Deserialize, Type, Clone, PartialOrd, Ord, PartialEq, Eq, Debug)]
 pub enum EntryType {
     Directory,
     File,
     Symlink,
+}
+
+impl std::fmt::Display for EntryType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Directory => write!(f, "directory"),
+            Self::File => write!(f, "file"),
+            Self::Symlink => write!(f, "link"),
+        }
+    }
 }
 
 impl From<fs::FileType> for EntryType {

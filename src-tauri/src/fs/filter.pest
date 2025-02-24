@@ -1,0 +1,50 @@
+WHITESPACE = _{ " " | "\t" | NEWLINE }
+
+filter      =  { SOI ~ expr ~ EOI }
+expr        =  { prefix? ~ primary ~ (infix ~ prefix? ~ primary)* }
+prefix      = _{ not }
+not         =  { ^"not" | "!" }
+infix       = _{ and | or | gt | lt | lte | gte | eq }
+and         =  { ^"and" | "&&" | "," | ";" }
+or          =  { ^"or" | "||" }
+gt          =  { ^"gt" | ">" }
+lt          =  { ^"lt" | "<" }
+lte         =  { ^"lte" | "<=" }
+gte         =  { ^"gte" | ">=" }
+eq          =  { ^"eq" | "==" | "=" }
+primary     = _{ property | pretty_byte | entry_kind | regex | date | group | word }
+property    =  { name | path | kind | size | created | accessed | modified }
+name        =  @{ ^"name" | ^"n" ~ alias_end }
+path        =  @{ ^"path" | ^"p" ~ alias_end }
+kind        =  @{ ^"kind" | ^"k" ~ alias_end }
+size        =  @{ ^"size" | ^"s" ~ alias_end }
+created     =  @{ ^"created" | ^"c" ~ alias_end }
+accessed    =  @{ ^"accessed" | ^"a" ~ alias_end }
+modified    =  @{ ^"modified" | ^"m" ~ alias_end }
+pretty_byte =  { number ~ unit }
+number      = _{ ASCII_DIGIT* ~ ("." ~ ASCII_DIGIT*)? }
+unit        = _{
+    ^"B"
+  | ^"KB"
+  | ^"KIB"
+  | ^"MB"
+  | ^"MIB"
+  | ^"GB"
+  | ^"GIB"
+  | ^"TB"
+  | ^"TIB"
+  | ^"PB"
+  | ^"PIB"
+}
+// unit terminals comes from https://docs.rs/bytesize/latest/bytesize/
+entry_kind =  { link | file | dir }
+link       =  @{ ^"link" | "l" ~ alias_end }
+file       =  @{ ^"file" | "f" ~ alias_end }
+dir        =  @{ ^"dir" | "d" ~ alias_end }
+regex      =  { "/" ~ (!"/" ~ ANY)* ~ "/" }
+date       =  { "$" ~ (!"$" ~ ANY)* ~ "$" }
+group      =  { "(" ~ expr ~ ")" }
+word       =  @{ quoted | (!WHITESPACE ~ ANY)+ }
+quoted     = _{ quote ~ (!"\"" ~ ANY)* ~ quote }
+quote      = _{ "\"" | "'" }
+alias_end   = _{ WHITESPACE+ | EOI }

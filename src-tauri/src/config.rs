@@ -94,6 +94,8 @@ pub struct Tab {
     view: View,
     grid_size: u8,
     list_columns: Vec<ListColumn>,
+    sort_by: SortMethod,
+    filter: String,
     query: String,
 }
 
@@ -107,6 +109,8 @@ impl Default for Tab {
             view: View::Grid,
             grid_size: 4,
             list_columns: vec![],
+            sort_by: SortMethod::Natural,
+            filter: "".to_string(),
             query: "".to_string(),
         }
     }
