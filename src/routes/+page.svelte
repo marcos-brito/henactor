@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Toolbar from "$lib/components/tool-bar.svelte";
+    import Toolbar from "$lib/components/toolbar/tool-bar.svelte";
     import { tabsManager } from "$lib";
     import { _ } from "svelte-i18n";
     import { commands, events, type Entry } from "$lib/bindings";
@@ -42,7 +42,12 @@
     });
 </script>
 
-<Toolbar bind:view={tabsManager.current.view} bind:path={tabsManager.current.path} />
+<Toolbar
+    bind:path={tabsManager.current.path}
+    bind:filter={tabsManager.current.filter}
+    bind:sortBy={tabsManager.current.sort_by}
+    bind:view={tabsManager.current.view}
+/>
 <div class="h-[70vh] overflow-auto p-4">
     {#if rawEntries.length == 0}
         <ExplorerEmpty />
