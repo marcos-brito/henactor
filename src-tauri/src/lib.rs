@@ -57,6 +57,7 @@ pub fn run() {
             fs::create_dir,
             fs::create_file,
             fs::find_link_target,
+            fs::sort::sort,
             fs::filter::filter,
             cache::download_or_find
         ])
