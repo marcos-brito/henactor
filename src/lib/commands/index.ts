@@ -1,3 +1,9 @@
+import { Delete, Create, type CreateArgs, Rename } from "./fs"
+import { NewTab } from "./tabs"
+
+export {
+    Delete, Create, type CreateArgs, Rename, NewTab
+}
 
 export interface Command<T> {
     name: string;
