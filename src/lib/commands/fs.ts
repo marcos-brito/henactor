@@ -3,10 +3,12 @@ import { type Command } from "./index";
 import { path as pathApi } from "@tauri-apps/api";
 import { parent } from "../utils";
 import { app } from "$lib/app.svelte";
+import { type Command as CommandKind } from "$lib/bindings";
 
 export class Delete implements Command<string> {
     public name = "Delete"
     public desc = "";
+    public kind: CommandKind = "Delete";
     public keybinds = app.keybinds["Delete"] || ["D"]
 
 
@@ -29,6 +31,7 @@ export type CreateArgs =
 export class Create implements Command<CreateArgs> {
     public name = "Create"
     public desc = "";
+    public kind: CommandKind = "Create";
     public keybinds = app.keybinds["Create"] || ["o"]
 
     public async execute(args: CreateArgs): Promise<void> {
@@ -63,6 +66,7 @@ export type RenameArgs = {
 export class Rename implements Command<RenameArgs> {
     public name = "Rename"
     public desc = ""
+    public kind: CommandKind = "Rename";
     public keybinds = app.keybinds["Rename"] || ["cc"];
 
     public async execute(args: RenameArgs): Promise<void> {

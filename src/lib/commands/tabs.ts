@@ -2,10 +2,12 @@ import { tabsManager } from "$lib";
 import { app } from "$lib/app.svelte";
 import type { Tab } from "$lib/bindings";
 import type { Command } from "./index";
+import { type Command as CommandKind } from "$lib/bindings";
 
 export class NewTab implements Command<Tab | undefined> {
     public name = "NewTab";
     public desc = "";
+    public kind: CommandKind = "NewTab";
     public keybinds = app.keybinds["NewTab"] || ["ctrl+t"];
 
     public async execute(tab?: Tab): Promise<void> {
@@ -16,6 +18,7 @@ export class NewTab implements Command<Tab | undefined> {
 export class CloseTab implements Command<number> {
     public name = "CloseTab";
     public desc = "";
+    public kind: CommandKind = "CloseTab";
     public keybinds = app.keybinds["NewTab"] || ["ctrl+d"];
 
     public async execute(idx: number): Promise<void> {
@@ -26,6 +29,7 @@ export class CloseTab implements Command<number> {
 export class NextTab implements Command<{}> {
     public name = "NextTab";
     public desc = "";
+    public kind: CommandKind = "NextTab";
     public keybinds = app.keybinds["NewTab"] || ["shift+l"];
 
     public async execute(): Promise<void> {
@@ -40,6 +44,7 @@ export class NextTab implements Command<{}> {
 export class PreviousTab implements Command<{}> {
     public name = "PreviousTab";
     public desc = "";
+    public kind: CommandKind = "PreviousTab";
     public keybinds = app.keybinds["NewTab"] || ["shift+h"];
 
     public async execute(): Promise<void> {
