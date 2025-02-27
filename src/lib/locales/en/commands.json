@@ -1,0 +1,34 @@
+{
+    "fs": {
+        "Delete": {
+            "name": "Delete",
+            "desc": "Deletes a file system entry"
+        },
+        "Rename": {
+            "name": "Rename",
+            "desc": "Renames a file system entry"
+        },
+        "Create": {
+            "name": "Create",
+            "desc": "Creates a new file system entry"
+        }
+    },
+    "tabs": {
+        "NewTab": {
+            "name": "New tab",
+            "desc": "Creates a new tab"
+        },
+        "CloseTab": {
+            "name": "Close tab",
+            "desc": "Closes the current tab"
+        },
+        "NextTab": {
+            "name": "Next tab",
+            "desc": "Goes to the next tab"
+        },
+        "PreviousTab": {
+            "name": "Previous tab",
+            "desc": "Goes to the previous tab"
+        }
+    }
+}
