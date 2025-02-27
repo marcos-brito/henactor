@@ -60,8 +60,8 @@ export class Executor {
     public async redo() {
         const entry = this.redoHistory.pop();
 
-        if (entry?.cmd?.undo) {
-            await entry.cmd.undo(entry.arg);
+        if (entry) {
+            await entry.cmd.execute(entry.arg);
             this.undoHistory.push(entry);
         }
     }
