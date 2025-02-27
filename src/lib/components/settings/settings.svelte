@@ -1,14 +1,14 @@
 <script lang="ts">
     import { _ } from "svelte-i18n";
     import { app } from "$lib/app.svelte";
+    import { commandRegister } from "$lib/index";
     import SettingsInput from "./settings-input.svelte";
     import SettingsCheck from "./settings-check.svelte";
     import SettingsSelect from "./settings-select.svelte";
     import SettingsKey from "./settings-key.svelte";
-    import { type Command } from "$lib/bindings";
     import type { Snippet } from "svelte";
-    import { dictionary } from "$lib/locale.svelte";
     import SettingsPopup from "./settings-popup.svelte";
+    import { i18n } from "$lib";
 
     const views = ["Grid", "List", "Tree"];
     const pages: Record<string, Snippet> = {
@@ -24,23 +24,26 @@
 {#snippet general()}
     <SettingsSelect
         bind:value={app.options.lang}
-        options={Object.keys(dictionary.current)}
-        name={$_("settings.general.lang")}
-        desc={$_("settings.general.lang.desc")}
+        options={i18n.languages}
+        name={i18n.t("general.options.lang.name", { ns: "settings" })}
+        desc={i18n.t("general.options.lang.desc", { ns: "settings" })}
+        onChange={(lang) => {
+            i18n.changeLanguage(lang);
+        }}
     />
     <SettingsCheck
         bind:checked={app.options.download_icons}
-        name={$_("settings.general.download_icons")}
-        desc={$_("settings.general.download_icons.desc")}
+        name={i18n.t("general.options.downloadIcons.name", { ns: "settings" })}
+        desc={i18n.t("general.options.downloadIcons.desc", { ns: "settings" })}
     />
     <SettingsCheck
         bind:checked={app.options.auto_reload}
-        name={$_("settings.general.auto_reload")}
-        desc={$_("settings.general.auto_reload.desc")}
+        name={i18n.t("general.options.autoReload.name", { ns: "settings" })}
+        desc={i18n.t("general.options.autoReload.desc", { ns: "settings" })}
     />
     <SettingsPopup
-        name={$_("settings.general.default_tab")}
-        desc={$_("settings.general.default_tab.desc")}
+        name={i18n.t("general.options.defaultTab.name", { ns: "settings" })}
+        desc={i18n.t("general.options.defaultTab.desc", { ns: "settings" })}
     >
         <label class="form-control w-full max-w-xs">
             <div class="label">
@@ -66,14 +69,14 @@
     <SettingsSelect
         bind:value={app.options.default_tab.view}
         options={views}
-        name={$_("settings.general.default_tab.view")}
-        desc={$_("settings.general.default_tab.view.desc")}
+        name={i18n.t("general.options.defaultView.name", { ns: "settings" })}
+        desc={i18n.t("general.options.defaultView.desc", { ns: "settings" })}
     />
     <SettingsInput
         type="number"
         bind:value={app.options.default_tab.grid_size}
-        name={$_("settings.general.default_tab.grid_size")}
-        desc={$_("settings.general.default_tab.grid_size.desc")}
+        name={i18n.t("general.options.defaultGridSize.name", { ns: "settings" })}
+        desc={i18n.t("general.options.defaultGridSize.desc", { ns: "settings" })}
     />
 {/snippet}
 
@@ -81,20 +84,20 @@
     <SettingsInput
         type="text"
         bind:value={app.options.title}
-        name={$_("settings.appearance.title")}
-        desc={$_("settings.appearance.title.desc")}
+        name={i18n.t("appearance.options.title.name", { ns: "settings" })}
+        desc={i18n.t("appearance.options.title.desc", { ns: "settings" })}
     />
     <SettingsInput
         type="number"
         bind:value={app.options.truncation_limit}
-        name={$_("settings.appearance.truncation_limit")}
-        desc={$_("settings.appearance.truncation_limit.desc")}
+        name={i18n.t("appearance.options.truncationLimit.name", { ns: "settings" })}
+        desc={i18n.t("appearance.options.truncationLimit.desc", { ns: "settings" })}
     />
     <SettingsSelect
         bind:value={app.options.current_theme}
         options={app.themes.map((t) => t.name)}
-        name={$_("settings.appearance.theme")}
-        desc={$_("settings.appearance.theme.desc")}
+        name={i18n.t("appearance.options.theme.name", { ns: "settings" })}
+        desc={i18n.t("appearance.options.theme.desc", { ns: "settings" })}
     />
 {/snippet}
 
@@ -103,8 +106,8 @@
 {/snippet}
 
 {#snippet keybinds()}
-    {#each Object.keys(app.keybinds) as cmd}
-        <SettingsKey name={cmd} desc="" bind:value={app.keybinds[cmd as Command]} />
+    {#each commandRegister.all().sort((a, b) => a.name.localeCompare(b.name)) as cmd}
+        <SettingsKey name={cmd.name} desc={cmd.desc} bind:value={cmd.keybinds} />
         <div class="divider my-0"></div>
     {/each}
 {/snippet}
@@ -116,7 +119,8 @@
                 <li>
                     <button
                         class={page == currentPage ? "active" : ""}
-                        onclick={() => (currentPage = page)}>{$_(`settings.${page}`)}</button
+                        onclick={() => (currentPage = page)}
+                        >{i18n.t(`settings:${page}.name`)}</button
                     >
                 </li>
             {/each}

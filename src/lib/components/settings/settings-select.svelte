@@ -6,16 +6,26 @@
         desc,
         value = $bindable(),
         options,
+        onChange,
     }: {
         name: string;
         desc: string;
         value: string;
-        options: Array<any>;
+        options: ReadonlyArray<any>;
+        onChange?: (value: string) => void;
     } = $props();
 </script>
 
 <SettingsField {name} {desc}>
-    <select bind:value class="select select-bordered select-sm">
+    <select
+        onchange={() => {
+            if (onChange) {
+                onChange(value);
+            }
+        }}
+        bind:value
+        class="select select-bordered select-sm"
+    >
         <option disabled selected>Pick one</option>
         {#each options as option}
             {#if option == value}
