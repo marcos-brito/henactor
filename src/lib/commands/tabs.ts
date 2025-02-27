@@ -1,13 +1,13 @@
-import { tabsManager } from "$lib";
+import { tabsManager, i18n } from "$lib";
 import { app } from "$lib/app.svelte";
 import type { Tab } from "$lib/bindings";
 import type { Command } from "./index";
 import { type Command as CommandKind } from "$lib/bindings";
 
 export class NewTab implements Command<Tab | undefined> {
-    public name = "NewTab";
-    public desc = "";
     public kind: CommandKind = "NewTab";
+    public name = i18n.t("tabs.NewTab.name", { ns: "commands" });
+    public desc = i18n.t("tabs.NewTab.desc", { ns: "commands" });
     public keybinds = app.keybinds["NewTab"] || ["ctrl+t"];
 
     public async execute(tab?: Tab): Promise<void> {
@@ -16,9 +16,9 @@ export class NewTab implements Command<Tab | undefined> {
 }
 
 export class CloseTab implements Command<number> {
-    public name = "CloseTab";
-    public desc = "";
     public kind: CommandKind = "CloseTab";
+    public name = i18n.t("tabs.CloseTab.name", { ns: "commands" });
+    public desc = i18n.t("tabs.CloseTab.desc", { ns: "commands" });;
     public keybinds = app.keybinds["NewTab"] || ["ctrl+d"];
 
     public async execute(idx: number): Promise<void> {
@@ -27,9 +27,9 @@ export class CloseTab implements Command<number> {
 }
 
 export class NextTab implements Command<{}> {
-    public name = "NextTab";
-    public desc = "";
     public kind: CommandKind = "NextTab";
+    public name = i18n.t("tabs.NextTab.name", { ns: "commands" });
+    public desc = i18n.t("tabs.NextTab.desc", { ns: "commands" });;
     public keybinds = app.keybinds["NewTab"] || ["shift+l"];
 
     public async execute(): Promise<void> {
@@ -42,9 +42,9 @@ export class NextTab implements Command<{}> {
 }
 
 export class PreviousTab implements Command<{}> {
-    public name = "PreviousTab";
-    public desc = "";
     public kind: CommandKind = "PreviousTab";
+    public name = i18n.t("tabs.PreviousTab.name", { ns: "commands" });
+    public desc = i18n.t("tabs.PreviousTab.desc", { ns: "commands" });;
     public keybinds = app.keybinds["NewTab"] || ["shift+h"];
 
     public async execute(): Promise<void> {

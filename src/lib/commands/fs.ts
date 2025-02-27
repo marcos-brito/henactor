@@ -4,11 +4,13 @@ import { path as pathApi } from "@tauri-apps/api";
 import { parent } from "../utils";
 import { app } from "$lib/app.svelte";
 import { type Command as CommandKind } from "$lib/bindings";
+import { i18n } from "$lib";
+
 
 export class Delete implements Command<string> {
-    public name = "Delete"
-    public desc = "";
     public kind: CommandKind = "Delete";
+    public name = i18n.t("fs.Delete.name", { ns: "commands" })
+    public desc = i18n.t("fs.Delete.desc", { ns: "commands" })
     public keybinds = app.keybinds["Delete"] || ["D"]
 
 
@@ -29,9 +31,9 @@ export type CreateArgs =
     };
 
 export class Create implements Command<CreateArgs> {
-    public name = "Create"
-    public desc = "";
     public kind: CommandKind = "Create";
+    public name = i18n.t("fs.Create.name", { ns: "commands" })
+    public desc = i18n.t("fs.Create.desc", { ns: "commands" })
     public keybinds = app.keybinds["Create"] || ["o"]
 
     public async execute(args: CreateArgs): Promise<void> {
@@ -64,9 +66,9 @@ export type RenameArgs = {
 }
 
 export class Rename implements Command<RenameArgs> {
-    public name = "Rename"
-    public desc = ""
     public kind: CommandKind = "Rename";
+    public name = i18n.t("fs.Rename.name", { ns: "commands" })
+    public desc = i18n.t("fs.Rename.desc", { ns: "commands" })
     public keybinds = app.keybinds["Rename"] || ["cc"];
 
     public async execute(args: RenameArgs): Promise<void> {
