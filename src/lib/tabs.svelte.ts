@@ -1,22 +1,26 @@
 import type { Tab } from "$lib/bindings";
-import { FsManager } from "$lib/fs";
+import { Executor } from "./commands";
+
+type InternalTab = Tab & {
+    executor: Executor
+}
 
 export class TabsManager {
     public currentIdx = $state(0);
     public defaultTab: Tab;
-    public tabs = $state<Array<Tab & { fs: FsManager }>>([]);
+    public tabs = $state<Array<InternalTab>>([]);
     public current = $derived(this.tabs[this.currentIdx]);
 
     constructor(tabs: Array<Tab>, defaultTab: Tab) {
-        this.tabs = tabs.map((tab) => {
-            return { ...tab, fs: new FsManager() };
-        });
         this.defaultTab = defaultTab;
+        this.tabs = tabs.map((tab) => {
+            return { ...tab, executor: new Executor() };
+        });
         if (tabs.length == 0) this.add();
     }
 
     public add(tab: Tab = { ...this.defaultTab }): void {
-        this.tabs.push({ ...tab, fs: new FsManager() });
+        this.tabs.push({ ...tab, executor: new Executor() });
         this.currentIdx = this.tabs.length - 1;
     }
 
