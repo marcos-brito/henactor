@@ -1,11 +1,10 @@
 <script lang="ts">
-    import { _ } from "svelte-i18n";
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import { PlusIcon } from "lucide-svelte";
     import Tab from "./tab.svelte";
     import Navigation from "$lib/components/navigation/navigation.svelte";
     import Keybinder from "$lib/components/keybinder.svelte";
-    import { tabsManager } from "$lib";
+    import { i18n, tabsManager } from "$lib";
 
     let ref = $state<HTMLElement>();
     let childsRef = $state<Array<HTMLElement>>([]);
@@ -35,7 +34,7 @@
 {/if}
 <nav id="tabs" tabindex="-1" class="navbar p-0" bind:this={ref}>
     <div class="flex flex-col">
-        <p class="menu-title self-start">{$_("tabs")}</p>
+        <p class="menu-title self-start">{i18n.t("words.tabs", { ns: "ui" })}</p>
         <ul class="menu menu-horizontal items-center gap-1 rounded-box">
             {#each tabsManager.tabs as tabData, id}
                 <Tab {tabData} {id} bind:ref={childsRef[id]} />

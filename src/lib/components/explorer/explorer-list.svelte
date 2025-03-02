@@ -1,6 +1,5 @@
 <script lang="ts">
     import { type Entry, type ListColumn } from "$lib/bindings";
-    import ColumnsMenu from "$lib/components/columns-menu.svelte";
     import { EllipsisVerticalIcon } from "lucide-svelte";
     import { EntryList } from "$lib/components/entry";
     import Modal from "$lib/components/modal.svelte";
@@ -39,7 +38,7 @@
                             </IconWithFallback>
                         </button>
                     {/snippet}
-                    <ColumnsMenu bind:columns />
+                    <h1>columns goes here</h1>
                 </Modal>
             </th>
             <th>Name</th>

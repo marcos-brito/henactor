@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { _ } from "svelte-i18n";
     import type { View } from "$lib/bindings";
     import type { Snippet } from "svelte";
     import { FolderTreeIcon, LayoutGridIcon, LayoutListIcon } from "lucide-svelte";
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
+    import { i18n } from "$lib";
 
     let { view = $bindable() }: { view: View } = $props();
 
@@ -18,21 +18,21 @@
     <IconWithFallback size={20} iconName="tree_view">
         <FolderTreeIcon size="20" />
     </IconWithFallback>
-    {$_("view.tree")}
+    {i18n.t("toolBar.views.tree", { ns: "ui" })}
 {/snippet}
 
 {#snippet list()}
     <IconWithFallback size={20} iconName="list_view">
         <LayoutListIcon size="20" />
     </IconWithFallback>
-    {$_("view.list")}
+    {i18n.t("toolBar.views.list", { ns: "ui" })}
 {/snippet}
 
 {#snippet grid()}
     <IconWithFallback size={20} iconName="grid_view">
         <LayoutGridIcon size="20" />
     </IconWithFallback>
-    {$_("view.grid")}
+    {i18n.t("toolBar.views.grid", { ns: "ui" })}
 {/snippet}
 
 <article class="dropdown dropdown-end dropdown-bottom">

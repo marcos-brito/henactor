@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { app } from "$lib/app.svelte";
     import type { Icons } from "$lib/bindings";
     import type { Snippet } from "svelte";
     import Icon from "./icon.svelte";
+    import { configManager } from "$lib";
 
     let {
         iconName,
@@ -14,9 +14,12 @@
         children: Snippet;
     } = $props();
 
-    let icon = $derived.by(() => {
-        if (app.currentTheme?.icons?.ui) {
-            return app.currentTheme.icons.ui[iconName];
+    const currentTheme = configManager.themes.find(
+        (t) => t.name == configManager.config.options.current_theme,
+    );
+    const icon = $derived.by(() => {
+        if (currentTheme?.icons?.ui) {
+            return currentTheme.icons.ui[iconName];
         }
     });
 </script>

@@ -1,14 +1,11 @@
 <script lang="ts">
-    import { app, loadingError } from "$lib/app.svelte";
-    import "$lib/locale.svelte";
     import "../app.css";
     import { convertFileSrc } from "@tauri-apps/api/core";
     import Sidebar from "$lib/components/sidebar.svelte";
-    import { locale } from "$lib/locale.svelte";
     import { type Snippet } from "svelte";
     import Tabs from "$lib/components/tab/tabs.svelte";
     import { Toaster, toast } from "svelte-sonner";
-    import { _ } from "svelte-i18n";
+    import { configManager } from "$lib";
 
     let {
         children,
@@ -16,28 +13,21 @@
         children: Snippet;
     } = $props();
 
-    $effect(() => {
-        if (loadingError) {
-            toast.error($_("messages.error.load_config.title"), {
-                description: $_("messages.error.load_config.desc"),
-            });
-        }
-    });
+    const currentTheme = $derived(
+        configManager.themes.find(
+            (theme) => theme.name == configManager.config.options.current_theme,
+        ),
+    );
 
     $effect(() => {
-        locale.current = app.options.lang;
-        app.options.auto_reload ? app.watch() : app.unwatch();
-        if (app.currentTheme)
-            document.querySelector("html")?.setAttribute("data-theme", app.currentTheme.name);
+        if (currentTheme)
+            document.querySelector("html")?.setAttribute("data-theme", currentTheme.name);
     });
 </script>
 
 <svelte:head>
-    {#if app.currentTheme}
-        <link
-            rel="stylesheet"
-            href={`${convertFileSrc(app.currentTheme.css_file)}?${Date.now()}`}
-        />
+    {#if currentTheme}
+        <link rel="stylesheet" href={`${convertFileSrc(currentTheme.css_file)}?${Date.now()}`} />
     {/if}
 </svelte:head>
 <Toaster

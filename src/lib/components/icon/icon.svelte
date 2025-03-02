@@ -1,27 +1,25 @@
 <script lang="ts">
-    import { app } from "$lib/app.svelte";
     import { path as pathApi } from "@tauri-apps/api";
     import { identifyIcon, resolve, IconType } from "./resolver";
+    import { configManager } from "$lib";
 
     let {
         icon,
         size,
-        basePath,
     }: {
         icon: string;
         size?: number;
-        basePath?: string;
     } = $props();
 
     const iconType = identifyIcon(icon);
 
     async function buildBasePath() {
-        if (app.currentTheme) return await pathApi.join(app.currentTheme.path);
+        if (configManager.currentTheme) return await pathApi.join(configManager.currentTheme.path);
         return pathApi.appConfigDir();
     }
 </script>
 
-{#await resolve(icon, basePath || (await buildBasePath()), app.options.download_icons) then src}
+{#await buildBasePath().then( (path) => resolve(icon, path, configManager.config.options.download_icons), ) then src}
     {#if iconType == IconType.Text}
         <p style:font-size={`${size || 24}px`}>{src}</p>
     {:else}

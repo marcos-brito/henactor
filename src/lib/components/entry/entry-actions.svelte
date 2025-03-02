@@ -1,5 +1,5 @@
 <script module lang="ts">
-    import { tabsManager } from "$lib";
+    import { i18n, tabsManager } from "$lib";
     import { commands, type Entry, type EntryType, type Command } from "$lib/bindings";
 
     export function gotoParent(entry: Entry): void {
@@ -19,8 +19,7 @@
 </script>
 
 <script lang="ts">
-    import { Menu, Item, Sep } from "$lib/components/context-menu";
-    import { _ } from "svelte-i18n";
+    import { Menu, Item } from "$lib/components/context-menu";
     import Keybinder from "$lib/components/keybinder.svelte";
     import { parent } from "$lib/utils";
     let {
@@ -44,11 +43,14 @@
     }}
 />
 <Menu {trigger}>
-    <Item onclick={async () => await open(entry)}>{$_("entry.open")}</Item>
+    <Item onclick={async () => await open(entry)}
+        >{i18n.t("entry.open", { ns: "contextMenu" })}</Item
+    >
     {#if entry.entry_type == "Directory"}
         <Item
             onclick={() => {
                 tabsManager.add({ ...tabsManager.defaultTab, path: entry.path });
-            }}>{$_("entry.open_in_new_tab")}</Item
+            }}>{i18n.t("entry.openInNewTab", { ns: "contextMenu" })}</Item
         >
     {/if}
+</Menu>
