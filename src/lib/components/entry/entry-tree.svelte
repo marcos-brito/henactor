@@ -36,10 +36,10 @@
 {#if ref}
     <EntryActions trigger={ref} {entry} />
 {/if}
-<li class="entry rounded text-base">
+<li class="entry rounded-sm text-base">
     {#await findRealEntryType(entry) then kind}
         {#if kind == "File"}
-            <button bind:this={ref} class="outline-2 outline-current focus:!outline">
+            <button bind:this={ref} class="outline-2 outline-current focus:outline!">
                 <EntryIcon {entry} />
                 <p>{entry.name}</p>
             </button>

@@ -39,7 +39,7 @@
     <button class="btn btn-ghost font-normal">
         {@render buttons[view]()}
     </button>
-    <ul class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow">
+    <ul class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow-sm">
         {#each Object.entries(buttons) as [name, viewButton]}
             <li>
                 <button onclick={() => (view = name as View)}>

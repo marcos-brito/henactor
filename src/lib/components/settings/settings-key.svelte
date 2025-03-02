@@ -39,11 +39,11 @@
 <SettingsField {name} {desc}>
     <div class="flex gap-4">
         {#if value.length == 0}
-            <div class="flex items-center gap-1 rounded bg-base-200 px-2 py-[2px]">Blank</div>
+            <div class="flex items-center gap-1 rounded-sm bg-base-200 px-2 py-[2px]">Blank</div>
         {/if}
         <div class="flex max-w-md gap-4 overflow-auto">
             {#each value as keybind}
-                <div class="flex items-center gap-1 rounded bg-base-200 px-2 py-[2px]">
+                <div class="flex items-center gap-1 rounded-sm bg-base-200 px-2 py-[2px]">
                     {@render keyBindText(keybind)}
                     <button
                         onclick={() => (value = value.filter((k) => k != keybind))}
