@@ -1,0 +1,36 @@
+{
+    "toolBar": {
+        "filter": "Filter",
+        "sort": {
+            "title": "Sort",
+            "methods": {
+                "name": "A-Z",
+                "size": "Size",
+                "kind": "Kind",
+                "natural": "First found",
+                "accessed": "Last accessed",
+                "modified": "Last modified",
+                "created": "Most recent"
+            }
+        },
+        "views": {
+            "grid": "Grid",
+            "list": "List",
+            "tree": "Tree"
+        }
+    },
+    "words": {
+        "tabs": "Tabs",
+        "pins": "Pins"
+    },
+    "emptyDir": "Empty directory",
+    "details": {
+        "dirItem_one": "{{count}} item",
+        "dirItem_other": "{{count}} items",
+        "kind": {
+            "link": "Symbolic link",
+            "dir": "Directory",
+            "file": "File"
+        }
+    }
+}
