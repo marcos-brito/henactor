@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { _ } from "svelte-i18n";
-    import { app } from "$lib/app.svelte";
-    import { commandRegister } from "$lib/index";
+    import { commandRegister, configManager } from "$lib/index";
     import SettingsInput from "./settings-input.svelte";
     import SettingsCheck from "./settings-check.svelte";
     import SettingsSelect from "./settings-select.svelte";
@@ -23,7 +21,7 @@
 
 {#snippet general()}
     <SettingsSelect
-        bind:value={app.options.lang}
+        bind:value={configManager.config.options.lang}
         options={i18n.languages}
         name={i18n.t("general.options.lang.name", { ns: "settings" })}
         desc={i18n.t("general.options.lang.desc", { ns: "settings" })}
@@ -32,12 +30,12 @@
         }}
     />
     <SettingsCheck
-        bind:checked={app.options.download_icons}
+        bind:checked={configManager.config.options.download_icons}
         name={i18n.t("general.options.downloadIcons.name", { ns: "settings" })}
         desc={i18n.t("general.options.downloadIcons.desc", { ns: "settings" })}
     />
     <SettingsCheck
-        bind:checked={app.options.auto_reload}
+        bind:checked={configManager.config.options.auto_reload}
         name={i18n.t("general.options.autoReload.name", { ns: "settings" })}
         desc={i18n.t("general.options.autoReload.desc", { ns: "settings" })}
     />
@@ -47,34 +45,38 @@
     >
         <label class="form-control w-full max-w-xs">
             <div class="label">
-                <span class="label-text">{$_("settings.general.default_tab.name")}</span>
+                <span class="label-text"
+                    >{i18n.t("general.options.defaultTab.fields.name", { ns: "settings" })}</span
+                >
             </div>
             <input
                 class="input input-sm input-bordered"
                 type="text"
-                bind:value={app.options.default_tab.name}
+                bind:value={configManager.config.options.default_tab.name}
             />
         </label>
         <label class="form-control w-full max-w-xs">
             <div class="label">
-                <span class="label-text">{$_("settings.general.default_tab.path")}</span>
+                <span class="label-text"
+                    >{i18n.t("general.options.defaultTab.fields.path", { ns: "settings" })}</span
+                >
             </div>
             <input
                 class="input input-sm input-bordered"
                 type="text"
-                bind:value={app.options.default_tab.path}
+                bind:value={configManager.config.options.default_tab.path}
             />
         </label>
     </SettingsPopup>
     <SettingsSelect
-        bind:value={app.options.default_tab.view}
+        bind:value={configManager.config.options.default_tab.view}
         options={views}
         name={i18n.t("general.options.defaultView.name", { ns: "settings" })}
         desc={i18n.t("general.options.defaultView.desc", { ns: "settings" })}
     />
     <SettingsInput
         type="number"
-        bind:value={app.options.default_tab.grid_size}
+        bind:value={configManager.config.options.default_tab.grid_size}
         name={i18n.t("general.options.defaultGridSize.name", { ns: "settings" })}
         desc={i18n.t("general.options.defaultGridSize.desc", { ns: "settings" })}
     />
@@ -83,19 +85,19 @@
 {#snippet appearance()}
     <SettingsInput
         type="text"
-        bind:value={app.options.title}
+        bind:value={configManager.config.options.title}
         name={i18n.t("appearance.options.title.name", { ns: "settings" })}
         desc={i18n.t("appearance.options.title.desc", { ns: "settings" })}
     />
     <SettingsInput
         type="number"
-        bind:value={app.options.truncation_limit}
+        bind:value={configManager.config.options.truncation_limit}
         name={i18n.t("appearance.options.truncationLimit.name", { ns: "settings" })}
         desc={i18n.t("appearance.options.truncationLimit.desc", { ns: "settings" })}
     />
     <SettingsSelect
-        bind:value={app.options.current_theme}
-        options={app.themes.map((t) => t.name)}
+        bind:value={configManager.config.options.current_theme}
+        options={configManager.themes.map((t) => t.name)}
         name={i18n.t("appearance.options.theme.name", { ns: "settings" })}
         desc={i18n.t("appearance.options.theme.desc", { ns: "settings" })}
     />

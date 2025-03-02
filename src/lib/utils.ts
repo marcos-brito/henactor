@@ -1,4 +1,4 @@
-import { commands, type Entry, type ListColumn } from "./bindings";
+import { commands, type Entry } from "./bindings";
 import { path as pathApi } from "@tauri-apps/api";
 
 export function clickOutside(node: HTMLElement, callback: () => void) {

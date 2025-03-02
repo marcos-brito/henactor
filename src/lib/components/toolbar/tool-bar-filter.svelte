@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { _ } from "svelte-i18n";
     import { FilterIcon } from "lucide-svelte";
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
+    import { i18n } from "$lib";
 
     let { filter = $bindable() }: { filter: string } = $props();
 </script>
@@ -11,7 +11,7 @@
         <IconWithFallback size={20} iconName="sort">
             <FilterIcon size="20" />
         </IconWithFallback>
-        {$_("filter")}
+        {i18n.t("toolBar.filter", { ns: "ui" })}
     </div>
     <ul
         tabindex="0"

@@ -6,7 +6,7 @@
     import EntryTree from "./entry-tree.svelte";
     import IconWithFallback from "../icon/icon-with-fallback.svelte";
     import { BirdIcon } from "lucide-svelte";
-    import { _ } from "svelte-i18n";
+    import { i18n } from "$lib";
 
     let { entry, ref = $bindable() }: { entry: Entry; ref: HTMLElement } = $props();
     let isOpen = $state(false);
@@ -56,7 +56,7 @@
                             <IconWithFallback iconName="empty_dir">
                                 <BirdIcon />
                             </IconWithFallback>
-                            <p class="text-sm">{$_("messages.empty_dir")}</p>
+                            <p class="text-sm">{i18n.t("emptyDir", { ns: "ui" })}</p>
                         </div>
                     {:else}
                         {#each entries as entry, i}

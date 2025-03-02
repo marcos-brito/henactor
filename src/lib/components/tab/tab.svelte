@@ -3,8 +3,7 @@
     import { clickOutside } from "$lib/utils";
     import { Menu, Item, Sep } from "$lib/components/context-menu";
     import Keybinder from "../keybinder.svelte";
-    import { _ } from "svelte-i18n";
-    import { tabsManager } from "$lib";
+    import { i18n, tabsManager } from "$lib";
 
     let {
         id,
@@ -22,15 +21,25 @@
 
 {#if ref}
     <Menu trigger={ref}>
-        <Item onclick={() => tabsManager.add()}>{$_("tab.new")}</Item>
+        <Item onclick={() => tabsManager.add()}>{i18n.t("tab.new", { ns: "contextMenu" })}</Item>
         <Sep />
-        <Item onclick={() => tabsManager.close(id)}>{$_("tab.close")}</Item>
-        <Item onclick={() => (editMode = true)}>{$_("tab.rename")}</Item>
-        <Item onclick={() => tabsManager.duplicate(id)}>{$_("tab.duplicate")}</Item>
+        <Item onclick={() => tabsManager.close(id)}
+            >{i18n.t("tab.close", { ns: "contextMenu" })}</Item
+        >
+        <Item onclick={() => (editMode = true)}>{i18n.t("tab.rename", { ns: "contextMenu" })}</Item>
+        <Item onclick={() => tabsManager.duplicate(id)}
+            >{i18n.t("tab.duplicate", { ns: "contextMenu" })}</Item
+        >
         <Sep />
-        <Item onclick={() => tabsManager.closeAhead(id)}>{$_("tab.close_ahead")}</Item>
-        <Item onclick={() => tabsManager.closeBehind(id)}>{$_("tab.close_behind")}</Item>
-        <Item onclick={() => tabsManager.closeAllExcept(id)}>{$_("tab.close_except")}</Item>
+        <Item onclick={() => tabsManager.closeAhead(id)}
+            >{i18n.t("tab.closeAhead", { ns: "contextMenu" })}</Item
+        >
+        <Item onclick={() => tabsManager.closeBehind(id)}
+            >{i18n.t("tab.closeBehind", { ns: "contextMenu" })}</Item
+        >
+        <Item onclick={() => tabsManager.closeAllExcept(id)}
+            >{i18n.t("tab.closeExcept", { ns: "contextMenu" })}</Item
+        >
     </Menu>
     <Keybinder
         trigger={ref}

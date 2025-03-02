@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { _ } from "svelte-i18n";
     import type { View, SortMethod } from "$lib/bindings";
     import ToolBarSort from "./tool-bar-sort.svelte";
     import ToolBarView from "./tool-bar-view.svelte";

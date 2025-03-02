@@ -3,21 +3,21 @@
     import { FolderIcon, FolderSymlinkIcon, FileSymlinkIcon, FileIcon } from "lucide-svelte";
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import { type Snippet } from "svelte";
-    import { app } from "$lib/app.svelte";
     import mime from "mime";
     import Icon from "../icon/icon.svelte";
+    import { configManager } from "$lib";
 
     let { entry }: { entry: Entry } = $props();
     const icon = findIcon();
 
     function findIcon(): string | null {
-        if (!app.currentTheme?.icons?.rules) return null;
+        if (!configManager.currentTheme?.icons?.rules) return null;
         const mimeType = mime.getType(entry.path);
 
-        if (mimeType && Object.hasOwn(app.currentTheme.icons.rules, mimeType))
-            return app.currentTheme.icons.rules[mimeType];
+        if (mimeType && Object.hasOwn(configManager.currentTheme.icons.rules, mimeType))
+            return configManager.currentTheme.icons.rules[mimeType];
 
-        for (const [pattern, icon] of Object.entries(app.currentTheme.icons.rules)) {
+        for (const [pattern, icon] of Object.entries(configManager.currentTheme.icons.rules)) {
             if (entry.path.match(pattern)) return icon;
         }
 

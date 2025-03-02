@@ -1,19 +1,19 @@
 <script lang="ts">
     import { ArrowDownUpIcon } from "lucide-svelte";
     import IconWithFallback from "../icon/icon-with-fallback.svelte";
-    import { _ } from "svelte-i18n";
     import type { SortMethod } from "$lib/bindings";
+    import { i18n } from "$lib";
 
     let { sortBy = $bindable() }: { sortBy: SortMethod } = $props();
 
     const aliases: Record<SortMethod, string> = {
-        Name: "A-Z",
-        Size: "Size",
-        Kind: "Kind",
-        Natural: "First found",
-        Accessed: "Last accessed",
-        Modified: "Last modified",
-        Created: "Most recent",
+        Name: i18n.t("toolBar.sort.methods.name", { ns: "ui" }),
+        Size: i18n.t("toolBar.sort.methods.size", { ns: "ui" }),
+        Kind: i18n.t("toolBar.sort.methods.kind", { ns: "ui" }),
+        Natural: i18n.t("toolBar.sort.methods.natural", { ns: "ui" }),
+        Accessed: i18n.t("toolBar.sort.methods.accessed", { ns: "ui" }),
+        Modified: i18n.t("toolBar.sort.methods.modified", { ns: "ui" }),
+        Created: i18n.t("toolBar.sort.methods.created", { ns: "ui" }),
     };
 </script>
 
@@ -22,7 +22,7 @@
         <IconWithFallback size={20} iconName="sort">
             <ArrowDownUpIcon size="20" />
         </IconWithFallback>
-        {$_("sort")}
+        {i18n.t("toolBar.sort.title", { ns: "ui" })}
     </div>
     <ul tabindex="0" class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow">
         {#each Object.entries(aliases) as [method, alias]}

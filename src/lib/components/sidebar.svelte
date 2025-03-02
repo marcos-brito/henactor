@@ -1,11 +1,10 @@
 <script lang="ts">
     import Pin from "$lib/components/pin.svelte";
-    import { _ } from "svelte-i18n";
     import Settings from "$lib/components/settings/settings.svelte";
     import Modal from "./modal.svelte";
-    import { app } from "$lib/app.svelte";
     import Navigation from "$lib/components/navigation/navigation.svelte";
     import Keybinder from "./keybinder.svelte";
+    import { configManager, i18n } from "$lib";
 
     let childsRef = $state<Array<HTMLElement>>([]);
     let ref = $state<HTMLElement>();
@@ -23,11 +22,11 @@
 {/if}
 <aside bind:this={ref} id="sidebar" tabindex="-1">
     <ul class="menu">
-        {#if app.options.title}
-            <h1 class="title mb-8 text-3xl">{app.options.title}</h1>
+        {#if configManager.config.options.title}
+            <h1 class="title mb-8 text-3xl">{configManager.config.options.title}</h1>
         {/if}
-        <li class="menu-title">{$_("pins")}</li>
-        {#each app.pins as pin, i}
+        <li class="menu-title">{i18n.t("words.pins", { ns: "ui" })}</li>
+        {#each configManager.config.pins as pin, i}
             <Pin {pin} bind:ref={childsRef[i]} />
         {/each}
         <li class="menu-title">Tools</li>
@@ -37,7 +36,7 @@
                 <Keybinder actions={{ OpenConfig: () => dialog.showModal() }} />
                 <li>
                     <button
-                        bind:this={childsRef[app.pins.length]}
+                        bind:this={childsRef[configManager.config.pins.length]}
                         onclick={() => dialog.showModal()}>Settings</button
                     >
                 </li>

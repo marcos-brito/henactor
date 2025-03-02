@@ -1,7 +1,6 @@
 <script lang="ts">
     import Toolbar from "$lib/components/toolbar/tool-bar.svelte";
     import { tabsManager } from "$lib";
-    import { _ } from "svelte-i18n";
     import { commands, events, type Entry } from "$lib/bindings";
     import type { UnlistenFn } from "@tauri-apps/api/event";
     import {
@@ -11,20 +10,18 @@
         ExplorerEmpty,
     } from "$lib/components/explorer";
 
-    let watcher: number;
     let unlisten: UnlistenFn;
     let rawEntries = $state<Array<Entry>>([]);
     let entries = $state<Array<Entry>>([]);
 
     async function findEntries(): Promise<void> {
+        if (unlisten) unlisten();
         const path = tabsManager.current.path;
+        await commands.watch(path, false);
 
         rawEntries = await commands.list(path);
-        watcher = await commands.watch(path, false);
         unlisten = await events.watchEvent.listen(async (event) => {
-            if (event.payload.includes(watcher.toString())) {
-                rawEntries = await commands.list(path);
-            }
+            if (event.payload.includes(path)) rawEntries = await commands.list(path);
         });
     }
 
@@ -32,13 +29,6 @@
         if (tabsManager.current.path) {
             findEntries();
         }
-
-        return () => {
-            if (watcher && unlisten) {
-                unlisten();
-                commands.unwatch(watcher);
-            }
-        };
     });
 </script>
 

@@ -2,7 +2,7 @@
     import type { Snippet } from "svelte";
     import Modal from "../modal.svelte";
     import SettingsField from "./settings-field.svelte";
-    import { _ } from "svelte-i18n";
+    import { i18n } from "$lib";
 
     let {
         name,
@@ -18,7 +18,9 @@
 <SettingsField {name} {desc}>
     <Modal>
         {#snippet trigger(dialog: HTMLDialogElement)}
-            <button class="btn btn-sm" onclick={() => dialog.showModal()}>{$_("configure")}</button>
+            <button class="btn btn-sm" onclick={() => dialog.showModal()}
+                >{i18n.t("configure", { ns: "settings" })}</button
+            >
         {/snippet}
         <div class="mb-2">
             <h1 class="text-lg font-bold">{name}</h1>

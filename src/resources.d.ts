@@ -63,6 +63,7 @@ interface Resources {
     }
   },
   "settings": {
+    "configure": "Configure",
     "general": {
       "name": "General",
       "options": {
@@ -80,7 +81,11 @@ interface Resources {
         },
         "defaultTab": {
           "name": "Default tab",
-          "desc": "Set the name and path for new tabs"
+          "desc": "Set the name and path for new tabs",
+          "fields": {
+            "name": "Name",
+            "path": "Path"
+          }
         },
         "defaultView": {
           "name": "Default view",
@@ -115,6 +120,42 @@ interface Resources {
     },
     "keybinds": {
       "name": "Keybinds"
+    }
+  },
+  "ui": {
+    "toolBar": {
+      "filter": "Filter",
+      "sort": {
+        "title": "Sort",
+        "methods": {
+          "name": "A-Z",
+          "size": "Size",
+          "kind": "Kind",
+          "natural": "First found",
+          "accessed": "Last accessed",
+          "modified": "Last modified",
+          "created": "Most recent"
+        }
+      },
+      "views": {
+        "grid": "Grid",
+        "list": "List",
+        "tree": "Tree"
+      }
+    },
+    "words": {
+      "tabs": "Tabs",
+      "pins": "Pins"
+    },
+    "emptyDir": "Empty directory",
+    "details": {
+      "dirItem_one": "{{count}} item",
+      "dirItem_other": "{{count}} items",
+      "kind": {
+        "link": "Symbolic link",
+        "dir": "Directory",
+        "file": "File"
+      }
     }
   }
 }

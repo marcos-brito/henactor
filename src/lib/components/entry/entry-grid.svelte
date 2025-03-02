@@ -4,7 +4,7 @@
     import EntryActions from "./entry-actions.svelte";
     import { open } from "./entry-actions.svelte";
     import { trucate } from "$lib/utils";
-    import { app } from "$lib/app.svelte";
+    import { configManager } from "$lib";
 
     let { entry, ref = $bindable() }: { entry: Entry; ref: HTMLElement } = $props();
 </script>
@@ -18,5 +18,5 @@
     class="entry btn btn-ghost flex size-full flex-col items-center justify-center gap-2 p-4 focus:outline"
 >
     <EntryIcon {entry} />
-    <p class="entry-name">{trucate(entry.name, app.options.truncation_limit)}</p>
+    <p class="entry-name">{trucate(entry.name, configManager.config.options.truncation_limit)}</p>
 </button>

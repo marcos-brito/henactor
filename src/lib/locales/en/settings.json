@@ -1,4 +1,5 @@
 {
+    "configure": "Configure",
     "general": {
         "name": "General",
         "options": {
@@ -16,7 +17,11 @@
             },
             "defaultTab": {
                 "name": "Default tab",
-                "desc": "Set the name and path for new tabs"
+                "desc": "Set the name and path for new tabs",
+                "fields": {
+                    "name": "Name",
+                    "path": "Path"
+                }
             },
             "defaultView": {
                 "name": "Default view",

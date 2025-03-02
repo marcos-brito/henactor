@@ -1,14 +1,13 @@
 <script lang="ts">
     import { commands, type Entry, type ListColumn, type SystemTime } from "$lib/bindings";
-    import { app } from "$lib/app.svelte";
     import EntryIcon from "./entry-icon.svelte";
     import prettyBytes from "pretty-bytes";
-    import { _ } from "svelte-i18n";
     import { linkIsBroken } from "$lib/utils";
     import { open } from "./entry-actions.svelte";
     import mime from "mime";
     import EntryActions from "./entry-actions.svelte";
     import { trucate } from "$lib/utils";
+    import { configManager, i18n } from "$lib";
 
     let {
         entry,
@@ -19,7 +18,7 @@
     function formatSystemTime(time: SystemTime): string {
         //@ts-ignore
         const date = new Date(time.secs_since_epoch * 1000);
-        return date.toLocaleString(app.options.lang, {
+        return date.toLocaleString(configManager.config.options.lang, {
             year: "numeric",
             day: "numeric",
             month: "short",
@@ -31,9 +30,7 @@
     async function resolveEntrySize(entry: Entry): Promise<string> {
         if (entry.entry_type == "Directory") {
             const entries = await commands.list(entry.path);
-            return entries.length == 1
-                ? $_("entry.details.dir_item")
-                : $_("entry.details.dir_items", { values: { itemsCount: entries.length } });
+            return i18n.t("details.dirItem", { ns: "ui", count: entries.length });
         }
 
         return prettyBytes(entry.details.size);
@@ -42,7 +39,7 @@
     async function mapColumn(column: ListColumn): Promise<string> {
         switch (column) {
             case "Kind":
-                return $_(`entry.kind.${entry.entry_type}`);
+                return i18n.t(`ui:details.kind.${entry.entry_type.toLowerCase()}`);
             case "Size":
                 if (entry.entry_type == "Symlink" && !(await linkIsBroken(entry))) {
                     const target = await commands.findLinkTarget(entry.path);
@@ -81,7 +78,9 @@
                 {/if}
             {/await}
         {/if}
-        <p class="entry-name">{trucate(entry.name, app.options.truncation_limit)}</p>
+        <p class="entry-name">
+            {trucate(entry.name, configManager.config.options.truncation_limit)}
+        </p>
     </td>
     {#each columns as column}
         <td>
