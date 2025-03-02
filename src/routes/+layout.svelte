@@ -35,7 +35,7 @@
     visibleToasts={1}
     toastOptions={{
         classes: {
-            toast: "rounded bg-base-200 border-none",
+            toast: "rounded-sm bg-base-200 border-none",
             title: "font-bold",
             default: "text-base-content",
             info: "text-info",

@@ -24,7 +24,7 @@
         </IconWithFallback>
         {i18n.t("toolBar.sort.title", { ns: "ui" })}
     </div>
-    <ul tabindex="0" class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow">
+    <ul tabindex="0" class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow-sm">
         {#each Object.entries(aliases) as [method, alias]}
             <li class="w-full">
                 <label class="label flex justify-normal gap-3">

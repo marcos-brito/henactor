@@ -15,6 +15,6 @@
     </div>
     <ul
         tabindex="0"
-        class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow"
+        class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow-sm"
     ></ul>
 </article>
