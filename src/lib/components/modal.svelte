@@ -47,6 +47,7 @@
 <dialog class="modal" bind:this={dialog}>
     <div class={`modal-box p-8 ${props.class}`}>
         <form
+            class="h-full w-full"
             onsubmit={() => {
                 open = false;
                 if (onSubmit) onSubmit();
