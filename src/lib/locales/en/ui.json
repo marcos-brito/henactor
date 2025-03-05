@@ -1,4 +1,12 @@
 {
+    "commandPallete": {
+        "placeHolder": "Select a command",
+        "controls": {
+            "navigate": "{{previousKey}} {{nextKey}} to navigate",
+            "use": "{{executeKey}} to use",
+            "dismiss": "{{dismissKey}} to dismiss"
+        }
+    },
     "toolBar": {
         "filter": "Filter",
         "sort": {
