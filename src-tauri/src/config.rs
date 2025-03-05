@@ -32,6 +32,7 @@ pub struct Tab {
     sort_by: SortMethod,
     filter: String,
     query: String,
+    selected: Vec<PathBuf>,
 }
 
 impl Default for Tab {
@@ -47,6 +48,7 @@ impl Default for Tab {
             sort_by: SortMethod::Natural,
             filter: "".to_string(),
             query: "".to_string(),
+            selected: vec![],
         }
     }
 }
