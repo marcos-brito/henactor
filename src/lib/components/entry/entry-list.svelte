@@ -9,11 +9,9 @@
     import { trucate } from "$lib/utils";
     import { configManager, i18n } from "$lib";
 
-    let {
-        entry,
-        columns,
-        ref = $bindable(),
-    }: { entry: Entry; columns: Array<ListColumn>; ref: HTMLElement } = $props();
+    let { entry, columns }: { entry: Entry; columns: Array<ListColumn> } = $props();
+
+    let ref = $state<HTMLTableRowElement>();
 
     function formatSystemTime(time: SystemTime): string {
         //@ts-ignore
@@ -85,9 +83,9 @@
     {#each columns as column}
         <td>
             {#await mapColumn(column)}
-                <p class="text-nowrap text-sm">---</p>
+                <p class="text-sm text-nowrap">---</p>
             {:then detail}
-                <p class="text-nowrap text-sm opacity-70">{detail}</p>
+                <p class="text-sm text-nowrap opacity-70">{detail}</p>
             {/await}
         </td>
     {/each}

@@ -16,30 +16,16 @@
     } = $props();
 
     let ref = $state<HTMLElement>();
-    let childsRef = $state<Array<HTMLElement>>([]);
 </script>
 
 {#if ref}
     <ExplorerActions trigger={ref} />
-    <Navigation parent={ref} childrens={childsRef} orientation="Vertical" />
 {/if}
-<table tabindex="-1" id="explorer" bind:this={ref} class="table table-pin-rows">
+<table tabindex="-1" id="explorer" bind:this={ref} class="table-pin-rows table">
     <thead>
         <tr class="border-none">
             <th>
-                <Modal>
-                    {#snippet trigger(dialog)}
-                        <button
-                            onclick={() => dialog.showModal()}
-                            class="btn btn-circle btn-ghost btn-xs"
-                        >
-                            <IconWithFallback size={16} iconName="plus">
-                                <EllipsisVerticalIcon size="16" />
-                            </IconWithFallback>
-                        </button>
-                    {/snippet}
-                    <h1>columns goes here</h1>
-                </Modal>
+                <h1>columns goes here</h1>
             </th>
             <th>Name</th>
             {#each columns as column}
@@ -48,8 +34,8 @@
         </tr>
     </thead>
     <tbody>
-        {#each entries as entry, i}
-            <EntryList bind:ref={childsRef[i]} {columns} {entry} />
+        {#each entries as entry}
+            <EntryList {columns} {entry} />
         {/each}
     </tbody>
 </table>

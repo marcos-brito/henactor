@@ -6,6 +6,7 @@
     import Tabs from "$lib/components/tab/tabs.svelte";
     import { Toaster, toast } from "svelte-sonner";
     import { configManager } from "$lib";
+    import Keylistener from "$lib/components/keylistener.svelte";
 
     let {
         children,
@@ -30,6 +31,7 @@
         <link rel="stylesheet" href={`${convertFileSrc(currentTheme.css_file)}?${Date.now()}`} />
     {/if}
 </svelte:head>
+<Keylistener />
 <Toaster
     position="top-right"
     visibleToasts={1}

@@ -20,28 +20,14 @@
 
 <script lang="ts">
     import { Menu, Item } from "$lib/components/context-menu";
-    import Keybinder from "$lib/components/keybinder.svelte";
     import { parent } from "$lib/utils";
     let {
         trigger,
         entry,
-        actions,
     }: { trigger: HTMLElement; entry: Entry; actions?: Partial<Record<Command, () => void>> } =
         $props();
 </script>
 
-<Keybinder
-    {trigger}
-    actions={{
-        Open: () => {
-            open(entry);
-        },
-        GotoParent: () => {
-            gotoParent(entry);
-        },
-        ...actions,
-    }}
-/>
 <Menu {trigger}>
     <Item onclick={async () => await open(entry)}
         >{i18n.t("entry.open", { ns: "contextMenu" })}</Item

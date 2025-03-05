@@ -8,10 +8,10 @@
     import { BirdIcon } from "lucide-svelte";
     import { i18n } from "$lib";
 
-    let { entry, ref = $bindable() }: { entry: Entry; ref: HTMLElement } = $props();
+    let { entry }: { entry: Entry } = $props();
+    let ref = $state<HTMLElement>();
     let isOpen = $state(false);
     let entries = $state<Array<Entry>>([]);
-    let childsRef = $state<Array<HTMLElement>>([]);
     let watcher: number;
     let unlisten: UnlistenFn;
 
@@ -59,8 +59,8 @@
                             <p class="text-sm">{i18n.t("emptyDir", { ns: "ui" })}</p>
                         </div>
                     {:else}
-                        {#each entries as entry, i}
-                            <EntryTree bind:ref={childsRef[i]} {entry} />
+                        {#each entries as entry}
+                            <EntryTree {entry} />
                         {/each}
                     {/if}
                 </ul>

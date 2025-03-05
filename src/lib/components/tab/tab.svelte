@@ -2,17 +2,13 @@
     import type { Tab } from "$lib/bindings";
     import { clickOutside } from "$lib/utils";
     import { Menu, Item, Sep } from "$lib/components/context-menu";
-    import Keybinder from "../keybinder.svelte";
     import { i18n, tabsManager } from "$lib";
 
-    let {
-        id,
-        tabData,
-        ref = $bindable(),
-    }: { id: number; tabData: Tab; ref: HTMLElement } = $props();
+    let { id, tabData }: { id: number; tabData: Tab } = $props();
 
     let editMode = $state(false);
     let input = $state<HTMLElement>();
+    let ref = $state<HTMLButtonElement>();
 
     $effect(() => {
         if (input) input.focus();
@@ -41,14 +37,6 @@
             >{i18n.t("tab.closeExcept", { ns: "contextMenu" })}</Item
         >
     </Menu>
-    <Keybinder
-        trigger={ref}
-        actions={{
-            Create: () => tabsManager.add(),
-            Delete: () => tabsManager.close(id),
-            Rename: () => (editMode = true),
-        }}
-    />
 {/if}
 <li>
     {#if editMode}
