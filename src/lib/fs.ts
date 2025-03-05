@@ -35,6 +35,18 @@ export class Executor {
     }
 }
 
+export class Group implements Action {
+    constructor(private actions: Array<Action>) { }
+
+    async do(): Promise<void> {
+        for (const action of this.actions) await action.do();
+    }
+
+    async undo(): Promise<void> {
+        for (const action of this.actions) if (action.undo) await action.undo();
+    }
+}
+
 export class Delete implements Action {
     constructor(private path: string) { }
 

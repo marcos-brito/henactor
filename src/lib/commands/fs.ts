@@ -1,83 +1,68 @@
-import { commands } from "../bindings";
 import { type Command } from "./index";
-import { path as pathApi } from "@tauri-apps/api";
-import { parent } from "../utils";
-import { type Command as CommandKind } from "$lib/bindings";
-import { configManager, i18n } from "$lib";
+import { i18n, modalManager, tabsManager } from "$lib";
+import * as actions from "$lib/fs";
 
-export class Delete implements Command<string> {
-    public kind: CommandKind = "Delete";
-    public name = i18n.t("fs.Delete.name", { ns: "commands" })
-    public desc = i18n.t("fs.Delete.desc", { ns: "commands" })
-    public keybinds = configManager.config.keybinds["Delete"];
+export class Delete implements Command {
+    public identifier = "Delete";
+    public name = i18n.t("fs.Delete.name", { ns: "commands" });
+    public desc = i18n.t("fs.Delete.desc", { ns: "commands" });
+    public keybinds = ["Shift+d", "Delete"];
 
+    public async canExecute(): Promise<boolean> {
+        return tabsManager.current.selected.length > 0;
+    }
 
-    public async execute(path: string): Promise<void> {
-        await commands.remove(path);
+    public async execute(): Promise<void> {
+        modalManager.show("delete", tabsManager.current.selected, async (paths: Array<string>) => {
+            if (paths.length == 1)
+                return await tabsManager.current.executor.do(new actions.Delete(paths[0]));
+
+            return await tabsManager.current.executor.do(
+                new actions.Group(paths.map((path) => new actions.Delete(path))),
+            );
+        });
     }
 }
 
-export type CreateArgs =
-    | {
-        path: string;
-        kind: "Directory" | "File";
-    }
-    | {
-        original: string;
-        link: string;
-        kind: "Symlink";
-    };
+export class Create implements Command {
+    public identifier = "Create";
+    public name = i18n.t("fs.Create.name", { ns: "commands" });
+    public desc = i18n.t("fs.Create.desc", { ns: "commands" });
+    public keybinds = ["o"];
 
-export class Create implements Command<CreateArgs> {
-    public kind: CommandKind = "Create";
-    public name = i18n.t("fs.Create.name", { ns: "commands" })
-    public desc = i18n.t("fs.Create.desc", { ns: "commands" })
-    public keybinds = configManager.config.keybinds["Create"];
-
-    public async execute(args: CreateArgs): Promise<void> {
-        switch (args.kind) {
-            case "Directory":
-                await commands.createDir(args.path);
-                break;
-            case "File":
-                await commands.createFile(args.path);
-                break;
-            case "Symlink":
-                await commands.createLink(args.original, args.link);
-                break;
-        }
+    public async canExecute(): Promise<boolean> {
+        return true;
     }
 
-    public async undo(args: CreateArgs): Promise<void> {
-        if (args.kind == "Symlink") {
-            await commands.remove(args.link);
-            return;
-        }
-
-        await commands.remove(args.path);
+    public async execute(): Promise<void> {
+        modalManager.show("create", undefined, (args) =>
+            tabsManager.current.executor.do(new actions.Create(args)),
+        );
     }
 }
 
-export type RenameArgs = {
-    target: string,
-    name: string,
-}
+export class Rename implements Command {
+    public identifier = "Rename";
+    public name = i18n.t("fs.Rename.name", { ns: "commands" });
+    public desc = i18n.t("fs.Rename.desc", { ns: "commands" });
+    public keybinds = ["r"];
 
-export class Rename implements Command<RenameArgs> {
-    public kind: CommandKind = "Rename";
-    public name = i18n.t("fs.Rename.name", { ns: "commands" })
-    public desc = i18n.t("fs.Rename.desc", { ns: "commands" })
-    public keybinds = configManager.config.keybinds["Rename"];
-
-    public async execute(args: RenameArgs): Promise<void> {
-        await commands.rename(args.target, this.renamedPath(args));
+    public async canExecute(): Promise<boolean> {
+        return tabsManager.current.selected.length > 0;
     }
 
-    public async undo(args: RenameArgs): Promise<void> {
-        await commands.rename(this.renamedPath(args), args.target);
-    }
+    public async execute(): Promise<void> {
+        modalManager.show(
+            "rename",
+            tabsManager.current.selected,
+            async (renames: Array<actions.RenameArgs>) => {
+                if (renames.length == 1)
+                    return await tabsManager.current.executor.do(new actions.Rename(renames[0]));
 
-    private renamedPath(args: RenameArgs): string {
-        return `${parent(args.target)}${pathApi.sep()}${args.name}`;
+                return await tabsManager.current.executor.do(
+                    new actions.Group(renames.map((rename) => new actions.Rename(rename))),
+                );
+            },
+        );
     }
 }

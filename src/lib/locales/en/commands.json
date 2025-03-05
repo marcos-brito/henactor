@@ -1,4 +1,36 @@
 {
+    "pallete": {
+        "OpenPallete": {
+            "name": "Open command pallete",
+            "desc": "Opens the command pallete"
+        },
+        "PalleteNext": {
+            "name": "Pallete next",
+            "desc": "Selects the next command on the pallete"
+        },
+        "PalletePrevious": {
+            "name": "Pallete previous",
+            "desc": "Selects the previous command on the pallete"
+        },
+        "PalleteExecute": {
+            "name": "Pallete execute",
+            "desc": "Executes the selected command on the pallete"
+        }
+    },
+    "settings": {
+        "OpenSettings": {
+            "name": "Open settings",
+            "desc": "Opens the settings"
+        },
+        "OpenThemePicker": {
+            "name": "Open theme picker",
+            "desc": "Opens the theme picker"
+        },
+        "SaveSettings": {
+            "name": "Save settings",
+            "desc": "Writes the settings to the configuration file"
+        }
+    },
     "fs": {
         "Delete": {
             "name": "Delete",

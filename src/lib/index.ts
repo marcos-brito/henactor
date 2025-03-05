@@ -1,7 +1,9 @@
 import { TabsManager } from "$lib/tabs.svelte";
 import { createInstance } from "i18next";
-import { Create, Delete, NewTab, Register, Rename } from "./commands";
-import { CloseTab, NextTab, PreviousTab } from "./commands/tabs";
+import { Register } from "./commands";
+import * as tabsCommands from "./commands/tabs";
+import * as fsCommands from "./commands/fs";
+import * as navigationCommands from "./commands/navigate";
 import { init, options } from "./locale.svelte";
 import { ConfigManager, configPath, userConfig, userThemes } from "./config.svelte";
 import { ModalManager } from "./modal_manager";
@@ -15,17 +17,19 @@ export const commandRegister = new Register(configManager);
 export const modalManager = new ModalManager();
 export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
 
-console.log(configManager, tabsManager, commandRegister, i18n)
-console.log(configManager.config)
-
-configManager.watch()
+configManager.watch();
 commandRegister
+    // Tabs
+    .register(new tabsCommands.NewTab())
+    .register(new tabsCommands.CloseTab())
+    .register(new tabsCommands.NextTab())
+    .register(new tabsCommands.PreviousTab())
     // Fs
-    .register(new Delete())
-    .register(new Create())
-    .register(new Rename())
-    // Tabs 
-    .register(new NewTab())
-    .register(new CloseTab())
-    .register(new NextTab())
-    .register(new PreviousTab());
+    .register(new fsCommands.Delete())
+    .register(new fsCommands.Rename())
+    .register(new fsCommands.Create())
+    // Navigation
+    .register(new navigationCommands.OpenPallete())
+    .register(new navigationCommands.SaveSettings())
+    .register(new navigationCommands.OpenThemePicker())
+    .register(new navigationCommands.OpenSettings());
