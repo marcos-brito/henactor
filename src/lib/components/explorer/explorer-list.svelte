@@ -1,10 +1,6 @@
 <script lang="ts">
     import { type Entry, type ListColumn } from "$lib/bindings";
-    import { EllipsisVerticalIcon } from "lucide-svelte";
     import { EntryList } from "$lib/components/entry";
-    import Modal from "$lib/components/modal.svelte";
-    import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
-    import Navigation from "$lib/components/navigation/navigation.svelte";
     import ExplorerActions from "./explorer-actions.svelte";
 
     let {
