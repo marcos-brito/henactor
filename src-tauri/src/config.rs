@@ -13,73 +13,7 @@ pub const THEMES_DIR: &str = "themes";
 pub const THEME_FILE: &str = "theme.css";
 pub const ICONS_FILE: &str = "icons.toml";
 
-#[derive(Debug, Hash, PartialEq, Eq, Serialize, Deserialize, Type)]
-pub enum Command {
-    HalfPageUp,
-    HalfPageDown,
-    Down,
-    Up,
-    Left,
-    Right,
-    Confirm,
-    FocusSidebar,
-    FocusTabs,
-    FocusExplorer,
-    NextTab,
-    PreviousTab,
-    NewTab,
-    CloseTab,
-    QuitKeyGrabber,
-    Delete,
-    Rename,
-    GotoParent,
-    Accept,
-    Create,
-    Open,
-    OpenDetails,
-    OpenConfig,
-}
-
-#[derive(Debug, Serialize, Deserialize, Type)]
-pub struct KeyBindings(HashMap<Command, Vec<String>>);
-
-impl Default for KeyBindings {
-    fn default() -> Self {
-        KeyBindings(HashMap::from([
-            (Command::Confirm, vec!["Enter".to_string()]),
-            (Command::HalfPageUp, vec!["Control+u".to_string()]),
-            (Command::HalfPageDown, vec!["Control+d".to_string()]),
-            (Command::Up, vec!["k".to_string(), "ArrowUp".to_string()]),
-            (Command::FocusSidebar, vec!["Control+h".to_string()]),
-            (Command::Rename, vec!["c+c".to_string()]),
-            (Command::Accept, vec!["Enter".to_string()]),
-            (Command::Create, vec!["o".to_string()]),
-            (Command::OpenDetails, vec!["i".to_string()]),
-            (Command::OpenConfig, vec!["Control+o".to_string()]),
-            (Command::QuitKeyGrabber, vec!["Control+Enter".to_string()]),
-            (Command::CloseTab, vec!["Control+w".to_string()]),
-            (Command::NewTab, vec!["Control+t".to_string()]),
-            (Command::NextTab, vec!["Shift+K".to_string()]),
-            (Command::PreviousTab, vec!["Shift+J".to_string()]),
-            (
-                Command::Delete,
-                vec!["Delete".to_string(), "d+d".to_string()],
-            ),
-            (
-                Command::Down,
-                vec!["j".to_string(), "ArrowDown".to_string()],
-            ),
-            (
-                Command::Left,
-                vec!["h".to_string(), "ArrowLeft".to_string()],
-            ),
-            (
-                Command::Right,
-                vec!["l".to_string(), "ArrowRight".to_string()],
-            ),
-        ]))
-    }
-}
+pub type KeyBindings = HashMap<String, Vec<String>>;
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Pin {

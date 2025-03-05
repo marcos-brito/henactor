@@ -7,8 +7,11 @@ import { ConfigManager, configPath, userConfig, userThemes } from "./config.svel
 import { ModalManager } from "./modal_manager";
 
 export const configManager = new ConfigManager(configPath, userConfig, userThemes);
-export const tabsManager = new TabsManager(configManager.config.tabs, configManager.config.options.default_tab);
-export const commandRegister = new Register();
+export const tabsManager = new TabsManager(
+    configManager.config.tabs,
+    configManager.config.options.default_tab,
+);
+export const commandRegister = new Register(configManager);
 export const modalManager = new ModalManager();
 export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
 
