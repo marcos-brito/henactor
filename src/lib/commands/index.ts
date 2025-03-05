@@ -12,7 +12,6 @@ export interface Command<T> {
     desc: string;
     keybinds: Array<string>;
     execute(arg: T): Promise<void>;
-    undo?(arg: T): Promise<void>;
 }
 
 export class Register {
@@ -36,35 +35,5 @@ export class Register {
     }
 }
 
-type HistoryEntry = {
-    cmd: Command<any>,
-    arg: any,
-}
-
-export class Executor {
-    private undoHistory: Array<HistoryEntry> = [];
-    private redoHistory: Array<HistoryEntry> = [];
-
-    public async do<T>(cmd: Command<T>, arg: T): Promise<void> {
-        await cmd.execute(arg);
-        this.undoHistory.push({ cmd, arg });
-    }
-
-    public async undo() {
-        const entry = this.undoHistory.pop();
-
-        if (entry?.cmd?.undo) {
-            await entry.cmd.undo(entry.arg);
-            this.redoHistory.push(entry);
-        }
-    }
-
-    public async redo() {
-        const entry = this.redoHistory.pop();
-
-        if (entry) {
-            await entry.cmd.execute(entry.arg);
-            this.undoHistory.push(entry);
-        }
     }
 }

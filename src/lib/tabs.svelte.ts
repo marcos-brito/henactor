@@ -1,9 +1,9 @@
 import type { Tab } from "$lib/bindings";
-import { Executor } from "./commands";
+import { Executor } from "./fs";
 
 type InternalTab = Tab & {
-    executor: Executor
-}
+    executor: Executor;
+};
 
 export class TabsManager {
     public currentIdx = $state(0);
