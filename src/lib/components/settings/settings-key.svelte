@@ -3,6 +3,7 @@
     import SettingsField from "./settings-field.svelte";
     import Keygrabber from "./keygrabber.svelte";
     import IconWithFallback from "../icon/icon-with-fallback.svelte";
+    import Keybind from "../keybind.svelte";
 
     let {
         name,
@@ -15,37 +16,18 @@
     } = $props();
 
     let isGrabbing = $state(false);
-    const keyAliases: Record<string, string> = {
-        Control: "Ctrl",
-        " ": "Space",
-        ArrowUp: "▲",
-        ArrowDown: "▼",
-        ArrowLeft: "◀︎",
-        ArrowRight: "▶︎",
-    };
 </script>
-
-{#snippet keyBindText(keybind: string)}
-    <div class="flex gap-1 text-sm">
-        {#each keybind.split("+") as key, i}
-            <p class="capitalize">{keyAliases[key] || key}</p>
-            {#if i != keybind.split("+").length - 1}
-                <p>+</p>
-            {/if}
-        {/each}
-    </div>
-{/snippet}
 
 <SettingsField {name} {desc}>
     <div class="flex gap-4">
         {#if value.length == 0}
-            <div class="flex items-center gap-1 rounded-sm bg-base-200 px-2 py-[2px]">Blank</div>
+            <div class="bg-base-200 flex items-center gap-1 rounded-sm px-2 py-[2px]">Blank</div>
         {/if}
         <div class="flex max-w-md gap-4 overflow-auto">
             {#each value as keybind}
-                <div class="flex items-center gap-1 rounded-sm bg-base-200 px-2 py-[2px]">
-                    {@render keyBindText(keybind)}
+                <Keybind {keybind}>
                     <button
+                        type="button"
                         onclick={() => (value = value.filter((k) => k != keybind))}
                         class="btn btn-circle btn-ghost btn-xs opacity-70"
                     >
@@ -53,7 +35,7 @@
                             <XIcon size="14" />
                         </IconWithFallback>
                     </button>
-                </div>
+                </Keybind>
             {/each}
         </div>
         {#if isGrabbing}
@@ -66,6 +48,7 @@
             />
         {:else}
             <button
+                type="button"
                 onclick={() => (isGrabbing = true)}
                 class="btn btn-circle btn-ghost btn-xs opacity-70"
             >
