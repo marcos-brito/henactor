@@ -4,7 +4,7 @@
     import Modal from "./modal.svelte";
     import Navigation from "$lib/components/navigation/navigation.svelte";
     import Keybinder from "./keybinder.svelte";
-    import { configManager, i18n } from "$lib";
+    import { configManager, i18n, modalManager } from "$lib";
 
     let childsRef = $state<Array<HTMLElement>>([]);
     let ref = $state<HTMLElement>();
@@ -31,17 +31,8 @@
         {/each}
         <li class="menu-title">Tools</li>
         <li><a href="/search">Search</a></li>
-        <Modal class="max-w-5xl overflow-hidden">
-            {#snippet trigger(dialog: HTMLDialogElement)}
-                <Keybinder actions={{ OpenConfig: () => dialog.showModal() }} />
-                <li>
-                    <button
-                        bind:this={childsRef[configManager.config.pins.length]}
-                        onclick={() => dialog.showModal()}>Settings</button
-                    >
-                </li>
-            {/snippet}
-            <Settings />
-        </Modal>
+        <li>
+            <button onclick={() => modalManager.show("settings")}>Settings</button>
+        </li>
     </ul>
 </aside>

@@ -7,6 +7,10 @@
     import type { Snippet } from "svelte";
     import SettingsPopup from "./settings-popup.svelte";
     import { i18n } from "$lib";
+    import Modal from "../modal.svelte";
+    import type { ModalManager } from "$lib/modal_manager";
+
+    let { modalManager }: { modalManager: ModalManager } = $props();
 
     const views = ["Grid", "List", "Tree"];
     const pages: Record<string, Snippet> = {
@@ -114,21 +118,24 @@
     {/each}
 {/snippet}
 
-<section class="mt-4 grid grid-cols-[200px_1fr]">
-    <aside class="h-[80vh] overflow-auto">
-        <ul class="menu">
-            {#each Object.keys(pages) as page}
-                <li>
-                    <button
-                        class={page == currentPage ? "active" : ""}
-                        onclick={() => (currentPage = page)}
-                        >{i18n.t(`settings:${page}.name`)}</button
-                    >
-                </li>
-            {/each}
-        </ul>
-    </aside>
-    <main class="h-[80vh] overflow-auto">
-        {@render currentPageContent()}
-    </main>
-</section>
+<Modal name="settings" {modalManager} class="max-w-5xl overflow-hidden">
+    <section class="mt-4 grid grid-cols-[200px_1fr]">
+        <aside class="h-[80vh] overflow-auto">
+            <ul class="menu">
+                {#each Object.keys(pages) as page}
+                    <li>
+                        <button
+                            type="button"
+                            class={page == currentPage ? "active" : ""}
+                            onclick={() => (currentPage = page)}
+                            >{i18n.t(`settings:${page}.name`)}</button
+                        >
+                    </li>
+                {/each}
+            </ul>
+        </aside>
+        <main class="h-[80vh] overflow-auto">
+            {@render currentPageContent()}
+        </main>
+    </section>
+</Modal>
