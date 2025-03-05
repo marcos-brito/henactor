@@ -1,4 +1,4 @@
-export type Hook<T> = (arg: T) => void;
+export type Hook<T> = (arg: T) => Promise<void>;
 
 export interface Modal<T = void> {
     name: string;
