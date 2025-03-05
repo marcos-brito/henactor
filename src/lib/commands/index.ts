@@ -1,5 +1,7 @@
+import type { ConfigManager } from "$lib/config.svelte";
 
 export interface Command {
+    identifier: string;
     name: string;
     desc: string;
     keybinds: Array<string>;
@@ -10,10 +12,14 @@ export interface Command {
 export class Register {
     private commands = new Map<string, Command>();
 
-    public register(cmd: Command<any>): Register {
-        this.commands.set(cmd.kind, cmd);
+    constructor(private configManager: ConfigManager) { }
+
     public register(cmd: Command): Register {
         this.commands.set(cmd.identifier, cmd);
+        if (!this.configManager.config.keybinds[cmd.identifier]) {
+            this.configManager.config.keybinds[cmd.identifier] = cmd.keybinds;
+        }
+
         for (const keybind of cmd.keybinds) {
             this.commands.set(keybind, cmd);
         }

@@ -113,7 +113,11 @@
 
 {#snippet keybinds()}
     {#each commandRegister.all().sort((a, b) => a.name.localeCompare(b.name)) as cmd}
-        <SettingsKey name={cmd.name} desc={cmd.desc} bind:value={cmd.keybinds} />
+        <SettingsKey
+            name={cmd.name}
+            desc={cmd.desc}
+            bind:value={configManager.config.keybinds[cmd.identifier]}
+        />
         <div class="divider my-0"></div>
     {/each}
 {/snippet}
