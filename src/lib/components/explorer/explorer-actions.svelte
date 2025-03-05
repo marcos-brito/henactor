@@ -15,13 +15,3 @@
     <Sep />
     <Item onclick={() => {}}>{$_("menu.explorer.details")}</Item>
 </Menu>
-<Keybinder
-    {trigger}
-<Keybinder
-    actions={{
-        FocusExplorer: () => {
-            trigger.focus();
-        },
-    }}
-/>
-/>

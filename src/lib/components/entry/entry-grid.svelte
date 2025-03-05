@@ -6,7 +6,8 @@
     import { trucate } from "$lib/utils";
     import { configManager } from "$lib";
 
-    let { entry, ref = $bindable() }: { entry: Entry; ref: HTMLElement } = $props();
+    let { entry }: { entry: Entry } = $props();
+    let ref = $state<HTMLButtonElement>();
 </script>
 
 {#if ref}
