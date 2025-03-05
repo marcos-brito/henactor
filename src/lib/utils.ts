@@ -1,6 +1,19 @@
 import { commands, type Entry } from "./bindings";
 import { path as pathApi } from "@tauri-apps/api";
 
+const keyAliases: Record<string, string> = {
+    Control: "Ctrl",
+    " ": "Space",
+    ArrowUp: "▲",
+    ArrowDown: "▼",
+    ArrowLeft: "◀︎",
+    ArrowRight: "▶︎",
+};
+
+export function findKeyAlias(key: string): string {
+    return keyAliases[key] || key;
+}
+
 export function clickOutside(node: HTMLElement, callback: () => void) {
     const handleClick = (event: Event) => {
         const target = event.target as HTMLElement;
@@ -35,5 +48,5 @@ export function trucate(text: string, maxChars: number): string {
     if (text.length < maxChars) return text;
     const head = text.substring(0, maxChars / 2);
     const tail = text.substring(text.length - maxChars / 2);
-    return `${head}…${tail}`
+    return `${head}…${tail}`;
 }
