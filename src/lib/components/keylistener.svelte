@@ -5,8 +5,9 @@
 
     async function maybeExecute(e: KeyboardEvent): Promise<void> {
         if (!e.repeat) holding.push(e.key);
-        const command = commandRegister.find(holding.join("+"));
-        if (command && (await command.canExecute())) await command.execute();
+        const commands = commandRegister.find(holding.join("+"));
+        for (const command of commands)
+            if (await command.canExecute()) return await command.execute();
     }
 
     function clearLastKey(): void {

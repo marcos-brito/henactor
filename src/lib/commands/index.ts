@@ -11,8 +11,9 @@ export interface Command {
 
 export class Register {
     private commands = new Map<string, Command>();
+    private keybinds = new Map<string, Array<Command>>();
 
-    constructor(private configManager: ConfigManager) { }
+    constructor(private configManager: ConfigManager) {}
 
     public register(cmd: Command): Register {
         this.commands.set(cmd.identifier, cmd);
@@ -21,14 +22,15 @@ export class Register {
         }
 
         for (const keybind of cmd.keybinds) {
-            this.commands.set(keybind, cmd);
+            this.keybinds.set(keybind, [...(this.keybinds.get(keybind) || []), cmd]);
         }
 
         return this;
     }
 
-    public find(query: string): Command | undefined {
-        return this.commands.get(query);
+    public find(query: string): Array<Command> {
+        if (this.commands.has(query)) return [this.commands.get(query)!];
+        return this.keybinds.get(query) || [];
     }
 
     public all(): Array<Command> {
