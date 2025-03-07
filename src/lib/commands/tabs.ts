@@ -35,7 +35,7 @@ export class NextTab implements Command {
     public identifier = "NextTab";
     public name = i18n.t("tabs.NextTab.name", { ns: "commands" });
     public desc = i18n.t("tabs.NextTab.desc", { ns: "commands" });
-    public keybinds = ["Shift+l"];
+    public keybinds = ["Shift+L"];
 
     public async canExecute(): Promise<boolean> {
         return true;
@@ -50,7 +50,7 @@ export class PreviousTab implements Command {
     public identifier = "PreviousTab";
     public name = i18n.t("tabs.PreviousTab.name", { ns: "commands" });
     public desc = i18n.t("tabs.PreviousTab.desc", { ns: "commands" });
-    public keybinds = ["Shift+h"];
+    public keybinds = ["Shift+H"];
 
     public async canExecute(): Promise<boolean> {
         return true;
