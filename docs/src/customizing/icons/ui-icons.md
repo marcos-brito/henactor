@@ -16,5 +16,7 @@ will be provided. Read [Icons](../icons.md) to learn more.
 -   `list_view`:
 -   `tree_view`:
 -   `empty_dir`:
+-   `settings`:
+-   `commands`:
 
 > **Note for myself:** Remember to keep this up to date 👽.

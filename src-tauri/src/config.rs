@@ -73,6 +73,8 @@ pub enum View {
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Icons {
     sort: Option<String>,
+    settings: Option<String>,
+    commands: Option<String>,
     filter: Option<String>,
     directory: Option<String>,
     file: Option<String>,
