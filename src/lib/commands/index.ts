@@ -13,7 +13,7 @@ export class Register {
     private commands = new Map<string, Command>();
     private keybinds = new Map<string, Array<Command>>();
 
-    constructor(private configManager: ConfigManager) {}
+    constructor(private configManager: ConfigManager) { }
 
     public register(cmd: Command): Register {
         this.commands.set(cmd.identifier, cmd);
@@ -22,7 +22,11 @@ export class Register {
         }
 
         for (const keybind of cmd.keybinds) {
-            this.keybinds.set(keybind, [...(this.keybinds.get(keybind) || []), cmd]);
+            this.keybinds.set(keybind, [
+                ...(this.keybinds.get(keybind)?.filter((c) => c.identifier != cmd.identifier) ||
+                    []),
+                cmd,
+            ]);
         }
 
         return this;
