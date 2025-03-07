@@ -1,4 +1,4 @@
-import type { Command } from ".";
+import type { Command } from "$lib/services";
 import { configManager, i18n, modalManager } from "$lib";
 import { commands } from "$lib/bindings";
 

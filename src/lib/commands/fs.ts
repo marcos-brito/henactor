@@ -1,4 +1,4 @@
-import { type Command } from "./index";
+import { type Command } from "$lib/services";
 import { i18n, modalManager, tabsManager } from "$lib";
 import * as actions from "$lib/services/filesystem_actions.svelte";
 
