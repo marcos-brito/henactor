@@ -1,4 +1,4 @@
-import { tabsManager, i18n, configManager } from "$lib";
+import { tabsManager, i18n, modalManager } from "$lib";
 import type { Command } from "./index";
 
 export class NewTab implements Command {
@@ -58,5 +58,35 @@ export class PreviousTab implements Command {
 
     public async execute(): Promise<void> {
         tabsManager.previous();
+    }
+}
+
+export class OpenViewPicker implements Command {
+    public identifier = "OpenViewPicker";
+    public name = i18n.t("tabs.OpenViewPicker.name", { ns: "commands" });
+    public desc = i18n.t("tabs.OpenViewPicker.desc", { ns: "commands" });
+    public keybinds = ["Control+,"];
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async execute(): Promise<void> {
+        modalManager.show("pallete:views");
+    }
+}
+
+export class OpenSortMethodPicker implements Command {
+    public identifier = "OpenSortMethodPicker";
+    public name = i18n.t("tabs.OpenSortMethodPicker.name", { ns: "commands" });
+    public desc = i18n.t("tabs.OpenSortMethodPicker.desc", { ns: "commands" });
+    public keybinds = ["Control+;"];
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async execute(): Promise<void> {
+        modalManager.show("pallete:sort");
     }
 }

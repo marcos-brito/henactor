@@ -22,6 +22,8 @@ commandRegister
     .register(new tabsCommands.CloseTab())
     .register(new tabsCommands.NextTab())
     .register(new tabsCommands.PreviousTab())
+    .register(new tabsCommands.OpenViewPicker())
+    .register(new tabsCommands.OpenSortMethodPicker())
     // Fs
     .register(new fsCommands.Delete())
     .register(new fsCommands.Rename())
