@@ -112,7 +112,7 @@
 {/snippet}
 
 {#snippet keybinds()}
-    {#each commandRegister.all().sort((a, b) => a.name.localeCompare(b.name)) as cmd}
+    {#each Array.from(commandRegister.commands.values()).sort( (a, b) => a.name.localeCompare(b.name), ) as cmd}
         <SettingsKey
             name={cmd.name}
             desc={cmd.desc}

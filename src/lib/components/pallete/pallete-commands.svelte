@@ -6,7 +6,9 @@
 
 <PalleteBase
     name="pallete:commands"
-    items={commandRegister.all()}
+    items={Array.from(commandRegister.commands.values()).sort((a, b) =>
+        a.name.localeCompare(b.name),
+    )}
     getFn={(cmd) => cmd.name}
     executor={async (cmd) => {
         if (await cmd.canExecute()) cmd.execute();

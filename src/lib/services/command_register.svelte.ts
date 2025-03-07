@@ -1,3 +1,4 @@
+import { SvelteMap } from "svelte/reactivity";
 import type { ConfigManager } from ".";
 
 export interface Command {
@@ -10,7 +11,7 @@ export interface Command {
 }
 
 export class CommandRegister {
-    readonly commands = $state(new Map<string, Command>());
+    readonly commands = $state(new SvelteMap<string, Command>());
     private keybinds = new Map<string, Array<Command>>();
 
     constructor(private configManager: ConfigManager) { }
