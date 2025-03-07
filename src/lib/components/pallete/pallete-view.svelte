@@ -3,33 +3,22 @@
     import type { View } from "$lib/bindings";
     import PalleteBase from "./pallete-base.svelte";
 
-    type Pair = {
-        view: View;
-        name: string;
-    };
+    const views: Array<View> = ["Grid", "List", "Tree"];
 
-    let views: Array<Pair> = [
-        {
-            view: "Grid",
-            name: i18n.t("toolBar.views.grid", { ns: "ui" }),
-        },
-        {
-            view: "List",
-            name: i18n.t("toolBar.views.list", { ns: "ui" }),
-        },
-        {
-            view: "Tree",
-            name: i18n.t("toolBar.views.tree", { ns: "ui" }),
-        },
-    ];
+    const items = views.map((view) => {
+        return {
+            view,
+            name: i18n.t(`ui:toolBar.views.${view.toLowerCase()}`),
+        };
+    });
 </script>
 
 <PalleteBase
     name="pallete:views"
-    items={views}
-    getFn={(t) => t.name}
-    executor={async (t) => {
-        tabsManager.current.view = t.view;
+    {items}
+    getFn={(pair) => pair.name}
+    executor={async (pair) => {
+        tabsManager.current.view = pair.view;
     }}
 >
     {#snippet children(pair)}

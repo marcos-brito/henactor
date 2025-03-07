@@ -65,6 +65,10 @@
         "OpenViewPicker": {
             "name": "Open view picker",
             "desc": "Opens the view picker"
+        },
+        "OpenSortMethodPicker": {
+            "name": "Open sort method picker",
+            "desc": "Opens the sort method picker"
         }
     },
     "keygrabber": {
