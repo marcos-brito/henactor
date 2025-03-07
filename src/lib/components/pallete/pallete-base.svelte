@@ -48,8 +48,6 @@
     });
 
     $effect(() => {
-        // HACK: focusing here works. But is it the best place?
-        input?.focus();
         if (container) {
             const item = itemsRef[selected].getBoundingClientRect();
             const containerRect = container.getBoundingClientRect();
