@@ -1,1 +1,1 @@
-import "$lib/config.svelte";
+import "$lib/services/config_manager.svelte";

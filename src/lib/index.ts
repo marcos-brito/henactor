@@ -1,21 +1,19 @@
-import { TabsManager } from "$lib/tabs.svelte";
 import { createInstance } from "i18next";
-import { Register } from "./commands";
 import * as tabsCommands from "./commands/tabs";
 import * as fsCommands from "./commands/fs";
 import * as navigationCommands from "./commands/navigate";
-import { init, options } from "./locale.svelte";
-import { ConfigManager, configPath, userConfig, userThemes } from "./config.svelte";
-import { ModalManager } from "./modal_manager";
+import { init, options } from "$lib/services/locale.svelte";
+import { configPath, userConfig, userThemes } from "$lib/services/config_manager.svelte";
+import { ConfigManager, ModalManager, TabsManager, CommandRegister } from "$lib/services";
 
 export const configManager = new ConfigManager(configPath, userConfig, userThemes);
+export const commandRegister = new CommandRegister(configManager);
+export const modalManager = new ModalManager();
+export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
 export const tabsManager = new TabsManager(
     configManager.config.tabs,
     configManager.config.options.default_tab,
 );
-export const commandRegister = new Register(configManager);
-export const modalManager = new ModalManager();
-export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
 
 configManager.watch();
 commandRegister

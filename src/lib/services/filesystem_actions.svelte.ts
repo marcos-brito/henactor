@@ -1,4 +1,4 @@
-import { commands } from "./bindings";
+import { commands } from "$lib/bindings";
 import { path as pathApi } from "@tauri-apps/api";
 import { parent } from "$lib/utils";
 
@@ -8,8 +8,8 @@ interface Action {
 }
 
 export class Executor {
-    private undoHistory: Array<Action> = [];
-    private redoHistory: Array<Action> = [];
+    readonly undoHistory: Array<Action> = $state([]);
+    readonly redoHistory: Array<Action> = $state([]);
 
     public async do(action: Action): Promise<void> {
         await action.do();

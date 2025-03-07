@@ -1,6 +1,6 @@
-import { expect, describe, it, beforeAll, afterEach, beforeEach } from "vitest";
-import { TabsManager } from "./tabs.svelte";
-import type { Tab } from "./bindings";
+import { expect, describe, it } from "vitest";
+import { TabsManager } from "./tabs_manager.svelte";
+import type { Tab } from "$lib/bindings";
 
 describe("TabsManager", () => {
     function createTabs(quantity: number): Array<Tab> {
@@ -11,9 +11,12 @@ describe("TabsManager", () => {
                 name: i.toString(),
                 path: "",
                 query: "",
+                filter: "",
+                sort_by: "Natural",
                 grid_size: 4,
                 view: "Grid",
                 list_columns: [],
+                selected: [],
             });
         }
 

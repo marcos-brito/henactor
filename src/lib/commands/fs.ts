@@ -1,6 +1,6 @@
 import { type Command } from "./index";
 import { i18n, modalManager, tabsManager } from "$lib";
-import * as actions from "$lib/fs";
+import * as actions from "$lib/services/filesystem_actions.svelte";
 
 export class Delete implements Command {
     public identifier = "Delete";

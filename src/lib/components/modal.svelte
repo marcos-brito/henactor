@@ -2,7 +2,7 @@
     import { XIcon } from "lucide-svelte";
     import IconWithFallback from "./icon/icon-with-fallback.svelte";
     import type { Snippet } from "svelte";
-    import type { Hook, ModalManager } from "$lib/modal_manager";
+    import type { Hook, ModalManager } from "$lib/services";
 
     let {
         children,

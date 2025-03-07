@@ -1,5 +1,5 @@
 import type { Tab } from "$lib/bindings";
-import { Executor } from "./fs";
+import { Executor } from ".";
 
 type InternalTab = Tab & {
     executor: Executor;
