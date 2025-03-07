@@ -1,5 +1,37 @@
 interface Resources {
   "commands": {
+    "pallete": {
+      "OpenPallete": {
+        "name": "Open command pallete",
+        "desc": "Opens the command pallete"
+      },
+      "PalleteNext": {
+        "name": "Pallete next",
+        "desc": "Selects the next command on the pallete"
+      },
+      "PalletePrevious": {
+        "name": "Pallete previous",
+        "desc": "Selects the previous command on the pallete"
+      },
+      "PalleteExecute": {
+        "name": "Pallete execute",
+        "desc": "Executes the selected command on the pallete"
+      }
+    },
+    "settings": {
+      "OpenSettings": {
+        "name": "Open settings",
+        "desc": "Opens the settings"
+      },
+      "OpenThemePicker": {
+        "name": "Open theme picker",
+        "desc": "Opens the theme picker"
+      },
+      "SaveSettings": {
+        "name": "Save settings",
+        "desc": "Writes the settings to the configuration file"
+      }
+    },
     "fs": {
       "Delete": {
         "name": "Delete",
@@ -15,6 +47,10 @@ interface Resources {
       }
     },
     "tabs": {
+      "RenameCurrentTab": {
+        "name": "Rename current tab",
+        "desc": "Renames the current tab"
+      },
       "NewTab": {
         "name": "New tab",
         "desc": "Creates a new tab"
@@ -30,6 +66,20 @@ interface Resources {
       "PreviousTab": {
         "name": "Previous tab",
         "desc": "Goes to the previous tab"
+      },
+      "OpenViewPicker": {
+        "name": "Open view picker",
+        "desc": "Opens the view picker"
+      },
+      "OpenSortMethodPicker": {
+        "name": "Open sort method picker",
+        "desc": "Opens the sort method picker"
+      }
+    },
+    "keygrabber": {
+      "QuitKeygrabber": {
+        "name": "Quit key grabber",
+        "desc": "Quits the key grabber"
       }
     }
   },
@@ -60,6 +110,12 @@ interface Resources {
       "closeAhead": "Close ahead",
       "closeBehind": "Close behind",
       "closeExcept": "Close all other tabs"
+    }
+  },
+  "modals": {
+    "renameTab": {
+      "title": "Rename tab",
+      "confirmation": "Rename"
     }
   },
   "settings": {
@@ -123,6 +179,15 @@ interface Resources {
     }
   },
   "ui": {
+    "pallete": {
+      "placeHolder": "Select an item",
+      "active": "Active",
+      "controls": {
+        "navigate": "{{previousKey}} {{nextKey}} to navigate",
+        "use": "{{executeKey}} to use",
+        "dismiss": "{{dismissKey}} to dismiss"
+      }
+    },
     "toolBar": {
       "filter": "Filter",
       "sort": {
@@ -156,6 +221,9 @@ interface Resources {
         "dir": "Directory",
         "file": "File"
       }
+    },
+    "keygrabber": {
+      "message": "Press your keys. {{keys}} when you are done"
     }
   }
 }

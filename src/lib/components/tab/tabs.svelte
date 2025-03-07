@@ -5,7 +5,7 @@
     import { i18n, tabsManager } from "$lib";
 </script>
 
-<nav id="tabs" class="navbar p-0">
+<nav class="navbar p-0">
     <div class="flex flex-col">
         <p class="menu-title self-start">{i18n.t("words.tabs", { ns: "ui" })}</p>
         <ul class="menu menu-horizontal rounded-box items-center gap-1">

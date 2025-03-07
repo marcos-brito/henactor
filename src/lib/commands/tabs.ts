@@ -1,5 +1,5 @@
 import { tabsManager, i18n, modalManager } from "$lib";
-import type { Command } from "./index";
+import type { Command } from "$lib/services";
 
 export class NewTab implements Command {
     public identifier = "NewTab";
@@ -58,6 +58,23 @@ export class PreviousTab implements Command {
 
     public async execute(): Promise<void> {
         tabsManager.previous();
+    }
+}
+
+export class RenameCurrentTab implements Command {
+    public identifier = "RenameCurrentTab";
+    public name = i18n.t("tabs.RenameCurrentTab.name", { ns: "commands" });
+    public desc = i18n.t("tabs.RenameCurrentTab.desc", { ns: "commands" });
+    public keybinds = ["Control+r"];
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async execute(): Promise<void> {
+        modalManager.show("renameTab", tabsManager.current, async (name: string) => {
+            tabsManager.current.name = name;
+        });
     }
 }
 

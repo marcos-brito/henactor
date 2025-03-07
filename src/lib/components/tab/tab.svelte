@@ -1,18 +1,11 @@
 <script lang="ts">
     import type { Tab } from "$lib/bindings";
-    import { clickOutside } from "$lib/utils";
     import { Menu, Item, Sep } from "$lib/components/context-menu";
-    import { i18n, tabsManager } from "$lib";
+    import { i18n, modalManager, tabsManager } from "$lib";
 
     let { id, tabData }: { id: number; tabData: Tab } = $props();
 
-    let editMode = $state(false);
-    let input = $state<HTMLElement>();
     let ref = $state<HTMLButtonElement>();
-
-    $effect(() => {
-        if (input) input.focus();
-    });
 </script>
 
 {#if ref}
@@ -22,7 +15,12 @@
         <Item onclick={() => tabsManager.close(id)}
             >{i18n.t("tab.close", { ns: "contextMenu" })}</Item
         >
-        <Item onclick={() => (editMode = true)}>{i18n.t("tab.rename", { ns: "contextMenu" })}</Item>
+        <Item
+            onclick={() =>
+                modalManager.show("renameTab", tabData, async (name: string) => {
+                    tabsManager.tabs[id].name = name;
+                })}>{i18n.t("tab.rename", { ns: "contextMenu" })}</Item
+        >
         <Item onclick={() => tabsManager.duplicate(id)}
             >{i18n.t("tab.duplicate", { ns: "contextMenu" })}</Item
         >
@@ -39,25 +37,14 @@
     </Menu>
 {/if}
 <li>
-    {#if editMode}
-        <input
-            bind:this={input}
-            use:clickOutside={() => (editMode = false)}
-            type="text"
-            bind:value={tabData.name}
-            class="input input-xs input-ghost text-sm"
-        />
-    {:else}
-        <button
-            bind:this={ref}
-            onmousedown={(e) => {
-                if (e.button == 1) tabsManager.close(id);
-            }}
-            ondblclick={() => (editMode = true)}
-            onclick={() => (tabsManager.currentIdx = id)}
-            class:active={id == tabsManager.currentIdx}
-            class={"tooltip tooltip-bottom"}
-            data-tip={tabData.path}>{tabData.name}</button
-        >
-    {/if}
+    <button
+        bind:this={ref}
+        onmousedown={(e) => {
+            if (e.button == 1) tabsManager.close(id);
+        }}
+        onclick={() => (tabsManager.currentIdx = id)}
+        class:menu-active={id == tabsManager.currentIdx}
+        class={"tooltip tooltip-bottom"}
+        data-tip={tabData.path}>{tabData.name}</button
+    >
 </li>

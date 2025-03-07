@@ -46,6 +46,10 @@
         }
     },
     "tabs": {
+        "RenameCurrentTab": {
+            "name": "Rename current tab",
+            "desc": "Renames the current tab"
+        },
         "NewTab": {
             "name": "New tab",
             "desc": "Creates a new tab"
