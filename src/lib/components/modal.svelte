@@ -33,10 +33,11 @@
         },
     });
 
-    let dialog = $state<HTMLDialogElement>();
+    let dialog: HTMLDialogElement;
 
     $effect(() => {
         dialog?.addEventListener("close", () => (open = false));
+        return () => dialog?.removeEventListener("close", () => (open = false));
     });
 
     $effect(() => {
@@ -47,6 +48,7 @@
 <dialog class="modal" bind:this={dialog}>
     <div class={`modal-box p-8 ${props.class}`}>
         <form
+            method="dialog"
             class="h-full w-full"
             onsubmit={() => {
                 open = false;
