@@ -15,15 +15,15 @@
         value: Array<string>;
     } = $props();
 
-    let isGrabbing = $state(false);
+    let grabbing = $state(false);
 </script>
 
 <SettingsField {name} {desc}>
-    <div class="flex gap-4">
+    <div class="flex gap-4 p-4">
         {#if value.length == 0}
             <div class="bg-base-200 flex items-center gap-1 rounded-sm px-2 py-[2px]">Blank</div>
         {/if}
-        <div class="flex max-w-md gap-4 overflow-auto">
+        <div class="flex max-w-xs gap-4 overflow-auto">
             {#each value as keybind}
                 <Keybind {keybind}>
                     <button
@@ -38,24 +38,20 @@
                 </Keybind>
             {/each}
         </div>
-        {#if isGrabbing}
-            <Keygrabber
-                callback={(grabbed) => {
-                    if (grabbed) value.push(grabbed);
-                    console.log(grabbed);
-                    isGrabbing = false;
-                }}
-            />
-        {:else}
-            <button
-                type="button"
-                onclick={() => (isGrabbing = true)}
-                class="btn btn-circle btn-ghost btn-xs opacity-70"
-            >
-                <IconWithFallback iconName="plus" size={16}>
-                    <PlusIcon size="16" />
-                </IconWithFallback>
-            </button>
-        {/if}
+        <Keygrabber
+            bind:grabbing
+            callback={(grabbed) => {
+                if (!value.includes(grabbed)) value.push(grabbed);
+            }}
+        />
+        <button
+            type="button"
+            onclick={() => (grabbing = true)}
+            class="btn btn-circle btn-ghost btn-xs opacity-70"
+        >
+            <IconWithFallback iconName="plus" size={16}>
+                <PlusIcon size="16" />
+            </IconWithFallback>
+        </button>
     </div>
 </SettingsField>
