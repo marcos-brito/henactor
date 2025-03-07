@@ -15,6 +15,10 @@
         "PalleteExecute": {
             "name": "Pallete execute",
             "desc": "Executes the selected command on the pallete"
+        },
+        "PalleteComplete": {
+            "name": "Pallete complete",
+            "desc": "Completes the pallete query with the selected item"
         }
     },
     "settings": {

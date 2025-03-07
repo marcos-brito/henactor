@@ -34,7 +34,7 @@
     const result = $derived(fuse.search(query));
 
     let container = $state<HTMLElement>();
-    let input = $state<HTMLElement>();
+    let input: HTMLElement;
     let itemsRef = $state<Array<HTMLElement>>([]);
 
     let selected = $state(0);
@@ -81,6 +81,21 @@
         }
     }
 
+    class PalleteComplete implements Command {
+        public identifier = "PalleteComplete";
+        public name = i18n.t("pallete.PalleteComplete.name", { ns: "commands" });
+        public desc = i18n.t("pallete.PalleteComplete.desc", { ns: "commands" });
+        public keybinds = ["Tab"];
+
+        public async canExecute(): Promise<boolean> {
+            return open;
+        }
+
+        public async execute(): Promise<void> {
+            if (selectedItem) query = getFn(selectedItem);
+        }
+    }
+
     class PalletePrevious implements Command {
         public identifier = "PalleteUp";
         public name = i18n.t("pallete.PalletePrevious.name", { ns: "commands" });
@@ -92,7 +107,6 @@
         }
 
         public async execute(): Promise<void> {
-            console.log(name);
             if (selected > 0) selected--;
         }
     }
@@ -112,8 +126,10 @@
         }
     }
 
+    // HACK: doing it twice so it shows on the settings before open a pallete
     commandRegister
         .register(new PalleteExecute())
+        .register(new PalleteComplete())
         .register(new PalletePrevious())
         .register(new PalleteNext());
 
@@ -121,6 +137,7 @@
         if (open)
             commandRegister
                 .register(new PalleteExecute())
+                .register(new PalleteComplete())
                 .register(new PalletePrevious())
                 .register(new PalleteNext());
     });
