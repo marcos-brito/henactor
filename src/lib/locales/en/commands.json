@@ -66,6 +66,11 @@
             "name": "Open view picker",
             "desc": "Opens the view picker"
         }
+    },
+    "keygrabber": {
+        "QuitKeygrabber": {
+            "name": "Quit key grabber",
+            "desc": "Quits the key grabber"
         }
     }
 }

@@ -53,7 +53,9 @@
         }
     });
 
-    commandRegister.register(new QuitKeyGrabber());
+    $effect(() => {
+        commandRegister.register(new QuitKeyGrabber());
+    });
 </script>
 
 <button

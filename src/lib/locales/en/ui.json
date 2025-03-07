@@ -41,5 +41,8 @@
             "dir": "Directory",
             "file": "File"
         }
+    },
+    "keygrabber": {
+        "message": "Press your keys. {{keys}} when you are done"
     }
 }
