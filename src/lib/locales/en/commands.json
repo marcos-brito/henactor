@@ -61,6 +61,11 @@
         "PreviousTab": {
             "name": "Previous tab",
             "desc": "Goes to the previous tab"
+        },
+        "OpenViewPicker": {
+            "name": "Open view picker",
+            "desc": "Opens the view picker"
+        }
         }
     }
 }

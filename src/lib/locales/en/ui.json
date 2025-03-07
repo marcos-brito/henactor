@@ -1,6 +1,7 @@
 {
-    "commandPallete": {
-        "placeHolder": "Select a command",
+    "pallete": {
+        "placeHolder": "Select an item",
+        "active": "Active",
         "controls": {
             "navigate": "{{previousKey}} {{nextKey}} to navigate",
             "use": "{{executeKey}} to use",

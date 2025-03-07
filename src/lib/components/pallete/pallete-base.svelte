@@ -140,7 +140,7 @@
             bind:this={input}
             bind:value={query}
             class="input w-full"
-            placeholder={i18n.t("commandPallete.placeHolder", { ns: "ui" })}
+            placeholder={i18n.t("pallete.placeHolder", { ns: "ui" })}
             type="text"
         />
         <ul bind:this={container} class="menu menu-md w-full flex-nowrap overflow-y-scroll">
@@ -176,20 +176,20 @@
         </ul>
         <article class="flex items-center justify-center gap-3 text-xs">
             <p>
-                {i18n.t("commandPallete.controls.navigate", {
+                {i18n.t("pallete.controls.navigate", {
                     ns: "ui",
                     previousKey: findKeyAlias(configManager.config.keybinds["PalleteDown"][0]),
                     nextKey: findKeyAlias(configManager.config.keybinds["PalleteUp"][0]),
                 })}
             </p>
             <p>
-                {i18n.t("commandPallete.controls.use", {
+                {i18n.t("pallete.controls.use", {
                     ns: "ui",
                     executeKey: findKeyAlias(configManager.config.keybinds["PalleteExecute"][0]),
                 })}
             </p>
             <p>
-                {i18n.t("commandPallete.controls.dismiss", {
+                {i18n.t("pallete.controls.dismiss", {
                     ns: "ui",
                     dismissKey: findKeyAlias("esc"),
                 })}
