@@ -10,8 +10,8 @@
         trigger: HTMLElement;
     } = $props();
 
+    let menu: HTMLElement;
     let isActive = $state(false);
-    let menu = $state<HTMLElement>();
     let x = $state(0);
     let y = $state(0);
 
@@ -37,19 +37,19 @@
         openAt(e.clientX, e.clientY);
     }
 
-    trigger.addEventListener("contextmenu", handleClick);
+    $effect(() => {
+        trigger.addEventListener("contextmenu", handleClick);
+    });
 </script>
 
-{#if isActive}
-    <ul
-        tabindex="-1"
-        bind:this={menu}
-        use:clickOutside={() => (isActive = false)}
-        onclick={() => (isActive = false)}
-        class="menu rounded-box bg-base-200 fixed z-10 w-48"
-        style:top={`${y}px`}
-        style:left={`${x}px`}
-    >
-        {@render children()}
-    </ul>
-{/if}
+<ul
+    class:hidden={!isActive}
+    bind:this={menu}
+    use:clickOutside={() => (isActive = false)}
+    onclick={() => (isActive = false)}
+    class="menu rounded-box bg-base-200 fixed z-10 w-48"
+    style:top={`${y}px`}
+    style:left={`${x}px`}
+>
+    {@render children()}
+</ul>
