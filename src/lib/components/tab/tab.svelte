@@ -36,7 +36,7 @@
         >
     </Menu>
 {/if}
-<li>
+<li class="flex gap-2">
     <button
         bind:this={ref}
         onmousedown={(e) => {
@@ -45,6 +45,7 @@
         onclick={() => (tabsManager.currentIdx = id)}
         class:menu-active={id == tabsManager.currentIdx}
         class={"tooltip tooltip-bottom"}
-        data-tip={tabData.path}>{tabData.name}</button
-    >
+        data-tip={tabData.path}
+        >{tabData.name}
+    </button>
 </li>

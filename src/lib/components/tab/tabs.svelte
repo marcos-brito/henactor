@@ -12,7 +12,7 @@
             {#each tabsManager.tabs as tabData, id}
                 <Tab {tabData} {id} />
             {/each}
-            <li>
+            <li class="tooltip tooltip-bottom" data-tip={i18n.t("tabs.newTab", { ns: "tooltip" })}>
                 <button onclick={() => tabsManager.add()} class="btn btn-circle btn-ghost btn-xs">
                     <IconWithFallback iconName="plus" size={16}>
                         <PlusIcon size="16" />

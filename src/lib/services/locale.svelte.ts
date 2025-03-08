@@ -24,6 +24,7 @@ export const options: InitOptions = {
             contextMenu: en.contextMenu,
             modals: en.modals,
             ui: en.ui,
+            tooltip: en.tooltip,
         },
     },
 };

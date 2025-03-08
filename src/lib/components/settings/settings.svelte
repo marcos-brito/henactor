@@ -118,8 +118,8 @@
     {/each}
 {/snippet}
 
-<Modal name="settings" {modalManager} class="max-w-5xl overflow-hidden">
-    <section class="mt-4 grid grid-cols-[200px_1fr]">
+<Modal name="settings" {modalManager} class="max-w-5xl">
+    <section class="mt-4 grid grid-cols-[150px_1fr]">
         <aside class="h-[80vh] overflow-auto">
             <ul class="menu">
                 {#each Object.keys(pages) as page}

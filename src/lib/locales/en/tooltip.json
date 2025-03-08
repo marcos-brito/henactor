@@ -1,0 +1,10 @@
+{
+    "settings": {
+        "resetKeybind": "Use default",
+        "removeKeybind": "Remove key bind",
+        "addKeybind": "Add key bind"
+    },
+    "tabs": {
+        "newTab": "New tab"
+    }
+}

@@ -5,6 +5,7 @@
     import IconWithFallback from "../icon/icon-with-fallback.svelte";
     import Keybind from "../keybind.svelte";
     import type { Command } from "$lib/services";
+    import { i18n } from "$lib";
 
     let {
         cmd,
@@ -22,18 +23,23 @@
         {#if value.length == 0}
             <div class="bg-base-200 flex items-center gap-1 rounded-sm px-2 py-[2px]">Blank</div>
         {/if}
-        <div class="flex max-w-xs gap-4 overflow-auto">
+        <div class="flex max-w-xs gap-4">
             {#each value as keybind}
                 <Keybind {keybind}>
-                    <button
-                        type="button"
-                        onclick={() => (value = value.filter((k) => k != keybind))}
-                        class="btn btn-circle btn-ghost btn-xs opacity-70"
+                    <div
+                        class="tooltip tooltip-bottom"
+                        data-tip={i18n.t("settings.removeKeybind", { ns: "tooltip" })}
                     >
-                        <IconWithFallback iconName="x" size={14}>
-                            <XIcon size="14" />
-                        </IconWithFallback>
-                    </button>
+                        <button
+                            type="button"
+                            onclick={() => (value = value.filter((k) => k != keybind))}
+                            class="btn btn-circle btn-ghost btn-xs opacity-70"
+                        >
+                            <IconWithFallback iconName="x" size={14}>
+                                <XIcon size="14" />
+                            </IconWithFallback>
+                        </button>
+                    </div>
                 </Keybind>
             {/each}
         </div>
@@ -43,23 +49,33 @@
                 if (!value.includes(grabbed)) value.push(grabbed);
             }}
         />
-        <button
-            type="button"
-            onclick={() => (grabbing = true)}
-            class="btn btn-circle btn-ghost btn-xs opacity-70"
+        <div
+            class="tooltip tooltip-bottom"
+            data-tip={i18n.t("settings.addKeybind", { ns: "tooltip" })}
         >
-            <IconWithFallback iconName="plus" size={16}>
-                <PlusIcon size="16" />
-            </IconWithFallback>
-        </button>
-        <button
-            type="button"
-            onclick={() => (value = cmd.keybinds)}
-            class="btn btn-circle btn-ghost btn-xs opacity-70"
+            <button
+                type="button"
+                onclick={() => (grabbing = true)}
+                class="btn btn-circle btn-ghost btn-xs opacity-70"
+            >
+                <IconWithFallback iconName="plus" size={16}>
+                    <PlusIcon size="16" />
+                </IconWithFallback>
+            </button>
+        </div>
+        <div
+            class="tooltip tooltip-left"
+            data-tip={i18n.t("settings.resetKeybind", { ns: "tooltip" })}
         >
-            <IconWithFallback iconName="plus" size={16}>
-                <RotateCcwIcon size="16" />
-            </IconWithFallback>
-        </button>
+            <button
+                type="button"
+                onclick={() => (value = cmd.keybinds)}
+                class="btn btn-circle btn-ghost btn-xs opacity-70"
+            >
+                <IconWithFallback iconName="plus" size={16}>
+                    <RotateCcwIcon size="16" />
+                </IconWithFallback>
+            </button>
+        </div>
     </div>
 </SettingsField>

@@ -3,7 +3,6 @@ import commands from "./commands.json";
 import contextMenu from "./contextMenu.json";
 import ui from "./ui.json";
 import modals from "./modals.json";
+import tooltip from "./tooltip.json";
 
-export {
-    settings, commands, contextMenu, ui, modals
-}
+export { settings, commands, contextMenu, ui, modals, tooltip };
