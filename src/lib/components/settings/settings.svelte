@@ -3,12 +3,12 @@
     import SettingsInput from "./settings-input.svelte";
     import SettingsCheck from "./settings-check.svelte";
     import SettingsSelect from "./settings-select.svelte";
-    import SettingsKey from "./settings-key.svelte";
+    import SettingsCmd from "./settings-cmd.svelte";
     import type { Snippet } from "svelte";
     import SettingsPopup from "./settings-popup.svelte";
     import { i18n } from "$lib";
     import Modal from "../modal.svelte";
-    import type { ModalManager } from "$lib/modal_manager";
+    import type { ModalManager } from "$lib/services";
 
     let { modalManager }: { modalManager: ModalManager } = $props();
 
@@ -113,11 +113,7 @@
 
 {#snippet keybinds()}
     {#each Array.from(commandRegister.commands.values()).sort( (a, b) => a.name.localeCompare(b.name), ) as cmd}
-        <SettingsKey
-            name={cmd.name}
-            desc={cmd.desc}
-            bind:value={configManager.config.keybinds[cmd.identifier]}
-        />
+        <SettingsCmd {cmd} bind:value={configManager.config.keybinds[cmd.identifier]} />
         <div class="divider my-0"></div>
     {/each}
 {/snippet}
