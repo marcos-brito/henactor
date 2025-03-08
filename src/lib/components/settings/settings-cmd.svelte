@@ -25,7 +25,7 @@
         {/if}
         <div class="flex max-w-xs gap-4">
             {#each value as keybind}
-                <Keybind {keybind}>
+                <Keybind {cmd} {keybind}>
                     <div
                         class="tooltip tooltip-bottom"
                         data-tip={i18n.t("settings.removeKeybind", { ns: "tooltip" })}

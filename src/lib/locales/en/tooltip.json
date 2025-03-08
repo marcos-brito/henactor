@@ -2,7 +2,8 @@
     "settings": {
         "resetKeybind": "Use default",
         "removeKeybind": "Remove key bind",
-        "addKeybind": "Add key bind"
+        "addKeybind": "Add key bind",
+        "keybindConflict": "Conflicts with \"{{keybind}}\""
     },
     "tabs": {
         "newTab": "New tab"
