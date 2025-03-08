@@ -1,128 +1,22 @@
 <script lang="ts">
-    import { commandRegister, configManager } from "$lib/index";
-    import SettingsInput from "./settings-input.svelte";
-    import SettingsCheck from "./settings-check.svelte";
-    import SettingsSelect from "./settings-select.svelte";
-    import SettingsCmd from "./settings-cmd.svelte";
-    import type { Snippet } from "svelte";
-    import SettingsPopup from "./settings-popup.svelte";
     import { i18n } from "$lib";
     import Modal from "../modal.svelte";
     import type { ModalManager } from "$lib/services";
+    import SettingsKeybinds from "./settings-keybinds.svelte";
+    import SettingsGeneral from "./settings-general.svelte";
+    import SettingsAppearence from "./settings-appearence.svelte";
 
     let { modalManager }: { modalManager: ModalManager } = $props();
 
-    const views = ["Grid", "List", "Tree"];
-    const pages: Record<string, Snippet> = {
-        general: general,
-        appearance: appearance,
-        pins: pins,
-        keybinds: keybinds,
-    };
-    let currentPage = $state("general");
-    let currentPageContent = $derived(pages[currentPage]);
+    const pages = ["general", "appearance", "pins", "keybinds"] as const;
+    let currentPage: (typeof pages)[number] = $state("general");
 </script>
-
-{#snippet general()}
-    <SettingsSelect
-        bind:value={configManager.config.options.lang}
-        options={i18n.languages}
-        name={i18n.t("general.options.lang.name", { ns: "settings" })}
-        desc={i18n.t("general.options.lang.desc", { ns: "settings" })}
-        onChange={(lang) => {
-            i18n.changeLanguage(lang);
-        }}
-    />
-    <SettingsCheck
-        bind:checked={configManager.config.options.download_icons}
-        name={i18n.t("general.options.downloadIcons.name", { ns: "settings" })}
-        desc={i18n.t("general.options.downloadIcons.desc", { ns: "settings" })}
-    />
-    <SettingsCheck
-        bind:checked={configManager.config.options.auto_reload}
-        name={i18n.t("general.options.autoReload.name", { ns: "settings" })}
-        desc={i18n.t("general.options.autoReload.desc", { ns: "settings" })}
-    />
-    <SettingsPopup
-        name={i18n.t("general.options.defaultTab.name", { ns: "settings" })}
-        desc={i18n.t("general.options.defaultTab.desc", { ns: "settings" })}
-    >
-        <label class="form-control w-full max-w-xs">
-            <div class="label">
-                <span class="label-text"
-                    >{i18n.t("general.options.defaultTab.fields.name", { ns: "settings" })}</span
-                >
-            </div>
-            <input
-                class="input input-sm input-bordered"
-                type="text"
-                bind:value={configManager.config.options.default_tab.name}
-            />
-        </label>
-        <label class="form-control w-full max-w-xs">
-            <div class="label">
-                <span class="label-text"
-                    >{i18n.t("general.options.defaultTab.fields.path", { ns: "settings" })}</span
-                >
-            </div>
-            <input
-                class="input input-sm input-bordered"
-                type="text"
-                bind:value={configManager.config.options.default_tab.path}
-            />
-        </label>
-    </SettingsPopup>
-    <SettingsSelect
-        bind:value={configManager.config.options.default_tab.view}
-        options={views}
-        name={i18n.t("general.options.defaultView.name", { ns: "settings" })}
-        desc={i18n.t("general.options.defaultView.desc", { ns: "settings" })}
-    />
-    <SettingsInput
-        type="number"
-        bind:value={configManager.config.options.default_tab.grid_size}
-        name={i18n.t("general.options.defaultGridSize.name", { ns: "settings" })}
-        desc={i18n.t("general.options.defaultGridSize.desc", { ns: "settings" })}
-    />
-{/snippet}
-
-{#snippet appearance()}
-    <SettingsInput
-        type="text"
-        bind:value={configManager.config.options.title}
-        name={i18n.t("appearance.options.title.name", { ns: "settings" })}
-        desc={i18n.t("appearance.options.title.desc", { ns: "settings" })}
-    />
-    <SettingsInput
-        type="number"
-        bind:value={configManager.config.options.truncation_limit}
-        name={i18n.t("appearance.options.truncationLimit.name", { ns: "settings" })}
-        desc={i18n.t("appearance.options.truncationLimit.desc", { ns: "settings" })}
-    />
-    <SettingsSelect
-        bind:value={configManager.config.options.current_theme}
-        options={configManager.themes.map((t) => t.name)}
-        name={i18n.t("appearance.options.theme.name", { ns: "settings" })}
-        desc={i18n.t("appearance.options.theme.desc", { ns: "settings" })}
-    />
-{/snippet}
-
-{#snippet pins()}
-    <p>a</p>
-{/snippet}
-
-{#snippet keybinds()}
-    {#each Array.from(commandRegister.commands.values()).sort( (a, b) => a.name.localeCompare(b.name), ) as cmd}
-        <SettingsCmd {cmd} bind:value={configManager.config.keybinds[cmd.identifier]} />
-        <div class="divider my-0"></div>
-    {/each}
-{/snippet}
 
 <Modal name="settings" {modalManager} class="max-w-5xl">
     <section class="mt-4 grid grid-cols-[150px_1fr]">
         <aside class="h-[80vh] overflow-auto">
             <ul class="menu">
-                {#each Object.keys(pages) as page}
+                {#each pages as page}
                     <li>
                         <button
                             type="button"
@@ -135,7 +29,18 @@
             </ul>
         </aside>
         <main class="h-[80vh] overflow-auto">
-            {@render currentPageContent()}
+            {#if currentPage == "general"}
+                <SettingsGeneral />
+            {/if}
+            {#if currentPage == "appearance"}
+                <SettingsAppearence />
+            {/if}
+            {#if currentPage == "keybinds"}
+                <SettingsKeybinds />
+            {/if}
+            {#if currentPage == "pins"}
+                <h1>todo</h1>
+            {/if}
         </main>
     </section>
 </Modal>
