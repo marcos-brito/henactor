@@ -6,58 +6,40 @@
     import { findKeyAlias } from "$lib/utils";
     import type { Snippet } from "svelte";
     import SearchResult from "$lib/components/search-result.svelte";
+    import { NavigatorBase, Navigator } from "$lib/components/navigator";
 
     let {
         children,
         name,
         items,
+        query = $bindable(""),
         getFn,
         executor,
     }: {
-        children: Snippet<[T]>;
+        children?: Snippet<[T]>;
         name: string;
         items: Array<T>;
+        query?: string;
         getFn: (item: T) => string;
         executor: (item: T) => Promise<void>;
     } = $props();
 
-    let query = $state("");
-    let open = $state(false);
+    const fuse = new Fuse(items, {
+        includeMatches: true,
+        keys: [{ name: "name", getFn }],
+    });
 
-    const fuse = $derived(
-        new Fuse(items, {
-            includeMatches: true,
-            keys: [{ name: "name", getFn }],
-        }),
-    );
-
+    const navigator = new Navigator(items.length - 1);
     const result = $derived(fuse.search(query));
 
+    let selectedItem = $derived(items[navigator.selected]);
+    let open = $state(false);
     let container = $state<HTMLElement>();
-    let input: HTMLElement;
     let itemsRef = $state<Array<HTMLElement>>([]);
-
-    let selected = $state(0);
-    let selectedItem = $derived.by(() => {
-        if (query) return result.at(selected)?.item;
-        return items.at(selected);
-    });
+    let input: HTMLElement;
 
     $effect(() => {
-        if (query) selected = 0;
-    });
-
-    $effect(() => {
-        if (container) {
-            const item = itemsRef[selected].getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-
-            if (item.top < containerRect.top)
-                container.scrollBy({ top: item.top - containerRect.top, behavior: "smooth" });
-
-            if (item.bottom > containerRect.bottom)
-                container.scrollBy({ top: item.bottom - containerRect.bottom, behavior: "smooth" });
-        }
+        if (query) navigator.selected = 0;
     });
 
     function maxIdx(): number {
@@ -107,7 +89,7 @@
         }
 
         public async execute(): Promise<void> {
-            if (selected > 0) selected--;
+            if (navigator.selected > 0) navigator.selected--;
         }
     }
 
@@ -122,7 +104,7 @@
         }
 
         public async execute(): Promise<void> {
-            if (selected < maxIdx()) selected++;
+            if (navigator.selected < maxIdx()) navigator.selected++;
         }
     }
 
@@ -160,37 +142,43 @@
             placeholder={i18n.t("pallete.placeHolder", { ns: "ui" })}
             type="text"
         />
-        <ul bind:this={container} class="menu menu-md w-full flex-nowrap overflow-y-scroll">
-            {#if query}
-                {#each result as r, i}
-                    <li bind:this={itemsRef[i]}>
-                        <button
-                            onclick={() => (selected = i)}
-                            type="submit"
-                            class:menu-active={selected == i}
-                            class="flex justify-between"
-                        >
-                            <SearchResult key="name" {getFn} result={r} />
-                            {@render children(r.item)}
-                        </button>
-                    </li>
-                {/each}
-            {:else}
-                {#each items as item, i}
-                    <li bind:this={itemsRef[i]}>
-                        <button
-                            onclick={() => (selected = i)}
-                            type="submit"
-                            class:menu-active={selected == i}
-                            class="flex justify-between"
-                        >
-                            <h1>{getFn(item)}</h1>
-                            {@render children(item)}
-                        </button>
-                    </li>
-                {/each}
-            {/if}
-        </ul>
+        <NavigatorBase items={itemsRef} {container} {navigator}>
+            <ul bind:this={container} class="menu menu-md w-full flex-nowrap overflow-y-scroll">
+                {#if query}
+                    {#each result as r, i}
+                        <li bind:this={itemsRef[i]}>
+                            <button
+                                onclick={() => (navigator.selected = i)}
+                                type="submit"
+                                class:menu-active={navigator.selected == i}
+                                class="flex justify-between"
+                            >
+                                <SearchResult key="name" {getFn} result={r} />
+                                {#if children}
+                                    {@render children(r.item)}
+                                {/if}
+                            </button>
+                        </li>
+                    {/each}
+                {:else}
+                    {#each items as item, i}
+                        <li bind:this={itemsRef[i]}>
+                            <button
+                                onclick={() => (navigator.selected = i)}
+                                type="submit"
+                                class:menu-active={navigator.selected == i}
+                                class="flex justify-between"
+                            >
+                                <h1>{getFn(item)}</h1>
+                                {#if children}
+                                    {@render children(item)}
+                                {/if}
+                            </button>
+                        </li>
+                    {/each}
+                {/if}
+            </ul>
+        </NavigatorBase>
         <article class="flex items-center justify-center gap-3 text-xs">
             <p>
                 {i18n.t("pallete.controls.navigate", {
