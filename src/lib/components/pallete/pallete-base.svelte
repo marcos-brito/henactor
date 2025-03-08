@@ -42,11 +42,6 @@
         if (query) navigator.selected = 0;
     });
 
-    function maxIdx(): number {
-        if (query) return result.length - 1;
-        return items.length - 1;
-    }
-
     class PalleteExecute implements Command {
         public identifier = "PalleteExecute";
         public name = i18n.t("pallete.PalleteExecute.name", { ns: "commands" });
@@ -89,7 +84,7 @@
         }
 
         public async execute(): Promise<void> {
-            if (navigator.selected > 0) navigator.selected--;
+            navigator.previous();
         }
     }
 
@@ -104,7 +99,7 @@
         }
 
         public async execute(): Promise<void> {
-            if (navigator.selected < maxIdx()) navigator.selected++;
+            navigator.next();
         }
     }
 
