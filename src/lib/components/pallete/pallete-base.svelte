@@ -24,7 +24,7 @@
         executor: (item: T) => Promise<void>;
     } = $props();
 
-    const navigator = new Navigator(items.length - 1);
+    const navigator = $derived(new Navigator(items.length - 1));
     const result = $derived(
         new Fuse(items, {
             includeMatches: true,
