@@ -5,7 +5,7 @@
     import PalleteBase from "./pallete-base.svelte";
     import { path as pathApi } from "@tauri-apps/api";
 
-    let query = $state(tabsManager.current.path);
+    let query = $state("");
     let entries = $state<Array<Entry>>([]);
 
     async function findSubDirs(path: string): Promise<void> {
@@ -23,6 +23,10 @@
 
         entries = dirs;
     }
+
+    $effect(() => {
+        query = tabsManager.current.path;
+    });
 
     $effect(() => {
         findSubDirs(query);
