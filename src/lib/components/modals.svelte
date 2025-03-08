@@ -1,18 +1,22 @@
 <script lang="ts">
-    import type { Register } from "$lib/commands";
     import type { ModalManager } from "$lib/services";
     import Settings from "$lib/components/settings/settings.svelte";
-    import { PalleteThemes, PalleteCommands } from "$lib/components/pallete";
     import RenameTabModal from "./tab/rename-tab-modal.svelte";
-    import PalleteView from "./pallete/pallete-view.svelte";
-    import PalleteSort from "./pallete/pallete-sort.svelte";
+    import {
+        PalleteThemes,
+        PalleteCommands,
+        PalleteView,
+        PalleteSort,
+        PalleteGoto,
+    } from "$lib/components/pallete";
 
-    let { register, modalManager }: { register: Register; modalManager: ModalManager } = $props();
+    let { modalManager }: { modalManager: ModalManager } = $props();
 </script>
 
 <PalleteCommands />
 <PalleteThemes />
 <PalleteView />
 <PalleteSort />
+<PalleteGoto />
 <Settings {modalManager} />
 <RenameTabModal />

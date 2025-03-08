@@ -107,3 +107,18 @@ export class OpenSortMethodPicker implements Command {
         modalManager.show("pallete:sort");
     }
 }
+
+export class OpenDirPicker implements Command {
+    public identifier = "OpenDirPicker";
+    public name = i18n.t("tabs.OpenDirPicker.name", { ns: "commands" });
+    public desc = i18n.t("tabs.OpenDirPicker.desc", { ns: "commands" });
+    public keybinds = ["Shift+:"];
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async execute(): Promise<void> {
+        modalManager.show("pallete:goto");
+    }
+}

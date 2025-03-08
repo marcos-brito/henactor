@@ -77,6 +77,10 @@
         "OpenSortMethodPicker": {
             "name": "Open sort method picker",
             "desc": "Opens the sort method picker"
+        },
+        "OpenDirPicker": {
+            "name": "Open directory picker ",
+            "desc": "Opens the directory picker"
         }
     },
     "keygrabber": {

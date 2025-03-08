@@ -1,6 +1,7 @@
 {
     "pallete": {
         "placeHolder": "Select an item",
+        "noResults": "Nothing found",
         "active": "Active",
         "controls": {
             "navigate": "{{previousKey}} {{nextKey}} to navigate",

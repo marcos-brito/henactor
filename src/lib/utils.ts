@@ -1,4 +1,4 @@
-import { commands, type Entry } from "./bindings";
+import { commands, type Entry } from "$lib/bindings";
 import { path as pathApi } from "@tauri-apps/api";
 
 const keyAliases: Record<string, string> = {
@@ -38,6 +38,15 @@ export async function linkIsBroken(entry: Entry): Promise<boolean> {
     } catch {
         return true;
     }
+}
+
+export async function isDir(entry: Entry): Promise<boolean> {
+    if (entry.entry_type == "Directory") return true;
+    if (entry.entry_type == "File") return false;
+
+    return await commands
+        .findLinkTarget(entry.path)
+        .then((entry) => entry.entry_type == "Directory");
 }
 
 export function parent(path: string): string {

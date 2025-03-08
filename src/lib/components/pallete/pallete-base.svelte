@@ -24,13 +24,13 @@
         executor: (item: T) => Promise<void>;
     } = $props();
 
-    const fuse = new Fuse(items, {
-        includeMatches: true,
-        keys: [{ name: "name", getFn }],
-    });
-
     const navigator = new Navigator(items.length - 1);
-    const result = $derived(fuse.search(query));
+    const result = $derived(
+        new Fuse(items, {
+            includeMatches: true,
+            keys: [{ name: "name", getFn }],
+        }).search(query),
+    );
 
     let selectedItem = $derived(items[navigator.selected]);
     let open = $state(false);

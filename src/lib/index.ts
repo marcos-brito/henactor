@@ -24,6 +24,8 @@ commandRegister
     .register(new tabsCommands.PreviousTab())
     .register(new tabsCommands.OpenViewPicker())
     .register(new tabsCommands.OpenSortMethodPicker())
+    .register(new tabsCommands.RenameCurrentTab())
+    .register(new tabsCommands.OpenDirPicker())
     // Fs
     .register(new fsCommands.Delete())
     .register(new fsCommands.Rename())
