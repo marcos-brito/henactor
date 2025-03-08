@@ -25,7 +25,7 @@
 <div>
     {#each getFn(result.item) as c, i}
         {#if shouldHighlight(i, result)}
-            <span class="text-info whitespace-nowrap">{c}</span>
+            <span class="text-info">{c}</span>
         {:else}
             <span>{c}</span>
         {/if}

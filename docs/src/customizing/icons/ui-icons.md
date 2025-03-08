@@ -18,5 +18,7 @@ will be provided. Read [Icons](../icons.md) to learn more.
 -   `empty_dir`:
 -   `settings`:
 -   `commands`:
+-   `keyboard`:
+-   `rotate`:
 
 > **Note for myself:** Remember to keep this up to date 👽.

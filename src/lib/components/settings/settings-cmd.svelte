@@ -6,19 +6,22 @@
     import Keybind from "../keybind.svelte";
     import type { Command } from "$lib/services";
     import { i18n } from "$lib";
+    import type { FuseResult } from "fuse.js";
 
     let {
         cmd,
+        result,
         value = $bindable(),
     }: {
         cmd: Command;
+        result?: FuseResult<{ name: string; desc: string }>;
         value: Array<string>;
     } = $props();
 
     let grabbing = $state(false);
 </script>
 
-<SettingsField name={cmd.name} desc={cmd.desc}>
+<SettingsField name={cmd.name} desc={cmd.desc} {result}>
     <div class="flex gap-4 p-4">
         {#if value.length == 0}
             <div class="bg-base-200 flex items-center gap-1 rounded-sm px-2 py-[2px]">Blank</div>
@@ -72,7 +75,7 @@
                 onclick={() => (value = cmd.keybinds)}
                 class="btn btn-circle btn-ghost btn-xs opacity-70"
             >
-                <IconWithFallback iconName="plus" size={16}>
+                <IconWithFallback iconName="rotate" size={16}>
                     <RotateCcwIcon size="16" />
                 </IconWithFallback>
             </button>

@@ -55,6 +55,9 @@
         "options": {}
     },
     "keybinds": {
-        "name": "Keybinds"
+        "name": "Keybinds",
+        "placeholder": "Search commands",
+        "commmandCount": "Showing {{count}} commands",
+        "defaultsMessage": "When using defaults conflicts can be ignored"
     }
 }

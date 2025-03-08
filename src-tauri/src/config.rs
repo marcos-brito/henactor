@@ -75,6 +75,8 @@ pub struct Icons {
     sort: Option<String>,
     settings: Option<String>,
     commands: Option<String>,
+    keyboard: Option<String>,
+    rotate: Option<String>,
     filter: Option<String>,
     directory: Option<String>,
     file: Option<String>,

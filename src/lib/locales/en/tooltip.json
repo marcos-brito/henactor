@@ -3,7 +3,10 @@
         "resetKeybind": "Use default",
         "removeKeybind": "Remove key bind",
         "addKeybind": "Add key bind",
-        "keybindConflict": "Conflicts with \"{{keybind}}\""
+        "keybindConflict": "Conflicts with \"{{keybind}}\"",
+        "keybindFilter": "Add key bind filter",
+        "removeFilter": "Remove this filter",
+        "clearFilters": "Clear all filters"
     },
     "tabs": {
         "newTab": "New tab"

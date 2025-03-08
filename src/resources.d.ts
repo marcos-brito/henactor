@@ -16,6 +16,10 @@ interface Resources {
       "PalleteExecute": {
         "name": "Pallete execute",
         "desc": "Executes the selected command on the pallete"
+      },
+      "PalleteComplete": {
+        "name": "Pallete complete",
+        "desc": "Completes the pallete query with the selected item"
       }
     },
     "settings": {
@@ -74,6 +78,10 @@ interface Resources {
       "OpenSortMethodPicker": {
         "name": "Open sort method picker",
         "desc": "Opens the sort method picker"
+      },
+      "OpenDirPicker": {
+        "name": "Open directory picker ",
+        "desc": "Opens the directory picker"
       }
     },
     "keygrabber": {
@@ -175,12 +183,30 @@ interface Resources {
       "options": {}
     },
     "keybinds": {
-      "name": "Keybinds"
+      "name": "Keybinds",
+      "placeholder": "Search commands",
+      "commmandCount": "Showing {{count}} commands",
+      "defaultsMessage": "When using defaults, conflicts can be ignored"
+    }
+  },
+  "tooltip": {
+    "settings": {
+      "resetKeybind": "Use default",
+      "removeKeybind": "Remove key bind",
+      "addKeybind": "Add key bind",
+      "keybindConflict": "Conflicts with \"{{keybind}}\"",
+      "keybindFilter": "Add key bind filter",
+      "removeFilter": "Remove this filter",
+      "clearFilters": "Clear all filters"
+    },
+    "tabs": {
+      "newTab": "New tab"
     }
   },
   "ui": {
     "pallete": {
       "placeHolder": "Select an item",
+      "noResults": "Nothing found",
       "active": "Active",
       "controls": {
         "navigate": "{{previousKey}} {{nextKey}} to navigate",
