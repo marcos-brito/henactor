@@ -10,3 +10,4 @@
         -   [Icon String](./customizing/icons/icon-string.md)
         -   [UI icons](./customizing/icons/ui-icons.md)
 -   [Filtering](./filtering.md)
+-   [Commands](./commands.md)
