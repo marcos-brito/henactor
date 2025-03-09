@@ -27,6 +27,12 @@
     name={i18n.t("general.options.autoReload.name", { ns: "settings" })}
     desc={i18n.t("general.options.autoReload.desc", { ns: "settings" })}
 />
+<SettingsInput
+    type="number"
+    bind:value={configManager.config.options.delete_timeout}
+    name={i18n.t("general.options.deleteTimeout.name", { ns: "settings" })}
+    desc={i18n.t("general.options.deleteTimeout.desc", { ns: "settings" })}
+/>
 <SettingsPopup
     name={i18n.t("general.options.defaultTab.name", { ns: "settings" })}
     desc={i18n.t("general.options.defaultTab.desc", { ns: "settings" })}

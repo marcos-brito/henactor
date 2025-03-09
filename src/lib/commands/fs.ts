@@ -13,14 +13,18 @@ export class Delete implements Command {
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("delete", tabsManager.current.selected, async (paths: Array<string>) => {
-            if (paths.length == 1)
-                return await tabsManager.current.executor.do(new actions.Delete(paths[0]));
+        modalManager.show(
+            "action:delete",
+            tabsManager.current.selected,
+            async (paths: Array<string>) => {
+                if (paths.length == 1)
+                    return await tabsManager.current.executor.do(new actions.Delete(paths[0]));
 
-            return await tabsManager.current.executor.do(
-                new actions.Group(paths.map((path) => new actions.Delete(path))),
-            );
-        });
+                return await tabsManager.current.executor.do(
+                    new actions.Group(paths.map((path) => new actions.Delete(path))),
+                );
+            },
+        );
     }
 }
 

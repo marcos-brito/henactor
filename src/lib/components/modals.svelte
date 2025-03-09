@@ -9,6 +9,9 @@
         PalleteSort,
         PalleteGoto,
     } from "$lib/components/pallete";
+    import {
+        ActionDelete,
+    } from "$lib/components/action";
 
     let { modalManager }: { modalManager: ModalManager } = $props();
 </script>
@@ -20,3 +23,4 @@
 <PalleteGoto />
 <Settings {modalManager} />
 <RenameTabModal />
+<ActionDelete />

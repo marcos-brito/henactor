@@ -53,6 +53,11 @@ export function parent(path: string): string {
     return path.split(pathApi.sep()).slice(0, -1).join(pathApi.sep());
 }
 
+export function fileName(path: string): string {
+    const parts = path.split(pathApi.sep());
+    return parts[parts.length - 1];
+}
+
 export function trucate(text: string, maxChars: number): string {
     if (text.length < maxChars) return text;
     const head = text.substring(0, maxChars / 2);

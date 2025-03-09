@@ -124,6 +124,15 @@ interface Resources {
     "renameTab": {
       "title": "Rename tab",
       "confirmation": "Rename"
+    },
+    "actions": {
+      "delete": {
+        "title": "Delete",
+        "count": "{{count}} items",
+        "message": "Are you sure you want to permanently delete this item? This can not be undone.",
+        "messageMany": "Are you sure you want to permanently delete this {{count}} items? This can not be undone.",
+        "confirmation": "Delete"
+      }
     }
   },
   "settings": {
@@ -142,6 +151,10 @@ interface Resources {
         "autoReload": {
           "name": "Auto reload",
           "desc": "Should the app reload whenever config files change?"
+        },
+        "deleteTimeout": {
+          "name": "Delete time out",
+          "desc": "Set the cooldown (in milliseconds) required to enable the delete button."
         },
         "defaultTab": {
           "name": "Default tab",
@@ -186,7 +199,7 @@ interface Resources {
       "name": "Keybinds",
       "placeholder": "Search commands",
       "commmandCount": "Showing {{count}} commands",
-      "defaultsMessage": "When using defaults, conflicts can be ignored"
+      "defaultsMessage": "When using defaults conflicts can be ignored"
     }
   },
   "tooltip": {

@@ -15,6 +15,10 @@
                 "name": "Auto reload",
                 "desc": "Should the app reload whenever config files change?"
             },
+            "deleteTimeout": {
+                "name": "Delete cooldown",
+                "desc": "Set the cooldown (in ms) required to enable the delete button."
+            },
             "defaultTab": {
                 "name": "Default tab",
                 "desc": "Set the name and path for new tabs",
