@@ -6,6 +6,7 @@
         "controls": {
             "navigate": "{{previousKey}} {{nextKey}} to navigate",
             "use": "{{executeKey}} to use",
+            "complete": "{{completeKey}} to complete",
             "dismiss": "{{dismissKey}} to dismiss"
         }
     },

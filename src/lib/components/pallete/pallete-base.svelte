@@ -189,9 +189,15 @@
                 })}
             </p>
             <p>
+                {i18n.t("pallete.controls.complete", {
+                    ns: "ui",
+                    completeKey: findKeyAlias(configManager.config.keybinds["PalleteComplete"][0]),
+                })}
+            </p>
+            <p>
                 {i18n.t("pallete.controls.dismiss", {
                     ns: "ui",
-                    dismissKey: findKeyAlias("esc"),
+                    dismissKey: findKeyAlias("Escape"),
                 })}
             </p>
         </article>
