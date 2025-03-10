@@ -1,0 +1,29 @@
+{
+    "explorer": {
+        "newItem": "Novo item",
+        "paste": "Colar",
+        "details": "Detalhes"
+    },
+    "entry": {
+        "open": "Abrir",
+        "openInNewTab": "Abrir em uma nova aba",
+        "cut": "Cortar",
+        "copy": "Copiar",
+        "copyTo": "Copiar para…",
+        "moveTo": "Mover para…",
+        "rename": "Renomear",
+        "compress": "Comprimir",
+        "moveToTrash": "Mover para lixeira",
+        "delete": "Excluir",
+        "details": "Detalhes"
+    },
+    "tab": {
+        "new": "Nova aba",
+        "rename": "Renomear",
+        "duplicate": "Duplicar",
+        "close": "Fechar",
+        "closeAhead": "Fechar adiante",
+        "closeBehind": "Fechar antes",
+        "closeExcept": "Fechar todas as outras abas"
+    }
+}

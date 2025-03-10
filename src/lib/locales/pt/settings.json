@@ -1,0 +1,67 @@
+{
+    "configure": "Configurar",
+    "general": {
+        "name": "Geral",
+        "options": {
+            "lang": {
+                "name": "Idioma",
+                "desc": "Muda o idioma do app"
+            },
+            "downloadIcons": {
+                "name": "Baixar ícones",
+                "desc": "Deve-se baixar os ícones que você escolhe?"
+            },
+            "autoReload": {
+                "name": "Recarregamento automático",
+                "desc": "Deve-se recarregar o app sempre que arquivos de configuração mudarem?"
+            },
+            "deleteTimeout": {
+                "name": "Intervalo de exclusão",
+                "desc": "Ajusta o intervalo (em ms) necessário para ativar o botão de excluir"
+            },
+            "defaultTab": {
+                "name": "Aba padrão",
+                "desc": "Ajusta o nome e caminho para novas abas",
+                "fields": {
+                    "name": "Nome",
+                    "path": "Caminho"
+                }
+            },
+            "defaultView": {
+                "name": "Visão padrão",
+                "desc": "Muda a visão padrão para novas abas"
+            },
+            "defaultGridSize": {
+                "name": "Tamanho padrão da grade",
+                "desc": "Ajusta o número padrão de colunas na visão em grade"
+            }
+        }
+    },
+    "appearance": {
+        "name": "Aparência",
+        "options": {
+            "title": {
+                "name": "Título",
+                "desc": "Ajusta o texto no topo da barra lateral"
+            },
+            "theme": {
+                "name": "Tema",
+                "desc": "Muda o tema atual"
+            },
+            "truncationLimit": {
+                "name": "Limite de truncação",
+                "desc": "Ajusta o limite de carácteres de um nome antes de truncar"
+            }
+        }
+    },
+    "pins": {
+        "name": "Fixados",
+        "options": {}
+    },
+    "keybinds": {
+        "name": "Atalhos",
+        "placeholder": "Procurar comandos",
+        "commmandCount": "Mostrando {{count}} comandos",
+        "defaultsMessage": "Ao utilizar padrões conflitos podem ser ignorados"
+    }
+}

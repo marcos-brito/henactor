@@ -1,0 +1,21 @@
+{
+    "renameTab": {
+        "title": "Renomear aba",
+        "confirmation": "Renomear"
+    },
+    "actions": {
+        "itemCount": "{{count}} itens",
+        "delete": {
+            "title": "Excluir",
+            "message": "Você tem certeza que quer excluir permanentemente esse item? Isso não pode ser desfeito",
+            "messageMany": "Você tem certeza que quer excluir permanentemente esses {{count}} itens? Isso não pode ser desfeito",
+            "confirmation": "Excluir"
+        },
+        "trash": {
+            "title": "Mover para lixeira",
+            "message": "Você tem certeza que quer mover esse item para a lixeira?",
+            "messageMany": "Você tem certeza que quer mover esses {{count}} itens para a lixeira?",
+            "confirmation": "Mover"
+        }
+    }
+}

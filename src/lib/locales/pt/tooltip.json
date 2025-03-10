@@ -1,0 +1,18 @@
+{
+    "settings": {
+        "resetKeybind": "Usar padrão",
+        "removeKeybind": "Remover atalho",
+        "addKeybind": "Adicionar atalho",
+        "keybindConflict": "Conflita com \"{{keybind}}\"",
+        "keybindFilter": "Adiciona filtro de atalho",
+        "removeFilter": "Remove esse filtro",
+        "clearFilters": "Limpa todos os filtros"
+    },
+    "help": {
+        "show": "Mostra ajudar",
+        "hide": "Ocultar ajuda"
+    },
+    "tabs": {
+        "newTab": "Nova aba"
+    }
+}

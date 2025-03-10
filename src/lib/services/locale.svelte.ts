@@ -1,5 +1,7 @@
 import { type InitOptions, type i18n } from "i18next";
 import * as en from "$lib/locales/en";
+import * as pt from "$lib/locales/pt";
+import { initialLang } from "./config_manager.svelte";
 
 export function init(instance: i18n) {
     let i18n = $state<i18n>(instance);
@@ -14,8 +16,8 @@ export function init(instance: i18n) {
 }
 
 export const options: InitOptions = {
-    lng: "en",
-    fallbackLng: "en",
+    lng: initialLang,
+    fallbackLng: ["en", "pt"],
     debug: true,
     resources: {
         en: {
@@ -25,6 +27,14 @@ export const options: InitOptions = {
             modals: en.modals,
             ui: en.ui,
             tooltip: en.tooltip,
+        },
+        pt: {
+            settings: pt.settings,
+            commands: pt.commands,
+            contextMenu: pt.contextMenu,
+            modals: pt.modals,
+            ui: pt.ui,
+            tooltip: pt.tooltip,
         },
     },
 };

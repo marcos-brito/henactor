@@ -11,11 +11,13 @@ commands
 export let configPath: string;
 export let userConfig: Config;
 export let userThemes: Array<Theme>;
+export let initialLang: string;
 appConfigDir().then(async (p) => {
     const { config, themes } = await readOrDefault(p);
     configPath = p;
     userConfig = config;
     userThemes = themes;
+    initialLang = config.options.lang;
 });
 
 async function readOrDefault(path: string) {
@@ -60,6 +62,7 @@ export class ConfigManager {
             this.unlisten = await events.watchEvent.listen(async (e) => {
                 if (e.payload.startsWith(this.path)) {
                     const { config, themes } = await readOrDefault(this.path);
+                    console.log("changed");
                     this.config = config;
                     this.themes = themes;
                 }

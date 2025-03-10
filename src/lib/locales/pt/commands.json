@@ -1,0 +1,96 @@
+{
+    "pallete": {
+        "OpenPallete": {
+            "name": "Abrir paleta de comandos",
+            "desc": "Abre a paleta de comandos"
+        },
+        "PalleteNext": {
+            "name": "Paleta próximo",
+            "desc": "Seleciona o próximo item na paleta"
+        },
+        "PalletePrevious": {
+            "name": "Paleta anterior",
+            "desc": "Seleciona o item anterior na paleta"
+        },
+        "PalleteExecute": {
+            "name": "Paleta executar",
+            "desc": "Executa o item selecionado na paleta"
+        },
+        "PalleteComplete": {
+            "name": "Paleta completar",
+            "desc": "Completa a busca da paleta com o item selecionado"
+        }
+    },
+    "settings": {
+        "OpenSettings": {
+            "name": "Abrir configurações",
+            "desc": "Abre as configurações"
+        },
+        "OpenThemePicker": {
+            "name": "Abrir seletor de temas",
+            "desc": "Abre o seletor de temas"
+        },
+        "SaveSettings": {
+            "name": "Salvar configurações",
+            "desc": "Salva as configurações no arquivo de configurações"
+        }
+    },
+    "fs": {
+        "Delete": {
+            "name": "Excluir",
+            "desc": "Exclui os itens selecionados"
+        },
+        "MoveToTrash": {
+            "name": "Mover para lixeira",
+            "desc": "Move os itens selecionados para a lixeira"
+        },
+        "Rename": {
+            "name": "Renomear",
+            "desc": "Renomeia os itens selecionados"
+        },
+        "Create": {
+            "name": "Criar",
+            "desc": "Cria um novo item"
+        }
+    },
+    "tabs": {
+        "RenameCurrentTab": {
+            "name": "Renomear aba atual",
+            "desc": "Renomeia a aba atual"
+        },
+        "NewTab": {
+            "name": "Nova aba",
+            "desc": "Cria uma nova aba"
+        },
+        "CloseTab": {
+            "name": "Fechar aba",
+            "desc": "Fecha a aba atual"
+        },
+        "NextTab": {
+            "name": "Próxima aba",
+            "desc": "Vai para próxima aba"
+        },
+        "PreviousTab": {
+            "name": "Aba anterior",
+            "desc": "Vai para a aba anterior"
+        },
+        "OpenViewPicker": {
+            "name": "Abrir seletor de visão",
+            "desc": "Abre o seletor de visão"
+        },
+        "OpenSortMethodPicker": {
+            "name": "Abrir seletor de ordenação",
+            "desc": "Abre o seletor de ordenação"
+        },
+        "OpenDirPicker": {
+            "name": "Abrir seletor de diretório",
+            "desc": "Abre o seletor de diretório"
+        }
+    },
+    "keygrabber": {
+        "QuitKeygrabber": {
+            "name": "Cancelar captura de atalho",
+            "desc": "Cancela a captura de atalhos"
+        }
+    }
+}

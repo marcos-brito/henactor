@@ -1,0 +1,50 @@
+{
+    "pallete": {
+        "placeHolder": "Selecione um item",
+        "noResults": "Nenhum item encontrado",
+        "active": "Ativo",
+        "controls": {
+            "navigate": "{{previousKey}} {{nextKey}} para navegar",
+            "use": "{{executeKey}} para usar",
+            "complete": "{{completeKey}} para completar",
+            "dismiss": "{{dismissKey}} para fechar"
+        }
+    },
+    "toolBar": {
+        "filter": "Filtrar",
+        "sort": {
+            "title": "Ordernar",
+            "methods": {
+                "name": "A-Z",
+                "size": "Tamanho",
+                "kind": "Tipo",
+                "natural": "Primeiro encontrado",
+                "accessed": "Último acesso",
+                "modified": "Última modificação",
+                "created": "Mais recente"
+            }
+        },
+        "views": {
+            "grid": "Grade",
+            "list": "Lista",
+            "tree": "Árvore"
+        }
+    },
+    "words": {
+        "tabs": "Abas",
+        "pins": "Fixados"
+    },
+    "emptyDir": "Diretório vazio",
+    "details": {
+        "dirItem_one": "{{count}} item",
+        "dirItem_other": "{{count}} itens",
+        "kind": {
+            "link": "Link simbólico",
+            "dir": "Diretório",
+            "file": "Arquivo"
+        }
+    },
+    "keygrabber": {
+        "message": "Pressione as teclas. {{keys}} quando acabar"
+    }
+}
