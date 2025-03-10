@@ -142,6 +142,7 @@ pub fn find_link_target(path: PathBuf) -> Result<Entry> {
             Err(err.into())
         })
 }
+
 #[tauri::command]
 #[specta::specta]
 pub fn exists(path: PathBuf) -> bool {
@@ -234,4 +235,15 @@ pub fn remove(to_remove: PathBuf) -> Result<()> {
         error!("{err}");
         Err(err.into())
     })
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn trash(path: PathBuf) -> Result<()> {
+    trash::delete(&path)
+        .with_context(|| format!("Failed to send {} to trash bin", path.display()))
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
 }

@@ -53,6 +53,7 @@ pub fn run() {
             fs::exists,
             fs::rename,
             fs::remove,
+            fs::trash,
             fs::create_link,
             fs::create_dir,
             fs::create_file,

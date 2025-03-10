@@ -28,6 +28,7 @@ commandRegister
     .register(new tabsCommands.OpenDirPicker())
     // Fs
     .register(new fsCommands.Delete())
+    .register(new fsCommands.MoveToTrash())
     .register(new fsCommands.Rename())
     .register(new fsCommands.Create())
     // Navigation

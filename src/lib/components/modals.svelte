@@ -11,6 +11,7 @@
     } from "$lib/components/pallete";
     import {
         ActionDelete,
+        ActionTrash,
     } from "$lib/components/action";
 
     let { modalManager }: { modalManager: ModalManager } = $props();
@@ -24,3 +25,4 @@
 <Settings {modalManager} />
 <RenameTabModal />
 <ActionDelete />
+<ActionTrash />

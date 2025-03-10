@@ -40,6 +40,10 @@
             "name": "Delete",
             "desc": "Deletes a file system entry"
         },
+        "MoveToTrash": {
+            "name": "Move to trash bin",
+            "desc": "Moves a file system entry to the trash bin"
+        },
         "Rename": {
             "name": "Rename",
             "desc": "Renames a file system entry"

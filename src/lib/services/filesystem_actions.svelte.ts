@@ -51,10 +51,18 @@ export class Delete implements Action {
     constructor(private path: string) { }
 
     async do(): Promise<void> {
-        // path = tabs.current.selected
-        // deleteModal.show(path, (path) => command.remove(path))
         await commands.remove(this.path);
     }
+}
+
+export class Trash implements Action {
+    constructor(private path: string) { }
+
+    async do(): Promise<void> {
+        await commands.trash(this.path);
+    }
+
+    async undo(): Promise<void> { }
 }
 
 export type CreateArgs =
