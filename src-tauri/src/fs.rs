@@ -247,3 +247,19 @@ pub fn trash(path: PathBuf) -> Result<()> {
             Err(err.into())
         })
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn restore_trashed(path: PathBuf) -> Result<()> {
+    trash::os_limited::list()
+        .map(|items| items.into_iter().find(|item| item.original_path() == path))
+        .and_then(|item| match item {
+            Some(item) => trash::os_limited::restore_all(vec![item]),
+            None => Ok(()),
+        })
+        .with_context(|| format!("Failed to restore trashed item {}", path.display()))
+        .or_else(|err| {
+            error!("{err}");
+            Err(err.into())
+        })
+}

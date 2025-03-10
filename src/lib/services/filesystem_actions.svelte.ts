@@ -62,7 +62,9 @@ export class Trash implements Action {
         await commands.trash(this.path);
     }
 
-    async undo(): Promise<void> { }
+    async undo(): Promise<void> {
+        await commands.restoreTrashed(this.path)
+    }
 }
 
 export type CreateArgs =

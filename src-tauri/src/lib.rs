@@ -54,6 +54,7 @@ pub fn run() {
             fs::rename,
             fs::remove,
             fs::trash,
+            fs::restore_trashed,
             fs::create_link,
             fs::create_dir,
             fs::create_file,
