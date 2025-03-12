@@ -2,11 +2,11 @@
     import { i18n } from "$lib";
     import Modal from "../modal.svelte";
     import type { ModalManager } from "$lib/services";
-    import { PageGeneral, PageAppearence, PageKeybinds } from "./page";
+    import { PageGeneral, PageAppearence, PageKeybinds, PageOpeners } from "./page";
 
     let { modalManager }: { modalManager: ModalManager } = $props();
 
-    const pages = ["general", "appearance", "pins", "keybinds"] as const;
+    const pages = ["general", "appearance", "pins", "keybinds", "openers"] as const;
     let currentPage: (typeof pages)[number] = $state("general");
 </script>
 
@@ -39,6 +39,9 @@
             {/if}
             {#if currentPage == "pins"}
                 <h1>todo</h1>
+            {/if}
+            {#if currentPage == "openers"}
+                <PageOpeners />
             {/if}
         </main>
     </section>

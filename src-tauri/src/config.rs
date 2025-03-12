@@ -90,6 +90,7 @@ pub struct Icons {
     list_view: Option<String>,
     tree_view: Option<String>,
     empty_dir: Option<String>,
+    edit: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]

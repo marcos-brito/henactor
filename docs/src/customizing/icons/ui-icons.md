@@ -20,5 +20,6 @@ will be provided. Read [Icons](../icons.md) to learn more.
 -   `commands`:
 -   `keyboard`:
 -   `rotate`:
+-   `edit`:
 
 > **Note for myself:** Remember to keep this up to date 👽.
