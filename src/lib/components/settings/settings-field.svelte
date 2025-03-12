@@ -23,8 +23,9 @@
             <SearchResult {result} key="desc" getFn={(i) => i.desc} />
         {:else}
             <h1 class="text-base">{name}</h1>
-            <p class="opacity-70">{desc}</p>
+            <p class="opacity-60">{desc}</p>
         {/if}
     </div>
     {@render children()}
 </div>
+<div class="divider m-0"></div>
