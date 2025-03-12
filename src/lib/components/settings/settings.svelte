@@ -19,6 +19,7 @@
                 {#each pages as page}
                     <li>
                         <button
+                            class:menu-active={page == currentPage}
                             type="button"
                             class={page == currentPage ? "active" : ""}
                             onclick={() => (currentPage = page)}
