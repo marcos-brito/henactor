@@ -14,6 +14,7 @@ pub const THEME_FILE: &str = "theme.css";
 pub const ICONS_FILE: &str = "icons.toml";
 
 pub type KeyBindings = HashMap<String, Vec<String>>;
+pub type Openers = HashMap<String, String>;
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct Pin {
@@ -138,6 +139,7 @@ impl Default for Options {
 pub struct Config {
     options: Options,
     keybinds: KeyBindings,
+    openers: Openers,
     tabs: Vec<Tab>,
     pins: Vec<Pin>,
 }
@@ -161,6 +163,7 @@ impl Default for Config {
         Config {
             options: Options::default(),
             keybinds: KeyBindings::default(),
+            openers: Openers::default(),
             tabs: vec![],
             pins,
         }

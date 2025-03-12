@@ -1,5 +1,6 @@
 {
     "configure": "Configurar",
+    "done": "Feito",
     "general": {
         "name": "Geral",
         "options": {
@@ -63,5 +64,19 @@
         "placeholder": "Procurar comandos",
         "commmandCount": "Mostrando {{count}} comandos",
         "defaultsMessage": "Ao utilizar padrões conflitos podem ser ignorados"
+    },
+    "openers": {
+        "name": "Aplicações de abertura",
+        "message": "Use isso para sobrescrever aplicações de abertura padrões",
+        "noneDefined": "Nenhuma regra definida",
+        "opensWith": "Abre com {{app}}",
+        "form": {
+            "new": "Nova regra",
+            "edit": "Editar regra",
+            "fields": {
+                "pattern": "Regra",
+                "app": "Aplicação"
+            }
+        }
     }
 }

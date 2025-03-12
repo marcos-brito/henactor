@@ -4,12 +4,13 @@ import * as fsCommands from "./commands/fs";
 import * as navigationCommands from "./commands/navigate";
 import { init, options } from "$lib/services/locale.svelte";
 import { configPath, userConfig, userThemes } from "$lib/services/config_manager.svelte";
-import { ConfigManager, ModalManager, TabsManager, CommandRegister } from "$lib/services";
+import { ConfigManager, ModalManager, TabsManager, CommandRegister, Opener } from "$lib/services";
 
 export const configManager = new ConfigManager(configPath, userConfig, userThemes);
 export const commandRegister = new CommandRegister(configManager);
 export const modalManager = new ModalManager();
 export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
+export const opener = new Opener(configManager);
 export const tabsManager = new TabsManager(
     configManager.config.tabs,
     configManager.config.options.default_tab,
@@ -35,4 +36,6 @@ commandRegister
     .register(new navigationCommands.OpenPallete())
     .register(new navigationCommands.SaveSettings())
     .register(new navigationCommands.OpenThemePicker())
-    .register(new navigationCommands.OpenSettings());
+    .register(new navigationCommands.OpenSettings())
+    .register(new navigationCommands.OpenFile())
+    .register(new navigationCommands.OpenFileWith());

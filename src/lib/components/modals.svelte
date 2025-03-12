@@ -8,6 +8,7 @@
         PalleteView,
         PalleteSort,
         PalleteGoto,
+        PalleteOpeners,
     } from "$lib/components/pallete";
     import {
         ActionDelete,
@@ -22,6 +23,7 @@
 <PalleteView />
 <PalleteSort />
 <PalleteGoto />
+<PalleteOpeners />
 <Settings {modalManager} />
 <RenameTabModal />
 <ActionDelete />

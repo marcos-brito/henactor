@@ -1,5 +1,6 @@
 {
     "configure": "Configure",
+    "done": "Done",
     "general": {
         "name": "General",
         "options": {
@@ -63,5 +64,19 @@
         "placeholder": "Search commands",
         "commmandCount": "Showing {{count}} commands",
         "defaultsMessage": "When using defaults conflicts can be ignored"
+    },
+    "openers": {
+        "name": "Openers",
+        "message": "Use this to overwrite default openers",
+        "noneDefined": "No opener is defined",
+        "opensWith": "Opens with {{app}}",
+        "form": {
+            "new": "New rule",
+            "edit": "Edit rule",
+            "fields": {
+                "pattern": "Rule",
+                "app": "Application"
+            }
+        }
     }
 }

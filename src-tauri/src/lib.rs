@@ -1,6 +1,7 @@
 pub mod cache;
 pub mod config;
 pub mod fs;
+pub mod open;
 
 use notify::RecommendedWatcher;
 use serde::Serialize;
@@ -61,6 +62,9 @@ pub fn run() {
             fs::find_link_target,
             fs::sort::sort,
             fs::filter::filter,
+            open::open,
+            open::open_with,
+            open::find_openers,
             cache::download_or_find
         ])
         .events(collect_events![fs::watch::WatchEvent])

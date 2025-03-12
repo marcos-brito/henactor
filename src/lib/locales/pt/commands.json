@@ -1,4 +1,14 @@
 {
+    "explorer": {
+        "OpenFile": {
+            "name": "Abrir arquivo",
+            "desc": "Abre os arquivos selecionados"
+        },
+        "OpenFileWith": {
+            "name": "Abrir arquivo com",
+            "desc": "Abre os arquivos selecionados com a aplicação fornecida"
+        }
+    },
     "pallete": {
         "OpenPallete": {
             "name": "Abrir paleta de comandos",

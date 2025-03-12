@@ -6,7 +6,13 @@
         "keybindConflict": "Conflicts with \"{{keybind}}\"",
         "keybindFilter": "Add key bind filter",
         "removeFilter": "Remove this filter",
-        "clearFilters": "Clear all filters"
+        "clearFilters": "Clear all filters",
+        "editOpener": "Edit this opener",
+        "removeOpener": "Remove this opener"
+    },
+    "help": {
+        "show": "Show help",
+        "hide": "Hide help"
     },
     "tabs": {
         "newTab": "New tab"
