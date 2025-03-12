@@ -1,5 +1,5 @@
 <script lang="ts">
-    import SettingsField from "./settings-field.svelte";
+    import ItemBase from "./item-base.svelte";
 
     let {
         name,
@@ -16,7 +16,7 @@
     } = $props();
 </script>
 
-<SettingsField {name} {desc}>
+<ItemBase {name} {desc}>
     <select
         onchange={() => {
             if (onChange) {
@@ -35,4 +35,4 @@
             {/if}
         {/each}
     </select>
-</SettingsField>
+</ItemBase>

@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { FuseResult } from "fuse.js";
     import type { Snippet } from "svelte";
-    import SearchResult from "../search-result.svelte";
+    import SearchResult from "$lib/components/search-result.svelte";
 
     let {
         name,

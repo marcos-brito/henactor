@@ -1,9 +1,9 @@
 <script lang="ts">
     import { PlusIcon, XIcon, RotateCcwIcon } from "lucide-svelte";
-    import SettingsField from "./settings-field.svelte";
-    import Keygrabber from "./keygrabber.svelte";
-    import IconWithFallback from "../icon/icon-with-fallback.svelte";
-    import Keybind from "../keybind.svelte";
+    import ItemBase from "./item-base.svelte";
+    import Keygrabber from "../keygrabber.svelte";
+    import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
+    import Keybind from "$lib/components/keybind.svelte";
     import type { Command } from "$lib/services";
     import { i18n } from "$lib";
     import type { FuseResult } from "fuse.js";
@@ -21,7 +21,7 @@
     let grabbing = $state(false);
 </script>
 
-<SettingsField name={cmd.name} desc={cmd.desc} {result}>
+<ItemBase name={cmd.name} desc={cmd.desc} {result}>
     <div class="flex gap-4 p-4">
         {#if value.length == 0}
             <div class="bg-base-200 flex items-center gap-1 rounded-sm px-2 py-[2px]">Blank</div>
@@ -81,4 +81,4 @@
             </button>
         </div>
     </div>
-</SettingsField>
+</ItemBase>

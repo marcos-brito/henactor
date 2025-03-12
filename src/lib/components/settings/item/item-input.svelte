@@ -1,5 +1,5 @@
 <script lang="ts">
-    import SettingsField from "./settings-field.svelte";
+    import ItemBase from "./item-base.svelte";
 
     let {
         name,
@@ -14,6 +14,6 @@
     } = $props();
 </script>
 
-<SettingsField {name} {desc}>
+<ItemBase {name} {desc}>
     <input {...props} bind:value class="input input-sm input-bordered" />
-</SettingsField>
+</ItemBase>

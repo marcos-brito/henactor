@@ -1,5 +1,5 @@
 <script lang="ts">
-    import SettingsField from "./settings-field.svelte";
+    import ItemBase from "./item-base.svelte";
 
     let {
         name,
@@ -12,6 +12,6 @@
     } = $props();
 </script>
 
-<SettingsField {name} {desc}>
+<ItemBase {name} {desc}>
     <input type="checkbox" bind:checked class="toggle" />
-</SettingsField>
+</ItemBase>

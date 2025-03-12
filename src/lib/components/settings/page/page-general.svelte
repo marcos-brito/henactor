@@ -1,14 +1,14 @@
 <script lang="ts">
     import { i18n, configManager } from "$lib";
-    import SettingsCheck from "./settings-check.svelte";
-    import SettingsInput from "./settings-input.svelte";
-    import SettingsPopup from "./settings-popup.svelte";
-    import SettingsSelect from "./settings-select.svelte";
+    import ItemCheck from "../item/item-check.svelte";
+    import ItemInput from "../item/item-input.svelte";
+    import ItemPopup from "../item/item-popup.svelte";
+    import ItemSelect from "../item/item-select.svelte";
 
     const views = ["Grid", "List", "Tree"];
 </script>
 
-<SettingsSelect
+<ItemSelect
     bind:value={configManager.config.options.lang}
     options={i18n.languages}
     name={i18n.t("general.options.lang.name", { ns: "settings" })}
@@ -17,23 +17,23 @@
         i18n.changeLanguage(lang);
     }}
 />
-<SettingsCheck
+<ItemCheck
     bind:checked={configManager.config.options.download_icons}
     name={i18n.t("general.options.downloadIcons.name", { ns: "settings" })}
     desc={i18n.t("general.options.downloadIcons.desc", { ns: "settings" })}
 />
-<SettingsCheck
+<ItemCheck
     bind:checked={configManager.config.options.auto_reload}
     name={i18n.t("general.options.autoReload.name", { ns: "settings" })}
     desc={i18n.t("general.options.autoReload.desc", { ns: "settings" })}
 />
-<SettingsInput
+<ItemInput
     type="number"
     bind:value={configManager.config.options.delete_timeout}
     name={i18n.t("general.options.deleteTimeout.name", { ns: "settings" })}
     desc={i18n.t("general.options.deleteTimeout.desc", { ns: "settings" })}
 />
-<SettingsPopup
+<ItemPopup
     name={i18n.t("general.options.defaultTab.name", { ns: "settings" })}
     desc={i18n.t("general.options.defaultTab.desc", { ns: "settings" })}
 >
@@ -61,14 +61,14 @@
             bind:value={configManager.config.options.default_tab.path}
         />
     </label>
-</SettingsPopup>
-<SettingsSelect
+</ItemPopup>
+<ItemSelect
     bind:value={configManager.config.options.default_tab.view}
     options={views}
     name={i18n.t("general.options.defaultView.name", { ns: "settings" })}
     desc={i18n.t("general.options.defaultView.desc", { ns: "settings" })}
 />
-<SettingsInput
+<ItemInput
     type="number"
     bind:value={configManager.config.options.default_tab.grid_size}
     name={i18n.t("general.options.defaultGridSize.name", { ns: "settings" })}

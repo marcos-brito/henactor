@@ -1,11 +1,11 @@
 <script lang="ts">
     import { i18n, commandRegister, configManager } from "$lib";
     import Fuse from "fuse.js";
-    import SettingsCmd from "./settings-cmd.svelte";
-    import Keygrabber from "./keygrabber.svelte";
+    import ItemCmd from "../item/item-cmd.svelte";
+    import Keygrabber from "../keygrabber.svelte";
     import { KeyboardIcon, XIcon } from "lucide-svelte";
-    import { IconWithFallback } from "../icon";
-    import Keybind from "../keybind.svelte";
+    import { IconWithFallback } from "$lib/components/icon";
+    import Keybind from "$lib/components/keybind.svelte";
     import type { Command } from "$lib/services";
 
     const commands = $derived(Array.from(commandRegister.commands.values()));
@@ -111,17 +111,15 @@
     <article>
         {#if query}
             {#each results.filter((r) => shouldShow(r.item, keyFilters)) as result}
-                <SettingsCmd
+                <ItemCmd
                     {result}
                     cmd={result.item}
                     bind:value={configManager.config.keybinds[result.item.identifier]}
                 />
-                <div class="divider my-0"></div>
             {/each}
         {:else}
             {#each commands.filter((r) => shouldShow(r, keyFilters)) as cmd}
-                <SettingsCmd {cmd} bind:value={configManager.config.keybinds[cmd.identifier]} />
-                <div class="divider my-0"></div>
+                <ItemCmd {cmd} bind:value={configManager.config.keybinds[cmd.identifier]} />
             {/each}
         {/if}
     </article>
