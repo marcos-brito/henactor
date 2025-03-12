@@ -21,7 +21,9 @@
 
 {#await buildBasePath().then( (path) => resolve(icon, path, configManager.config.options.download_icons), ) then src}
     {#if iconType == IconType.Text}
-        <p style:font-size={`${size || 24}px`}>{src}</p>
+        <p style:font-size={`${size || 24}px`} style:color={src.split(";").at(1)}>
+            {src.split(";").at(0)}
+        </p>
     {:else}
         <img {src} style:width={`${size || 24}px`} style:height="auto" alt="icon" />
     {/if}

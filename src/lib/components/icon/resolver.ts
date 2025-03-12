@@ -31,9 +31,9 @@ export function identifyIcon(icon: string): IconType {
 export async function resolve(
     iconString: string,
     basePath: string,
-    download: boolean
+    download: boolean,
 ): Promise<string> {
-    const iconType = identifyIcon(iconString)
+    const iconType = identifyIcon(iconString);
 
     if (download) {
         if (memoized[iconString]) return memoized[iconString];
@@ -75,9 +75,6 @@ function buildIconifyUri(iconString: string): string {
     return `${url}/${prefix}/${icon}.svg`;
 }
 
-async function buildRelativeUri(
-    iconString: string,
-    basePath: string,
-): Promise<string> {
+async function buildRelativeUri(iconString: string, basePath: string): Promise<string> {
     return await pathApi.join(basePath, iconString);
 }

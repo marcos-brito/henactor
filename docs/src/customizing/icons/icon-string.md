@@ -46,4 +46,8 @@ browse it [here](https://icon-sets.iconify.design/).
 
 ### Literal
 
-A regular text. If none of the above apply the text is used as a literal.
+A regular text with no special meaning. It follows the format of `literal:color` where
+`literal` is any text such as `pdf` or `yaml` and `color` is an optional hex color such as `#BE23aF` or `#FFAB32`
+
+-   `pdf;#8839ef`
+-   `yaml`
