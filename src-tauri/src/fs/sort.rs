@@ -18,7 +18,7 @@ pub enum SortMethod {
 #[specta::specta]
 pub fn sort(mut entries: Vec<Entry>, method: SortMethod) -> Vec<Entry> {
     match method {
-        SortMethod::Name => entries.sort_by_key(|entry| entry.name.clone()),
+        SortMethod::Name => entries.sort_by_key(|entry| entry.name.to_lowercase().clone()),
         SortMethod::Size => {
             entries.sort_by_key(|entry| entry.details.size);
             entries.reverse();
