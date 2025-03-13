@@ -10,6 +10,7 @@
         Name: i18n.t("toolBar.sort.methods.name", { ns: "ui" }),
         Size: i18n.t("toolBar.sort.methods.size", { ns: "ui" }),
         Kind: i18n.t("toolBar.sort.methods.kind", { ns: "ui" }),
+        DetailedKind: i18n.t("toolBar.sort.methods.detailedKind", { ns: "ui" }),
         Natural: i18n.t("toolBar.sort.methods.natural", { ns: "ui" }),
         Accessed: i18n.t("toolBar.sort.methods.accessed", { ns: "ui" }),
         Modified: i18n.t("toolBar.sort.methods.modified", { ns: "ui" }),
@@ -24,7 +25,7 @@
         </IconWithFallback>
         {i18n.t("toolBar.sort.title", { ns: "ui" })}
     </div>
-    <ul tabindex="0" class="menu dropdown-content z-50 w-52 rounded-box bg-base-200 p-2 shadow-sm">
+    <ul tabindex="0" class="menu dropdown-content rounded-box bg-base-200 z-50 w-52 p-2 shadow-sm">
         {#each Object.entries(aliases) as [method, alias]}
             <li class="w-full">
                 <label class="label flex justify-normal gap-3">

@@ -3,28 +3,26 @@
     import type { SortMethod } from "$lib/bindings";
     import PalleteBase from "./pallete-base.svelte";
 
-    const methods: Array<SortMethod> = [
-        "Name",
-        "Size",
-        "Kind",
-        "Natural",
-        "Accessed",
-        "Modified",
-        "Created",
-    ];
+    const aliases: Record<SortMethod, string> = {
+        Name: i18n.t("toolBar.sort.methods.name", { ns: "ui" }),
+        Size: i18n.t("toolBar.sort.methods.size", { ns: "ui" }),
+        Kind: i18n.t("toolBar.sort.methods.kind", { ns: "ui" }),
+        DetailedKind: i18n.t("toolBar.sort.methods.detailedKind", { ns: "ui" }),
+        Natural: i18n.t("toolBar.sort.methods.natural", { ns: "ui" }),
+        Accessed: i18n.t("toolBar.sort.methods.accessed", { ns: "ui" }),
+        Modified: i18n.t("toolBar.sort.methods.modified", { ns: "ui" }),
+        Created: i18n.t("toolBar.sort.methods.created", { ns: "ui" }),
+    };
 
-    const items = methods.map((method) => {
-        return {
-            method,
-            name: i18n.t(`ui:toolBar.sort.methods.${method.toLowerCase()}`),
-        };
+    const items = Object.entries(aliases).map(([method, alias]) => {
+        return { method: method as SortMethod, alias };
     });
 </script>
 
 <PalleteBase
     name="pallete:sort"
     {items}
-    getFn={(pair) => pair.name}
+    getFn={(pair) => pair.alias}
     executor={async (pair) => {
         tabsManager.current.sort_by = pair.method;
     }}
