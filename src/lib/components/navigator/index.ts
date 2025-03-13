@@ -1,4 +1,4 @@
-import { Navigator, GridNavigator } from "./navigator.svelte";
+import { RegularNavigator, GridNavigator, type Navigator } from "./navigator.svelte";
 import NavigatorBase from "./navigator-base.svelte";
 
-export { Navigator, GridNavigator, NavigatorBase };
+export { type Navigator, RegularNavigator, GridNavigator, NavigatorBase };

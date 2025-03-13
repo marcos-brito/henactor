@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GridNavigator, Navigator } from "./navigator.svelte";
+import { GridNavigator, RegularNavigator } from "./navigator.svelte";
 
 describe("GridNavigator", () => {
     it("should works as a regular navigator", () => {
@@ -70,13 +70,13 @@ describe("GridNavigator", () => {
 
 describe("Navigator", () => {
     it("Should not allow to select beyond N", () => {
-        const navigator = new Navigator(6);
+        const navigator = new RegularNavigator(6);
         for (let i = 0; i < 10; i++) navigator.next();
         expect(navigator.selected).toBe(5);
     });
 
     it("Should not allow to select before 0", () => {
-        const navigator = new Navigator(6);
+        const navigator = new RegularNavigator(6);
         for (let i = 0; i < 10; i++) navigator.previous();
         expect(navigator.selected).toBe(0);
     });

@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import { GridNavigator, Navigator } from "./navigator.svelte";
+    import { type Navigator } from "./navigator.svelte";
 
     let {
         children,
@@ -11,7 +11,7 @@
         children: Snippet;
         container: HTMLElement | undefined;
         items: Array<HTMLElement>;
-        navigator: GridNavigator | Navigator;
+        navigator: Navigator;
     } = $props();
 
     $effect(() => {

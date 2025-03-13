@@ -6,7 +6,7 @@
     import { findKeyAlias } from "$lib/utils";
     import type { Snippet } from "svelte";
     import SearchResult from "$lib/components/search-result.svelte";
-    import { NavigatorBase, Navigator } from "$lib/components/navigator";
+    import { NavigatorBase, RegularNavigator } from "$lib/components/navigator";
 
     let {
         children,
@@ -24,7 +24,7 @@
         executor: (item: T) => Promise<void>;
     } = $props();
 
-    const navigator = $derived(new Navigator(items.length - 1));
+    const navigator = $derived(new RegularNavigator(items.length - 1));
     const result = $derived(
         new Fuse(items, {
             includeMatches: true,
