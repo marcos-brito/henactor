@@ -1,5 +1,29 @@
 {
     "explorer": {
+        "Up": {
+            "name": "Up",
+            "desc": "Selects the above entry in the explorer"
+        },
+        "Down": {
+            "name": "Down",
+            "desc": "Selects the below entry in the explorer"
+        },
+        "Left": {
+            "name": "Left",
+            "desc": "Selects the left entry in the explorer"
+        },
+        "Right": {
+            "name": "Right",
+            "desc": "Selects the right entry in the explorer"
+        },
+        "OpenDir": {
+            "name": "Open directory",
+            "desc": "Opens the selected directory"
+        },
+        "CloseDir": {
+            "name": "Close directory",
+            "desc": "Closes the current directory"
+        },
         "OpenFile": {
             "name": "Open file",
             "desc": "Opens the selected files"

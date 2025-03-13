@@ -1,5 +1,29 @@
 {
     "explorer": {
+        "Up": {
+            "name": "Cima",
+            "desc": "Seleciona o item acima no explorador"
+        },
+        "Down": {
+            "name": "Baixo",
+            "desc": "Seleciona o item abaixo no explorador"
+        },
+        "Left": {
+            "name": "Esquerda",
+            "desc": "Seleciona o item a esquerda no explorador"
+        },
+        "Right": {
+            "name": "Direita",
+            "desc": "Seleciona o item a direita no explorador"
+        },
+        "OpenDir": {
+            "name": "Abrir diretório",
+            "desc": "Abre o diretório selecionado"
+        },
+        "CloseDir": {
+            "name": "Fechar diretório",
+            "desc": "Fecha o diretório atual"
+        },
         "OpenFile": {
             "name": "Abrir arquivo",
             "desc": "Abre os arquivos selecionados"
