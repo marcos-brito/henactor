@@ -18,6 +18,7 @@
                 "name": "A-Z",
                 "size": "Tamanho",
                 "kind": "Tipo",
+                "detailedKind": "Tipo detalhado",
                 "natural": "Primeiro encontrado",
                 "accessed": "Último acesso",
                 "modified": "Última modificação",

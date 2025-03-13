@@ -18,6 +18,7 @@
                 "name": "A-Z",
                 "size": "Size",
                 "kind": "Kind",
+                "detailedKind": "Detailed kind",
                 "natural": "First found",
                 "accessed": "Last accessed",
                 "modified": "Last modified",
