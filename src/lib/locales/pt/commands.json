@@ -16,6 +16,10 @@
             "name": "Direita",
             "desc": "Seleciona o item a direita no explorador"
         },
+        "ToggleMark": {
+            "name": "Alternar marca",
+            "desc": "Marca ou desmarca o item atual como selecionado"
+        },
         "OpenDir": {
             "name": "Abrir diretório",
             "desc": "Abre o diretório selecionado"
@@ -23,6 +27,18 @@
         "CloseDir": {
             "name": "Fechar diretório",
             "desc": "Fecha o diretório atual"
+        },
+        "SelectModeOn": {
+            "name": "Ativar modo seleção",
+            "desc": "Ativa o modo de seleção"
+        },
+        "SelectModeOff": {
+            "name": "Desativar modo seleção",
+            "desc": "Desativa o modo de seleção"
+        },
+        "ClearSelection": {
+            "name": "Limpar seleção",
+            "desc": "Limpa a seleção de itens"
         },
         "OpenFile": {
             "name": "Abrir arquivo",

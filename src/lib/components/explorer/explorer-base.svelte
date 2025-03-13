@@ -29,8 +29,30 @@
         selected: Array<string>;
     } = $props();
 
+    let selectMode = $state(false);
+    let selectModeStart = $state(0);
+
+    function pushSelected(): void {
+        if (navigator.selected > selectModeStart) {
+            selected.push(...entries.slice(selectModeStart, navigator.selected).map((e) => e.path));
+        } else {
+            selected.push(...entries.slice(navigator.selected, selectModeStart).map((e) => e.path));
+        }
+    }
+
     function bodyIsFocused(): boolean {
         return document.activeElement == document.body;
+    }
+
+    function toggleMark(path: string) {
+        if (selected.includes(path)) {
+            selected.splice(
+                selected.findIndex((p) => p == path),
+                1,
+            );
+        } else {
+            selected.push(path);
+        }
     }
 
     class OpenDir implements Command {
@@ -61,6 +83,67 @@
 
         public async execute(): Promise<void> {
             path = parent(path);
+        }
+    }
+
+    class SelectModeOn implements Command {
+        public identifier = "SelectOn";
+        public name = i18n.t("explorer.SelectModeOn.name", { ns: "commands" });
+        public desc = i18n.t("explorer.SelectModeOn.desc", { ns: "commands" });
+        public keybinds = ["v"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused() && !selectMode;
+        }
+
+        public async execute(): Promise<void> {
+            selectModeStart = navigator.selected;
+            selectMode = true;
+        }
+    }
+
+    class SelectModeOff implements Command {
+        public identifier = "SelectOff";
+        public name = i18n.t("explorer.SelectModeOff.name", { ns: "commands" });
+        public desc = i18n.t("explorer.SelectModeOff.desc", { ns: "commands" });
+        public keybinds = ["Escape"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused() && selectMode;
+        }
+
+        public async execute(): Promise<void> {
+            selectMode = false;
+        }
+    }
+
+    class ClearSelection implements Command {
+        public identifier = "ClearSelection";
+        public name = i18n.t("explorer.ClearSelection.name", { ns: "commands" });
+        public desc = i18n.t("explorer.ClearSelection.desc", { ns: "commands" });
+        public keybinds = ["Escape"];
+
+        public async canExecute(): Promise<boolean> {
+            return !selectMode;
+        }
+
+        public async execute(): Promise<void> {
+            selected.splice(0, selected.length);
+        }
+    }
+
+    class ToggleMark implements Command {
+        public identifier = "ToggleMark";
+        public name = i18n.t("explorer.ToggleMark.name", { ns: "commands" });
+        public desc = i18n.t("explorer.ToggleMark.desc", { ns: "commands" });
+        public keybinds = ["m"];
+
+        public async canExecute(): Promise<boolean> {
+            return true;
+        }
+
+        public async execute(): Promise<void> {
+            toggleMark(entries[navigator.selected].path);
         }
     }
 
@@ -136,6 +219,10 @@
             .register(new Up())
             .register(new Left())
             .register(new Right())
+            .register(new ToggleMark())
+            .register(new SelectModeOn())
+            .register(new SelectModeOff())
+            .register(new ClearSelection())
             .register(new OpenDir())
             .register(new CloseDir());
     });

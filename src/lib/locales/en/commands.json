@@ -16,6 +16,10 @@
             "name": "Right",
             "desc": "Selects the right entry in the explorer"
         },
+        "ToggleMark": {
+            "name": "Toogle mark",
+            "desc": "Mark or unmark the current entry as selected"
+        },
         "OpenDir": {
             "name": "Open directory",
             "desc": "Opens the selected directory"
@@ -23,6 +27,18 @@
         "CloseDir": {
             "name": "Close directory",
             "desc": "Closes the current directory"
+        },
+        "SelectModeOn": {
+            "name": "Selection mode on",
+            "desc": "Turns the selection mode on"
+        },
+        "SelectModeOff": {
+            "name": "Selection mode off",
+            "desc": "Turns the selection mode off"
+        },
+        "ClearSelection": {
+            "name": "Clear selection",
+            "desc": "Clears all selected items"
         },
         "OpenFile": {
             "name": "Open file",
