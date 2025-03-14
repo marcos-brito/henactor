@@ -47,6 +47,31 @@
         "OpenFileWith": {
             "name": "Open file with",
             "desc": "Opens the selected files with the given application"
+        },
+        "Start": {
+            "name": "Start",
+            "desc": "Goes to start of the explorer"
+        },
+        "End": {
+            "name": "End",
+            "desc": "Goes to end of the explorer"
+        },
+        "PageForward": {
+            "name": "Page forward",
+            "desc": "Goes one page forward in the explorer"
+        },
+        "PageBackward": {
+            "name": "Page backward",
+            "desc": "Goes one page backward in the explorer"
+        },
+        "HalfPageForward": {
+            "name": "Half page forward",
+            "desc": "Goes half page forward in the explorer"
+        },
+        "HalfPageBackward": {
+            "name": "Half page backward",
+            "desc": "Goes half page backward in the explorer"
+        },
         }
     },
     "pallete": {

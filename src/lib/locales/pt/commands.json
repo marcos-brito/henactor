@@ -47,6 +47,31 @@
         "OpenFileWith": {
             "name": "Abrir arquivo com",
             "desc": "Abre os arquivos selecionados com a aplicação fornecida"
+        },
+        "Start": {
+            "name": "Começo",
+            "desc": "Vai para o começo da listagem no explorador"
+        },
+        "End": {
+            "name": "Fim",
+            "desc": "Vai para o fim da listagem no explorador"
+        },
+        "PageForward": {
+            "name": "Avançar página",
+            "desc": "Avança uma página no explorador"
+        },
+        "PageBackward": {
+            "name": "Retroceder página",
+            "desc": "Retrocede uma página no explorador"
+        },
+        "HalfPageForward": {
+            "name": "Avançar meia página",
+            "desc": "Avança meia página no explorador"
+        },
+        "HalfPageBackward": {
+            "name": "Retroceder meia página",
+            "desc": "Retrocede meia página no explorador"
+        },
         }
     },
     "pallete": {

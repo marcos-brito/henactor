@@ -86,6 +86,96 @@
         }
     }
 
+    class Start implements Command {
+        public identifier = "Start";
+        public name = i18n.t("explorer.Start.name", { ns: "commands" });
+        public desc = i18n.t("explorer.Start.desc", { ns: "commands" });
+        public keybinds = ["g"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused();
+        }
+
+        public async execute(): Promise<void> {
+            navigator.first();
+        }
+    }
+
+    class End implements Command {
+        public identifier = "End";
+        public name = i18n.t("explorer.End.name", { ns: "commands" });
+        public desc = i18n.t("explorer.End.desc", { ns: "commands" });
+        public keybinds = ["Shift+G"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused();
+        }
+
+        public async execute(): Promise<void> {
+            navigator.last();
+        }
+    }
+
+    class PageForward implements Command {
+        public identifier = "PageForward";
+        public name = i18n.t("explorer.PageForward.name", { ns: "commands" });
+        public desc = i18n.t("explorer.PageForward.desc", { ns: "commands" });
+        public keybinds = ["Control+f"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused();
+        }
+
+        public async execute(): Promise<void> {
+            navigator.pageForward();
+        }
+    }
+
+    class PageBackward implements Command {
+        public identifier = "PageForward";
+        public name = i18n.t("explorer.PageBackward.name", { ns: "commands" });
+        public desc = i18n.t("explorer.PageBackward.desc", { ns: "commands" });
+        public keybinds = ["Control+b"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused();
+        }
+
+        public async execute(): Promise<void> {
+            navigator.pageBackward();
+        }
+    }
+
+    class HalfPageForward implements Command {
+        public identifier = "HalfForward";
+        public name = i18n.t("explorer.HalfPageForward.name", { ns: "commands" });
+        public desc = i18n.t("explorer.HalfPageForward.desc", { ns: "commands" });
+        public keybinds = ["Control+d"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused();
+        }
+
+        public async execute(): Promise<void> {
+            navigator.halfPageForward();
+        }
+    }
+
+    class HalfPageBackward implements Command {
+        public identifier = "HalfBackward";
+        public name = i18n.t("explorer.HalfPageBackward.name", { ns: "commands" });
+        public desc = i18n.t("explorer.HalfPageBackward.desc", { ns: "commands" });
+        public keybinds = ["Control+u"];
+
+        public async canExecute(): Promise<boolean> {
+            return bodyIsFocused();
+        }
+
+        public async execute(): Promise<void> {
+            navigator.halfPageBackward();
+        }
+    }
+
     class SelectModeOn implements Command {
         public identifier = "SelectOn";
         public name = i18n.t("explorer.SelectModeOn.name", { ns: "commands" });
@@ -224,7 +314,15 @@
             .register(new SelectModeOff())
             .register(new ClearSelection())
             .register(new OpenDir())
-            .register(new CloseDir());
+            .register(new CloseDir())
+            // Scrolling
+            .register(new Start())
+            .register(new End())
+            .register(new PageForward())
+            .register(new PageBackward())
+            .register(new HalfPageBackward())
+            .register(new HalfPageForward())
+            .register(new HalfPageBackward());
     });
 </script>
 
