@@ -14,7 +14,7 @@ pub fn filter(entries: Vec<Entry>, filter: String) -> Result<Vec<Entry>> {
             entries
                 .into_iter()
                 // TODO: Not clone. Changing the Visitor should allow to pass a reference
-                .filter(|entry| eval::eval(&entry, expr.clone()).is_ok())
+                .filter(|entry| eval::eval(&entry, expr.clone()).unwrap_or(false))
                 .collect()
         })?)
 }

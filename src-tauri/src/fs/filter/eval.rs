@@ -260,7 +260,15 @@ impl<'a> Visitor for Evaluator<'a> {
             Property::Path => Literal(self.entry.path.to_string_lossy().to_string()).into(),
             Property::Size => Number(self.entry.details.size).into(),
             Property::Kind => Literal(self.entry.entry_type.to_string()).into(),
-            _ => todo!(),
+            Property::Created => {
+                Date(self.entry.details.created.unwrap_or(SystemTime::now())).into()
+            }
+            Property::Modified => {
+                Date(self.entry.details.modified.unwrap_or(SystemTime::now())).into()
+            }
+            Property::Accessed => {
+                Date(self.entry.details.accessed.unwrap_or(SystemTime::now())).into()
+            }
         };
 
         Ok(obj)
