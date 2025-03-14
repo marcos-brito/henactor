@@ -39,3 +39,6 @@ commandRegister
     .register(new navigationCommands.OpenSettings())
     .register(new navigationCommands.OpenFile())
     .register(new navigationCommands.OpenFileWith());
+    // Explorer
+    .register(new explorerCommands.IncreaseGridSize())
+    .register(new explorerCommands.DecreaseGridSize());

@@ -7,10 +7,9 @@
     import Icon from "../icon/icon.svelte";
     import { configManager } from "$lib";
 
-    let { entry }: { entry: Entry } = $props();
-    const icon = findIcon();
+    let { entry, size = 16 }: { entry: Entry; size?: number } = $props();
 
-    function findIcon(): string | null {
+    const icon = $derived.by(() => {
         if (!configManager.currentTheme?.icons?.rules) return null;
         const mimeType = mime.getType(entry.path);
 
@@ -22,7 +21,7 @@
         }
 
         return null;
-    }
+    });
 
     let icons: Record<EntryType, Snippet> = {
         File: file,
@@ -38,14 +37,14 @@
 </script>
 
 {#snippet directory()}
-    <IconWithFallback iconName="directory">
-        <FolderIcon />
+    <IconWithFallback {size} iconName="directory">
+        <FolderIcon {size} />
     </IconWithFallback>
 {/snippet}
 
 {#snippet file()}
-    <IconWithFallback iconName="file">
-        <FileIcon />
+    <IconWithFallback {size} iconName="file">
+        <FileIcon {size} />
     </IconWithFallback>
 {/snippet}
 
@@ -56,19 +55,19 @@
 {/snippet}
 
 {#snippet link_file()}
-    <IconWithFallback iconName="link_to_file">
-        <FileSymlinkIcon />
+    <IconWithFallback {size} iconName="link_to_file">
+        <FileSymlinkIcon {size} />
     </IconWithFallback>
 {/snippet}
 
 {#snippet link_directory()}
-    <IconWithFallback iconName="link_to_dir">
-        <FolderSymlinkIcon />
+    <IconWithFallback {size} iconName="link_to_dir">
+        <FolderSymlinkIcon {size} />
     </IconWithFallback>
 {/snippet}
 
 {#if icon}
-    <Icon {icon} />
+    <Icon {size} {icon} />
 {:else}
     {@render icons[entry.entry_type]()}
 {/if}

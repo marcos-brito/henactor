@@ -1,5 +1,9 @@
-import { commands, type Entry } from "$lib/bindings";
+import { i18n } from "$lib";
+import { commands, type Entry, type SortMethod } from "$lib/bindings";
 import { path as pathApi } from "@tauri-apps/api";
+
+export const maxGridSize = 8;
+export const minGridSize = 2;
 
 const keyAliases: Record<string, string> = {
     Control: "Ctrl",

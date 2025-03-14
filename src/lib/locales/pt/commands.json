@@ -72,6 +72,13 @@
             "name": "Retroceder meia página",
             "desc": "Retrocede meia página no explorador"
         },
+        "IncreaseGridSize": {
+            "name": "Aumentar grade",
+            "desc": "Aumenta o tamanho da visão em grade"
+        },
+        "DecreaseGridSize": {
+            "name": "Diminuir grade",
+            "desc": "Diminui o tamanho da visão em grade"
         }
     },
     "pallete": {

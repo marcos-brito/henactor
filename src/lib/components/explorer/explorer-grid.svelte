@@ -1,30 +1,50 @@
 <script lang="ts">
     import { type Entry } from "$lib/bindings";
-    import { EntryGrid } from "$lib/components/entry";
-    import ExplorerActions from "./explorer-actions.svelte";
+    import { maxGridSize, minGridSize } from "$lib/utils";
+    import { EntryGrid } from "../entry";
+    import { GridNavigator } from "../navigator";
+    import ExplorerBase from "./explorer-base.svelte";
 
     let {
         entries,
-        gridSize,
+        path = $bindable(),
+        selected = $bindable(),
+        gridSize = $bindable(),
     }: {
         entries: Array<Entry>;
+        path: string;
+        selected: Array<string>;
         gridSize: number;
     } = $props();
 
-    let ref = $state<HTMLElement>();
+    let navigator = $derived(new GridNavigator(entries.length, gridSize));
+    let items = $state<Array<HTMLElement>>([]);
+    let container = $state<HTMLElement>();
+
+    $inspect(navigator.selected);
+
+    $effect(() => {
+        if (gridSize > maxGridSize) gridSize = maxGridSize;
+        if (gridSize < minGridSize) gridSize = minGridSize;
+    });
 </script>
 
-{#if ref}
-    <ExplorerActions trigger={ref} />
-{/if}
-<ul
-    tabindex="-1"
-    id="explorer"
-    bind:this={ref}
-    class="grid gap-4"
-    style:grid-template-columns={`repeat(${gridSize}, minmax(0, 1fr))`}
->
-    {#each entries as entry}
-        <EntryGrid {entry} />
-    {/each}
-</ul>
+<ExplorerBase {items} {container} {navigator} {entries} bind:path bind:selected>
+    <ul
+        style:grid-template-columns={`repeat(${gridSize}, minmax(0, 1fr))`}
+        bind:this={container}
+        class="grid size-full auto-rows-min gap-4 overflow-y-scroll"
+    >
+        {#each entries as entry, i}
+            <li bind:this={items[i]}>
+                <button
+                    class="btn btn-ghost size-full rounded-md"
+                    class:bg-neutral={navigator.selected == i}
+                    class:bg-base-300={selected.includes(entry.path)}
+                >
+                    <EntryGrid size={248 / gridSize} {entry} />
+                </button>
+            </li>
+        {/each}
+    </ul>
+</ExplorerBase>

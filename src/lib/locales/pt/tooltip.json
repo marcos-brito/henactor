@@ -6,9 +6,9 @@
         "keybindConflict": "Conflita com \"{{keybind}}\"",
         "keybindFilter": "Adicionar filtro de atalho",
         "clearFilters": "Limpar todos os filtros",
-        "removeFilter": "Remover esse filtro",
-        "editOpener": "Editar essa regra",
-        "removeOpener": "Remover essa regra"
+        "removeFilter": "Remover filtro",
+        "editOpener": "Editar regra",
+        "removeOpener": "Remover regra"
     },
     "help": {
         "show": "Mostra ajudar",
@@ -16,5 +16,11 @@
     },
     "tabs": {
         "newTab": "Nova aba"
+    },
+    "toolbar": {
+        "gridSize": {
+            "increase": "Aumentar grade",
+            "decrease": "Diminuir grade"
+        }
     }
 }

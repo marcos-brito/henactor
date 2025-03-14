@@ -16,5 +16,11 @@
     },
     "tabs": {
         "newTab": "New tab"
+    },
+    "toolbar": {
+        "gridSize": {
+            "increase": "Increase grid size",
+            "decrease": "Decrease grid size"
+        }
     }
 }

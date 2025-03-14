@@ -72,6 +72,13 @@
             "name": "Half page backward",
             "desc": "Goes half page backward in the explorer"
         },
+        "IncreaseGridSize": {
+            "name": "Increase grid size",
+            "desc": "Increases the grid view size"
+        },
+        "DecreaseGridSize": {
+            "name": "Decrease grid size",
+            "desc": "Decreases the grid view size"
         }
     },
     "pallete": {
