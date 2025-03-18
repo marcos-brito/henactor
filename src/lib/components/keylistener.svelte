@@ -7,7 +7,10 @@
         if (!e.repeat) holding.push(e.key);
         const commands = commandRegister.find(holding.join("+"));
         for (const command of commands)
-            if (await command.canExecute()) return await command.execute();
+            if (await command.canExecute()) {
+                e.preventDefault();
+                return await command.execute();
+            }
     }
 
     function clearLastKey(): void {
