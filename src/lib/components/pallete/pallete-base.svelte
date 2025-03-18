@@ -34,9 +34,9 @@
 
     let selectedItem = $derived(items[navigator.selected]);
     let open = $state(false);
+    let input: HTMLInputElement;
     let container = $state<HTMLElement>();
     let itemsRef = $state<Array<HTMLElement>>([]);
-    let input: HTMLElement;
 
     $effect(() => {
         if (query) navigator.selected = 0;
@@ -111,12 +111,14 @@
         .register(new PalleteNext());
 
     $effect(() => {
-        if (open)
+        if (open) {
+            input.focus();
             commandRegister
                 .register(new PalleteExecute())
                 .register(new PalleteComplete())
                 .register(new PalletePrevious())
                 .register(new PalleteNext());
+        }
     });
 </script>
 
@@ -131,8 +133,8 @@
 >
     <div class="grid h-full grid-rows-[10%_85%_5%] gap-3">
         <input
-            bind:this={input}
             bind:value={query}
+            bind:this={input}
             class="input w-full"
             placeholder={i18n.t("pallete.placeHolder", { ns: "ui" })}
             type="text"
