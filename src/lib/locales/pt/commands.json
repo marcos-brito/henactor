@@ -167,6 +167,10 @@
         "OpenDirPicker": {
             "name": "Abrir seletor de diretório",
             "desc": "Abre o seletor de diretório"
+        },
+        "OpenFilter": {
+            "name": "Abrir filtro",
+            "desc": "Abre caixa de inserção de filtro"
         }
     },
     "keygrabber": {

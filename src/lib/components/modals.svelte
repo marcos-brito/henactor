@@ -14,6 +14,8 @@
         ActionDelete,
         ActionTrash,
     } from "$lib/components/action";
+    import FilterBox from "./filter-box.svelte";
+    import { tabsManager } from "$lib";
 
     let { modalManager }: { modalManager: ModalManager } = $props();
 </script>
@@ -28,3 +30,4 @@
 <RenameTabModal />
 <ActionDelete />
 <ActionTrash />
+<FilterBox bind:filter={tabsManager.current.filter} />

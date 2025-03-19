@@ -29,6 +29,7 @@ commandRegister
     .register(new openCommands.OpenFile())
     .register(new openCommands.OpenDirPicker())
     .register(new openCommands.OpenFileWith())
+    .register(new openCommands.OpenFilter())
     // Tabs
     .register(new tabsCommands.NewTab())
     .register(new tabsCommands.CloseTab())

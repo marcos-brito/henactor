@@ -167,6 +167,10 @@
         "OpenDirPicker": {
             "name": "Open directory picker ",
             "desc": "Opens the directory picker"
+        },
+        "OpenFilter": {
+            "name": "Open filter input",
+            "desc": "Opens the filter input"
         }
     },
     "keygrabber": {

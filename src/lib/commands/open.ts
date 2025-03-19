@@ -120,3 +120,18 @@ export class OpenFileWith implements Command {
         modalManager.show("pallete:openers");
     }
 }
+
+export class OpenFilter implements Command {
+    public identifier = "OpenFilter";
+    public name = i18n.t("tabs.OpenFilter.name", { ns: "commands" });
+    public desc = i18n.t("tabs.OpenFilter.desc", { ns: "commands" });
+    public keybinds = ["/"];
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async execute(): Promise<void> {
+        modalManager.show("filterBox");
+    }
+}
