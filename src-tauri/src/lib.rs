@@ -4,14 +4,19 @@ pub mod fs;
 pub mod open;
 
 use notify::RecommendedWatcher;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use specta::Type;
 use specta_typescript::{BigIntExportBehavior, Typescript};
 use std::sync::Mutex;
+use tauri_specta::Event;
 use tauri_specta::{collect_commands, collect_events, Builder, ErrorHandlingMode};
+
+#[derive(Serialize, Deserialize, Debug, Type, Event, Clone)]
+pub struct TaskKillEvent(u32);
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, specta::Type, Serialize)]
+#[derive(Debug, Type, Serialize)]
 pub struct Error {
     err: String,
     causes: Vec<String>,
@@ -62,12 +67,13 @@ pub fn run() {
             fs::find_link_target,
             fs::sort::sort,
             fs::filter::filter,
+            fs::filter::search,
             open::open,
             open::open_with,
             open::find_openers,
             cache::download_or_find
         ])
-        .events(collect_events![fs::watch::WatchEvent])
+        .events(collect_events![fs::watch::WatchEvent, TaskKillEvent])
         .error_handling(ErrorHandlingMode::Throw);
 
     #[cfg(debug_assertions)]

@@ -11,7 +11,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::time::SystemTime;
 
-#[derive(Serialize, Deserialize, Type)]
+#[derive(Serialize, Deserialize, Type, Clone)]
 pub struct Entry {
     name: String,
     path: PathBuf,
@@ -57,7 +57,7 @@ impl TryFrom<PathBuf> for Entry {
     }
 }
 
-#[derive(Serialize, Deserialize, Type)]
+#[derive(Serialize, Deserialize, Type, Clone)]
 pub struct EntryDetails {
     created: Option<SystemTime>,
     accessed: Option<SystemTime>,
@@ -78,7 +78,7 @@ impl From<fs::Metadata> for EntryDetails {
     }
 }
 
-#[derive(Serialize, Deserialize, Type)]
+#[derive(Serialize, Deserialize, Type, Clone)]
 pub struct Permissions {}
 
 #[derive(Serialize, Deserialize, Type, Clone, PartialOrd, Ord, PartialEq, Eq, Debug)]
