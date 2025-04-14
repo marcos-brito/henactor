@@ -1,0 +1,11 @@
+{
+    "title": "Tasks",
+    "item": {
+        "started": "Started at {{time}}",
+        "notStarted": "Not running yet"
+    },
+    "search": {
+        "name": "Search",
+        "desc": "Searching for {{query}} at {{path}}"
+    }
+}

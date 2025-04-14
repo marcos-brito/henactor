@@ -27,6 +27,7 @@ export const options: InitOptions = {
             modals: en.modals,
             ui: en.ui,
             tooltip: en.tooltip,
+            tasks: en.tasks,
         },
         pt: {
             settings: pt.settings,

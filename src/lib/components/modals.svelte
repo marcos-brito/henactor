@@ -2,6 +2,7 @@
     import type { ModalManager } from "$lib/services";
     import Settings from "$lib/components/settings/settings.svelte";
     import RenameTabModal from "./tab/rename-tab-modal.svelte";
+    import TasksModal from "./tasks/tasks-modal.svelte";
     import {
         PalleteThemes,
         PalleteCommands,
@@ -31,3 +32,4 @@
 <ActionDelete />
 <ActionTrash />
 <FilterBox bind:filter={tabsManager.current.filter} />
+<TasksModal />

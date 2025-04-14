@@ -5,7 +5,7 @@
     import { type Snippet } from "svelte";
     import Tabs from "$lib/components/tab/tabs.svelte";
     import { Toaster, toast } from "svelte-sonner";
-    import { configManager, commandRegister, modalManager } from "$lib";
+    import { commandRegister, configManager, modalManager } from "$lib";
     import Modals from "$lib/components/modals.svelte";
     import Keylistener from "$lib/components/keylistener.svelte";
 
@@ -33,7 +33,7 @@
     {/if}
 </svelte:head>
 <Keylistener />
-<Modals register={commandRegister} {modalManager} />
+<Modals {modalManager} />
 <Toaster
     position="top-right"
     visibleToasts={1}

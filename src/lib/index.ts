@@ -7,12 +7,14 @@ import * as explorerCommands from "./commands/explorer";
 import { init, options } from "$lib/services/locale.svelte";
 import { configPath, userConfig, userThemes } from "$lib/services/config_manager.svelte";
 import { ConfigManager, ModalManager, TabsManager, CommandRegister, Opener } from "$lib/services";
+import { TaskManager } from "./services/task_manager.svelte";
 
 export const configManager = new ConfigManager(configPath, userConfig, userThemes);
 export const commandRegister = new CommandRegister(configManager);
 export const modalManager = new ModalManager();
 export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
 export const opener = new Opener(configManager);
+export const taskManager = new TaskManager();
 export const tabsManager = new TabsManager(
     configManager.config.tabs,
     configManager.config.options.default_tab,

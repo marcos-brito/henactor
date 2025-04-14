@@ -22,5 +22,10 @@
             "increase": "Increase grid size",
             "decrease": "Decrease grid size"
         }
+    },
+    "tasks": {
+        "kill": "Kill task",
+        "elapsed": "{{time}}",
+        "waiting": "Waiting"
     }
 }

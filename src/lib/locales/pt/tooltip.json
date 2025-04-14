@@ -22,5 +22,10 @@
             "increase": "Aumentar grade",
             "decrease": "Diminuir grade"
         }
+    },
+    "tasks": {
+        "kill": "Cancelar tarefa",
+        "elapsed": "{{time}}",
+        "waiting": "Aguardando"
     }
 }

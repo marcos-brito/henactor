@@ -1,6 +1,7 @@
 import { i18n } from "$lib";
 import { commands, type Entry, type SortMethod } from "$lib/bindings";
 import { path as pathApi } from "@tauri-apps/api";
+import type { Task } from "./services/task_manager.svelte";
 
 export const maxGridSize = 8;
 export const minGridSize = 2;
@@ -67,4 +68,8 @@ export function trucate(text: string, maxChars: number): string {
     const head = text.substring(0, maxChars / 2);
     const tail = text.substring(text.length - maxChars / 2);
     return `${head}…${tail}`;
+}
+
+export function taskIsRunning(task: Task<any>): boolean {
+    return task.timer.startedAt != undefined && task.timer.finishedAt == undefined;
 }

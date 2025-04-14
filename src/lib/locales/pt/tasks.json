@@ -1,0 +1,11 @@
+{
+    "title": "Tarefas",
+    "item": {
+        "started": "Iniciou as {{time}}",
+        "notStarted": "Ainda não iniciada"
+    },
+    "search": {
+        "name": "Busca",
+        "desc": "Buscando por {{query}} em {{path}}"
+    }
+}
