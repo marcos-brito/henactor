@@ -1,4 +1,15 @@
 {
+    "sidebar": {
+        "tools": {
+            "title": "Ferramentas",
+            "items": {
+                "commands": "Comandos",
+                "history": "Histórico",
+                "tasks": "Tarefas",
+                "settings": "Configurações"
+            }
+        }
+    },
     "pallete": {
         "placeHolder": "Selecione um item",
         "noResults": "Nenhum item encontrado",
