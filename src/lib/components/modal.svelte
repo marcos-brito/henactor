@@ -31,13 +31,17 @@
             hook = h;
             open = true;
         },
+        hide: () => {
+            open = false;
+        },
     });
 
     let dialog: HTMLDialogElement;
 
     $effect(() => {
-        dialog?.addEventListener("close", () => (open = false));
-        return () => dialog?.removeEventListener("close", () => (open = false));
+        dialog?.addEventListener("close", () => {
+            modalManager.hide(name);
+        });
     });
 
     $effect(() => {
