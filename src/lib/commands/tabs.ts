@@ -6,6 +6,7 @@ export class NewTab implements Command {
     public desc: string;
     public identifier = "NewTab";
     public keybinds = ["Control+t"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -34,6 +35,7 @@ export class CloseTab implements Command {
     public desc: string;
     public identifier = "CloseTab";
     public keybinds = ["Control+w"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -62,6 +64,7 @@ export class NextTab implements Command {
     public desc: string;
     public identifier = "NextTab";
     public keybinds = ["Shift+L"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -90,6 +93,7 @@ export class PreviousTab implements Command {
     public desc: string;
     public identifier = "PreviousTab";
     public keybinds = ["Shift+H"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -118,6 +122,7 @@ export class RenameCurrentTab implements Command {
     public desc: string;
     public identifier = "RenameCurrentTab";
     public keybinds = ["Control+r"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,

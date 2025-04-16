@@ -7,6 +7,7 @@ export class Delete implements Command {
     public desc: string;
     public identifier = "Delete";
     public keybinds = ["Shift+d", "Delete"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -46,6 +47,7 @@ export class MoveToTrash implements Command {
     public desc: string;
     public identifier = "MoveToTrash";
     public keybinds = ["d"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -85,6 +87,7 @@ export class Create implements Command {
     public desc: string;
     public identifier = "Create";
     public keybinds = ["o"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -115,6 +118,7 @@ export class Rename implements Command {
     public desc: string;
     public identifier = "Rename";
     public keybinds = ["r"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,

@@ -6,6 +6,7 @@ export class SaveSettings implements Command {
     public desc: string;
     public identifier = "SaveSettings";
     public keybinds = ["Control+s"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,

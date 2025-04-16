@@ -5,6 +5,7 @@ export interface Command {
     identifier: string;
     name: string;
     desc: string;
+    visible: boolean;
     keybinds: Array<string>;
     canExecute(): Promise<boolean>;
     canTrigger(): Promise<boolean>;

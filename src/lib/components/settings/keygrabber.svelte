@@ -24,6 +24,7 @@
         public name = i18n.t("keygrabber.QuitKeygrabber.name", { ns: "commands" });
         public desc = i18n.t("keygrabber.QuitKeygrabber.desc", { ns: "commands" });
         public keybinds = ["Control+Enter"];
+        public visible = true;
 
         public async canExecute(): Promise<boolean> {
             return grabbing;

@@ -6,6 +6,7 @@ export class OpenPallete implements Command {
     public desc: string;
     public identifier = "OpenPallete";
     public keybinds = ["Control+p"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -33,6 +34,7 @@ export class OpenSettings implements Command {
     public desc: string;
     public identifier = "OpenSettings";
     public keybinds = ["Control+o"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -60,6 +62,7 @@ export class OpenThemePicker implements Command {
     public desc: string;
     public identifier = "OpenThemePicker";
     public keybinds = [];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -87,6 +90,7 @@ export class OpenViewPicker implements Command {
     public desc: string;
     public identifier = "OpenViewPicker";
     public keybinds = ["Control+,"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -114,6 +118,7 @@ export class OpenSortMethodPicker implements Command {
     public desc: string;
     public identifier = "OpenSortMethodPicker";
     public keybinds = ["Control+;"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -141,6 +146,7 @@ export class OpenDirPicker implements Command {
     public desc: string;
     public identifier = "OpenDirPicker";
     public keybinds = ["Shift+:"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -168,6 +174,7 @@ export class OpenFile implements Command {
     public desc: string;
     public identifier = "OpenFile";
     public keybinds = ["Control+l"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -197,6 +204,7 @@ export class OpenFileWith implements Command {
     public desc: string;
     public identifier = "OpenFileWith";
     public keybinds = ["Control+Shift+L"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -225,6 +233,7 @@ export class OpenFilter implements Command {
     public desc: string;
     public identifier = "OpenFilter";
     public keybinds = ["/"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,

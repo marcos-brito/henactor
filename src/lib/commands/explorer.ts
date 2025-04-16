@@ -6,6 +6,7 @@ export class IncreaseGridSize implements Command {
     public desc: string;
     public identifier = "IncreaseGridSize";
     public keybinds = ["Shift++"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
@@ -38,6 +39,7 @@ export class DecreaseGridSize implements Command {
     public desc: string;
     public identifier = "DecreaseGridSize";
     public keybinds = ["Shift+_"];
+    public visible = true;
 
     constructor(
         private i18n: i18n,
