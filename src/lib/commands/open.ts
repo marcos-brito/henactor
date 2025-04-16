@@ -6,7 +6,7 @@ export class OpenPallete implements Command {
     public desc: string;
     public identifier = "OpenPallete";
     public keybinds = ["Control+p"];
-    public visible = true;
+    public visible = false;
 
     constructor(
         private i18n: i18n,
