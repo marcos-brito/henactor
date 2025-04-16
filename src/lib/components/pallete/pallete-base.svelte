@@ -24,15 +24,14 @@
         executor: (item: T) => Promise<void>;
     } = $props();
 
-    const navigator = $derived(new RegularNavigator(items.length - 1));
     const result = $derived(
         new Fuse(items, {
             includeMatches: true,
             keys: [{ name: "name", getFn }],
         }).search(query),
     );
+    const navigator = $derived(new RegularNavigator(query ? result.length - 1 : items.length - 1));
 
-    let selectedItem = $derived(items[navigator.selected]);
     let open = $state(false);
     let input: HTMLInputElement;
     let container = $state<HTMLElement>();
@@ -47,6 +46,7 @@
         public name = i18n.t("pallete.PalleteExecute.name", { ns: "commands" });
         public desc = i18n.t("pallete.PalleteExecute.desc", { ns: "commands" });
         public keybinds = ["Enter"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
             return open;
@@ -58,7 +58,11 @@
 
         public async execute(): Promise<void> {
             open = false;
-            if (selectedItem) await executor(selectedItem);
+            if (query) {
+                await executor(result[navigator.selected].item);
+                return;
+            }
+            await executor(items[navigator.selected]);
         }
     }
 
@@ -67,6 +71,7 @@
         public name = i18n.t("pallete.PalleteComplete.name", { ns: "commands" });
         public desc = i18n.t("pallete.PalleteComplete.desc", { ns: "commands" });
         public keybinds = ["Tab"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
             return open;
@@ -77,7 +82,11 @@
         }
 
         public async execute(): Promise<void> {
-            if (selectedItem) query = getFn(selectedItem);
+            if (query) {
+                query = getFn(result[navigator.selected].item);
+                return;
+            }
+            query = getFn(items[navigator.selected]);
         }
     }
 
@@ -86,6 +95,7 @@
         public name = i18n.t("pallete.PalletePrevious.name", { ns: "commands" });
         public desc = i18n.t("pallete.PalletePrevious.desc", { ns: "commands" });
         public keybinds = ["ArrowUp", "Control+k"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
             return open;
@@ -105,6 +115,7 @@
         public name = i18n.t("pallete.PalleteNext.name", { ns: "commands" });
         public desc = i18n.t("pallete.PalleteNext.desc", { ns: "commands" });
         public keybinds = ["ArrowDown", "Control+j"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
             return open;
@@ -143,7 +154,11 @@
     {name}
     {modalManager}
     onSubmit={() => {
-        if (selectedItem) executor(selectedItem);
+        if (query) {
+            executor(result[navigator.selected].item);
+            return;
+        }
+        executor(items[navigator.selected]);
     }}
     class="h-3/5 max-w-2xl overflow-hidden"
 >
