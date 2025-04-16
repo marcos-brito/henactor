@@ -1,173 +1,248 @@
-import type { Command } from "$lib/services";
-import { i18n, modalManager, opener, tabsManager } from "$lib";
+import type { Command, Opener, TabsManager, ModalManager } from "$lib/services";
+import type { i18n } from "i18next";
 
 export class OpenPallete implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenPallete";
-    public name = i18n.t("pallete.OpenPallete.name", { ns: "commands" });
-    public desc = i18n.t("pallete.OpenPallete.desc", { ns: "commands" });
     public keybinds = ["Control+p"];
 
-    public async canExecute(): Promise<boolean> {
-        return true;
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("pallete.OpenPallete.name", { ns: "commands" });
+        this.desc = this.i18n.t("pallete.OpenPallete.desc", { ns: "commands" });
     }
-
-    public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
-    }
-
-    public async execute(): Promise<void> {
-        modalManager.show("pallete:commands");
-    }
-}
-
-export class OpenThemePicker implements Command {
-    public identifier = "OpenThemePicker";
-    public name = i18n.t("settings.OpenThemePicker.name", { ns: "commands" });
-    public desc = i18n.t("settings.OpenThemePicker.desc", { ns: "commands" });
-    public keybinds = [];
 
     public async canExecute(): Promise<boolean> {
         return true;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("pallete:themes");
+        this.modalManager.show("pallete:commands");
     }
 }
 
 export class OpenSettings implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenSettings";
-    public name = i18n.t("settings.OpenSettings.name", { ns: "commands" });
-    public desc = i18n.t("settings.OpenSettings.desc", { ns: "commands" });
     public keybinds = ["Control+o"];
 
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("settings.OpenSettings.name", { ns: "commands" });
+        this.desc = this.i18n.t("settings.OpenSettings.desc", { ns: "commands" });
+    }
+
     public async canExecute(): Promise<boolean> {
-        return modalManager.allClosedExcept("pallete:commands");
+        return this.modalManager.allClosedExcept("pallete:commands");
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("settings");
+        this.modalManager.show("settings");
+    }
+}
+
+export class OpenThemePicker implements Command {
+    public name: string;
+    public desc: string;
+    public identifier = "OpenThemePicker";
+    public keybinds = [];
+
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("settings.OpenThemePicker.name", { ns: "commands" });
+        this.desc = this.i18n.t("settings.OpenThemePicker.desc", { ns: "commands" });
+    }
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return this.modalManager.allClosed();
+    }
+
+    public async execute(): Promise<void> {
+        this.modalManager.show("pallete:themes");
     }
 }
 
 export class OpenViewPicker implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenViewPicker";
-    public name = i18n.t("tabs.OpenViewPicker.name", { ns: "commands" });
-    public desc = i18n.t("tabs.OpenViewPicker.desc", { ns: "commands" });
     public keybinds = ["Control+,"];
+
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("tabs.OpenViewPicker.name", { ns: "commands" });
+        this.desc = this.i18n.t("tabs.OpenViewPicker.desc", { ns: "commands" });
+    }
 
     public async canExecute(): Promise<boolean> {
         return true;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("pallete:views");
+        this.modalManager.show("pallete:views");
     }
 }
 
 export class OpenSortMethodPicker implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenSortMethodPicker";
-    public name = i18n.t("tabs.OpenSortMethodPicker.name", { ns: "commands" });
-    public desc = i18n.t("tabs.OpenSortMethodPicker.desc", { ns: "commands" });
     public keybinds = ["Control+;"];
+
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("tabs.OpenSortMethodPicker.name", { ns: "commands" });
+        this.desc = this.i18n.t("tabs.OpenSortMethodPicker.desc", { ns: "commands" });
+    }
 
     public async canExecute(): Promise<boolean> {
         return true;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("pallete:sort");
+        this.modalManager.show("pallete:sort");
     }
 }
 
 export class OpenDirPicker implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenDirPicker";
-    public name = i18n.t("tabs.OpenDirPicker.name", { ns: "commands" });
-    public desc = i18n.t("tabs.OpenDirPicker.desc", { ns: "commands" });
     public keybinds = ["Shift+:"];
+
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("tabs.OpenDirPicker.name", { ns: "commands" });
+        this.desc = this.i18n.t("tabs.OpenDirPicker.desc", { ns: "commands" });
+    }
 
     public async canExecute(): Promise<boolean> {
         return true;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("pallete:goto");
+        this.modalManager.show("pallete:goto");
     }
 }
 
 export class OpenFile implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenFile";
-    public name = i18n.t("explorer.OpenFile.name", { ns: "commands" });
-    public desc = i18n.t("explorer.OpenFile.desc", { ns: "commands" });
     public keybinds = ["Control+l"];
 
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+        private tabsManager: TabsManager,
+        private opener: Opener,
+    ) {
+        this.name = this.i18n.t("explorer.OpenFile.name", { ns: "commands" });
+        this.desc = this.i18n.t("explorer.OpenFile.desc", { ns: "commands" });
+    }
+
     public async canExecute(): Promise<boolean> {
-        return tabsManager.current.selected.length > 0;
+        return this.tabsManager.current.selected.length > 0;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        for (const file of tabsManager.current.selected) await opener.open(file);
+        for (const file of this.tabsManager.current.selected) await this.opener.open(file);
     }
 }
 
 export class OpenFileWith implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenFileWith";
-    public name = i18n.t("explorer.OpenFileWith.name", { ns: "commands" });
-    public desc = i18n.t("explorer.OpenFileWith.desc", { ns: "commands" });
     public keybinds = ["Control+Shift+L"];
 
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+        private tabsManager: TabsManager,
+    ) {
+        this.name = this.i18n.t("explorer.OpenFileWith.name", { ns: "commands" });
+        this.desc = this.i18n.t("explorer.OpenFileWith.desc", { ns: "commands" });
+    }
+
     public async canExecute(): Promise<boolean> {
-        return tabsManager.current.selected.length > 0;
+        return this.tabsManager.current.selected.length > 0;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("pallete:openers");
+        this.modalManager.show("pallete:openers");
     }
 }
 
 export class OpenFilter implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "OpenFilter";
-    public name = i18n.t("tabs.OpenFilter.name", { ns: "commands" });
-    public desc = i18n.t("tabs.OpenFilter.desc", { ns: "commands" });
     public keybinds = ["/"];
+
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("tabs.OpenFilter.name", { ns: "commands" });
+        this.desc = this.i18n.t("tabs.OpenFilter.desc", { ns: "commands" });
+    }
 
     public async canExecute(): Promise<boolean> {
         return true;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("filterBox");
+        this.modalManager.show("filterBox");
     }
 }

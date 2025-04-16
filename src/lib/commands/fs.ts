@@ -1,30 +1,39 @@
-import { type Command } from "$lib/services";
-import { i18n, modalManager, tabsManager } from "$lib";
+import { TabsManager, ModalManager, type Command } from "$lib/services";
 import * as actions from "$lib/services/filesystem_actions.svelte";
+import { type i18n } from "i18next";
 
 export class Delete implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "Delete";
-    public name = i18n.t("fs.Delete.name", { ns: "commands" });
-    public desc = i18n.t("fs.Delete.desc", { ns: "commands" });
     public keybinds = ["Shift+d", "Delete"];
 
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+        private tabsManager: TabsManager,
+    ) {
+        this.name = this.i18n.t("fs.Delete.name", { ns: "commands" });
+        this.desc = this.i18n.t("fs.Delete.desc", { ns: "commands" });
+    }
+
     public async canExecute(): Promise<boolean> {
-        return tabsManager.current.selected.length > 0;
+        return this.tabsManager.current.selected.length > 0;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show(
+        this.modalManager.show(
             "action:delete",
-            tabsManager.current.selected,
+            this.tabsManager.current.selected,
             async (paths: Array<string>) => {
                 if (paths.length == 1)
-                    return await tabsManager.current.executor.do(new actions.Delete(paths[0]));
+                    return await this.tabsManager.current.executor.do(new actions.Delete(paths[0]));
 
-                return await tabsManager.current.executor.do(
+                return await this.tabsManager.current.executor.do(
                     new actions.Group(paths.map((path) => new actions.Delete(path))),
                 );
             },
@@ -33,28 +42,37 @@ export class Delete implements Command {
 }
 
 export class MoveToTrash implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "MoveToTrash";
-    public name = i18n.t("fs.MoveToTrash.name", { ns: "commands" });
-    public desc = i18n.t("fs.MoveToTrash.desc", { ns: "commands" });
     public keybinds = ["d"];
 
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+        private tabsManager: TabsManager,
+    ) {
+        this.name = this.i18n.t("fs.MoveToTrash.name", { ns: "commands" });
+        this.desc = this.i18n.t("fs.MoveToTrash.desc", { ns: "commands" });
+    }
+
     public async canExecute(): Promise<boolean> {
-        return tabsManager.current.selected.length > 0;
+        return this.tabsManager.current.selected.length > 0;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show(
+        this.modalManager.show(
             "action:trash",
-            tabsManager.current.selected,
+            this.tabsManager.current.selected,
             async (paths: Array<string>) => {
                 if (paths.length == 1)
-                    return await tabsManager.current.executor.do(new actions.Trash(paths[0]));
+                    return await this.tabsManager.current.executor.do(new actions.Trash(paths[0]));
 
-                return await tabsManager.current.executor.do(
+                return await this.tabsManager.current.executor.do(
                     new actions.Group(paths.map((path) => new actions.Trash(path))),
                 );
             },
@@ -63,57 +81,75 @@ export class MoveToTrash implements Command {
 }
 
 export class Create implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "Create";
-    public name = i18n.t("fs.Create.name", { ns: "commands" });
-    public desc = i18n.t("fs.Create.desc", { ns: "commands" });
     public keybinds = ["o"];
+
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+        private tabsManager: TabsManager,
+    ) {
+        this.name = this.i18n.t("fs.Create.name", { ns: "commands" });
+        this.desc = this.i18n.t("fs.Create.desc", { ns: "commands" });
+    }
 
     public async canExecute(): Promise<boolean> {
         return true;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        modalManager.show("action:create", "", (args) =>
-            tabsManager.current.executor.do(new actions.Create(args)),
+        this.modalManager.show("action:create", "", (args) =>
+            this.tabsManager.current.executor.do(new actions.Create(args)),
         );
     }
 }
 
 export class Rename implements Command {
+    public name: string;
+    public desc: string;
     public identifier = "Rename";
-    public name = i18n.t("fs.Rename.name", { ns: "commands" });
-    public desc = i18n.t("fs.Rename.desc", { ns: "commands" });
     public keybinds = ["r"];
 
+    constructor(
+        private i18n: i18n,
+        private modalManager: ModalManager,
+        private tabsManager: TabsManager,
+    ) {
+        this.name = this.i18n.t("fs.Rename.name", { ns: "commands" });
+        this.desc = this.i18n.t("fs.Rename.desc", { ns: "commands" });
+    }
+
     public async canExecute(): Promise<boolean> {
-        return tabsManager.current.selected.length > 0;
+        return this.tabsManager.current.selected.length > 0;
     }
 
     public async canTrigger(): Promise<boolean> {
-        return modalManager.allClosed();
+        return this.modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
-        const selected = tabsManager.current.selected;
+        const selected = this.tabsManager.current.selected;
 
         if (selected.length == 1)
-            return modalManager.show(
+            return this.modalManager.show(
                 "action:rename",
-                tabsManager.current.selected[0],
+                this.tabsManager.current.selected[0],
                 async (rename: actions.RenameArgs) => {
-                    return await tabsManager.current.executor.do(new actions.Rename(rename));
+                    return await this.tabsManager.current.executor.do(new actions.Rename(rename));
                 },
             );
 
-        return modalManager.show(
+        return this.modalManager.show(
             "action:renameMany",
-            tabsManager.current.selected,
+            this.tabsManager.current.selected,
             async (renames: Array<actions.RenameArgs>) => {
-                return await tabsManager.current.executor.do(
+                return await this.tabsManager.current.executor.do(
                     new actions.Group(renames.map((rename) => new actions.Rename(rename))),
                 );
             },
