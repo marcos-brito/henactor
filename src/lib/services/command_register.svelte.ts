@@ -7,6 +7,7 @@ export interface Command {
     desc: string;
     keybinds: Array<string>;
     canExecute(): Promise<boolean>;
+    canTrigger(): Promise<boolean>;
     execute(): Promise<void>;
 }
 
@@ -14,7 +15,7 @@ export class CommandRegister {
     readonly commands = $state(new SvelteMap<string, Command>());
     private keybinds = new Map<string, Array<Command>>();
 
-    constructor(private configManager: ConfigManager) { }
+    constructor(private configManager: ConfigManager) {}
 
     public register(cmd: Command): CommandRegister {
         this.commands.set(cmd.identifier, cmd);

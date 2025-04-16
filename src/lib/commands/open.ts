@@ -11,6 +11,10 @@ export class OpenPallete implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         modalManager.show("pallete:commands");
     }
@@ -26,6 +30,10 @@ export class OpenThemePicker implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         modalManager.show("pallete:themes");
     }
@@ -38,7 +46,11 @@ export class OpenSettings implements Command {
     public keybinds = ["Control+o"];
 
     public async canExecute(): Promise<boolean> {
-        return true;
+        return modalManager.allClosedExcept("pallete:commands");
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
@@ -56,6 +68,10 @@ export class OpenViewPicker implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         modalManager.show("pallete:views");
     }
@@ -69,6 +85,10 @@ export class OpenSortMethodPicker implements Command {
 
     public async canExecute(): Promise<boolean> {
         return true;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
@@ -86,6 +106,10 @@ export class OpenDirPicker implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         modalManager.show("pallete:goto");
     }
@@ -99,6 +123,10 @@ export class OpenFile implements Command {
 
     public async canExecute(): Promise<boolean> {
         return tabsManager.current.selected.length > 0;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
@@ -116,6 +144,10 @@ export class OpenFileWith implements Command {
         return tabsManager.current.selected.length > 0;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         modalManager.show("pallete:openers");
     }
@@ -129,6 +161,10 @@ export class OpenFilter implements Command {
 
     public async canExecute(): Promise<boolean> {
         return true;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {

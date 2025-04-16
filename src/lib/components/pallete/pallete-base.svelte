@@ -52,6 +52,10 @@
             return open;
         }
 
+        public async canTrigger(): Promise<boolean> {
+            return open;
+        }
+
         public async execute(): Promise<void> {
             open = false;
             if (selectedItem) await executor(selectedItem);
@@ -65,6 +69,10 @@
         public keybinds = ["Tab"];
 
         public async canExecute(): Promise<boolean> {
+            return open;
+        }
+
+        public async canTrigger(): Promise<boolean> {
             return open;
         }
 
@@ -83,6 +91,10 @@
             return open;
         }
 
+        public async canTrigger(): Promise<boolean> {
+            return open;
+        }
+
         public async execute(): Promise<void> {
             navigator.previous();
         }
@@ -95,6 +107,10 @@
         public keybinds = ["ArrowDown", "Control+j"];
 
         public async canExecute(): Promise<boolean> {
+            return open;
+        }
+
+        public async canTrigger(): Promise<boolean> {
             return open;
         }
 

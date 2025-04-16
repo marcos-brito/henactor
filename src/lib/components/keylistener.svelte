@@ -7,7 +7,7 @@
         if (!e.repeat) holding.push(e.key);
         const commands = commandRegister.find(holding.join("+"));
         for (const command of commands)
-            if (await command.canExecute()) {
+            if ((await command.canTrigger()) && (await command.canExecute())) {
                 e.preventDefault();
                 return await command.execute();
             }

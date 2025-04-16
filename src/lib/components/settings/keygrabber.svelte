@@ -1,6 +1,6 @@
 <script lang="ts">
     import { commandRegister, configManager, i18n } from "$lib";
-    import type { Command } from "$lib/commands";
+    import type { Command } from "$lib/services";
     import { clickOutside } from "$lib/utils";
 
     let {
@@ -26,6 +26,10 @@
         public keybinds = ["Control+Enter"];
 
         public async canExecute(): Promise<boolean> {
+            return grabbing;
+        }
+
+        public async canTrigger(): Promise<boolean> {
             return grabbing;
         }
 

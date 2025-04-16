@@ -12,6 +12,10 @@ export class Delete implements Command {
         return tabsManager.current.selected.length > 0;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         modalManager.show(
             "action:delete",
@@ -36,6 +40,10 @@ export class MoveToTrash implements Command {
 
     public async canExecute(): Promise<boolean> {
         return tabsManager.current.selected.length > 0;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
@@ -64,6 +72,10 @@ export class Create implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         modalManager.show("action:create", "", (args) =>
             tabsManager.current.executor.do(new actions.Create(args)),
@@ -79,6 +91,10 @@ export class Rename implements Command {
 
     public async canExecute(): Promise<boolean> {
         return tabsManager.current.selected.length > 0;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {

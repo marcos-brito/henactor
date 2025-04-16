@@ -11,6 +11,10 @@ export class NewTab implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         tabsManager.add();
     }
@@ -24,6 +28,10 @@ export class CloseTab implements Command {
 
     public async canExecute(): Promise<boolean> {
         return true;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {
@@ -41,6 +49,10 @@ export class NextTab implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         tabsManager.next();
     }
@@ -56,6 +68,10 @@ export class PreviousTab implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
+    }
+
     public async execute(): Promise<void> {
         tabsManager.previous();
     }
@@ -69,6 +85,10 @@ export class RenameCurrentTab implements Command {
 
     public async canExecute(): Promise<boolean> {
         return true;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return modalManager.allClosed();
     }
 
     public async execute(): Promise<void> {

@@ -12,6 +12,10 @@ export class SaveSettings implements Command {
         return true;
     }
 
+    public async canTrigger(): Promise<boolean> {
+        return true;
+    }
+
     public async execute(): Promise<void> {
         await commands.saveConfig(configManager.path, configManager.config);
     }
