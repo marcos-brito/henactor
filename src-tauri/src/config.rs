@@ -118,6 +118,7 @@ pub struct Options {
     lang: String,
     truncation_limit: u8,
     default_tab: Tab,
+    commit_mode: bool,
 }
 
 impl Default for Options {
@@ -132,6 +133,7 @@ impl Default for Options {
             truncation_limit: 40,
             lang: "en".to_string(),
             default_tab: Tab::default(),
+            commit_mode: false,
         }
     }
 }

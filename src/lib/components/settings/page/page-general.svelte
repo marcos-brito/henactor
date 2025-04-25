@@ -27,6 +27,11 @@
     name={i18n.t("general.options.autoReload.name", { ns: "settings" })}
     desc={i18n.t("general.options.autoReload.desc", { ns: "settings" })}
 />
+<ItemCheck
+    bind:checked={configManager.config.options.commit_mode}
+    name={i18n.t("general.options.commitMode.name", { ns: "settings" })}
+    desc={i18n.t("general.options.commitMode.desc", { ns: "settings" })}
+/>
 <ItemInput
     type="number"
     bind:value={configManager.config.options.delete_timeout}

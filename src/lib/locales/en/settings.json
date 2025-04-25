@@ -35,6 +35,10 @@
             "defaultGridSize": {
                 "name": "Default grid size",
                 "desc": "Set the default number of columns for the grid view"
+            },
+            "commitMode": {
+                "name": "Commit mode",
+                "desc": "Should the filesystem changes be made after confirmation?"
             }
         }
     },

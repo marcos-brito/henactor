@@ -35,6 +35,10 @@
             "defaultGridSize": {
                 "name": "Tamanho padrão da grade",
                 "desc": "Ajusta o número padrão de colunas na visão em grade"
+            },
+            "commitMode": {
+                "name": "Modo commit",
+                "desc": "Deve-se salvar alterações nos arquivos somente após confirmação?"
             }
         }
     },
