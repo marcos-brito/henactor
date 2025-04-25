@@ -10,6 +10,16 @@ interface Action {
 export class Executor {
     readonly undoHistory: Array<Action> = $state([]);
     readonly redoHistory: Array<Action> = $state([]);
+    readonly staged: Array<Action> = $state([]);
+
+    public add(action: Action): void {
+        this.staged.push(action);
+    }
+
+    public async commit(): Promise<void> {
+        await this.do(new Group(this.staged));
+        this.staged.splice(0, this.staged.length);
+    }
 
     public async do(action: Action): Promise<void> {
         await action.do();
