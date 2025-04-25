@@ -2,7 +2,7 @@ import { commands } from "$lib/bindings";
 import { path as pathApi } from "@tauri-apps/api";
 import { parent } from "$lib/utils";
 
-interface Action {
+export interface Action {
     do(): Promise<void>;
     undo?(): Promise<void>;
 }
@@ -46,7 +46,7 @@ export class Executor {
 }
 
 export class Group implements Action {
-    constructor(private actions: Array<Action>) { }
+    constructor(readonly actions: Array<Action>) { }
 
     async do(): Promise<void> {
         for (const action of this.actions) await action.do();
@@ -58,7 +58,7 @@ export class Group implements Action {
 }
 
 export class Delete implements Action {
-    constructor(private path: string) { }
+    constructor(readonly path: string) { }
 
     async do(): Promise<void> {
         await commands.remove(this.path);
@@ -66,14 +66,14 @@ export class Delete implements Action {
 }
 
 export class Trash implements Action {
-    constructor(private path: string) { }
+    constructor(readonly path: string) { }
 
     async do(): Promise<void> {
         await commands.trash(this.path);
     }
 
     async undo(): Promise<void> {
-        await commands.restoreTrashed(this.path)
+        await commands.restoreTrashed(this.path);
     }
 }
 
@@ -89,7 +89,7 @@ export type CreateArgs =
     };
 
 export class Create implements Action {
-    constructor(private args: CreateArgs) { }
+    constructor(readonly args: CreateArgs) { }
 
     public async do(): Promise<void> {
         switch (this.args.kind) {
@@ -121,7 +121,7 @@ export type RenameArgs = {
 };
 
 export class Rename implements Action {
-    constructor(private args: RenameArgs) { }
+    constructor(readonly args: RenameArgs) { }
 
     public async do(): Promise<void> {
         await commands.rename(this.args.target, this.renamedPath(this.args));
