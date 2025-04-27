@@ -22,7 +22,7 @@
     });
 </script>
 
-<div bind:this={ref} class="breadcrumbs text-sm">
+<div bind:this={ref} class="breadcrumbs max-w-xs text-sm">
     <ul ondblclick={() => modalManager.show("pallete:goto")}>
         <li>
             <button class="btn btn-ghost btn-sm" onclick={() => (path = pathApi.sep())}>
