@@ -6,7 +6,7 @@
 Henactor is an open-source, highly customizable, keyboard-driven file explorer/manager inspired by amazing software out there. It might have
 every feature you expect plus a few you didn't asked for. Here are a few highlights:
 
--   **Customization:** Bend the UI to your needs by changing icons and writing themes with CSS
+-   **Customization:** Bend the UI to your likings by changing icons and writing themes with CSS
 -   **Keyboard Driven:** Forget your mouse and bind any command to any key you want
 -   **Rclone integration:** Integrate with a rclone server to manage all your cloud storage
 -   **Easy searching:** Search you file system by writing boolean expressions with a small language you probably already now
