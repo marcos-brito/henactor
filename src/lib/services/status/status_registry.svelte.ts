@@ -1,0 +1,33 @@
+import { SvelteMap } from "svelte/reactivity";
+
+export interface StatusProvider {
+    name: string;
+    status: string;
+    onClick?: () => void;
+}
+
+export class StatusRegistry {
+    private allSelector = "*";
+    readonly items = new SvelteMap<string, StatusProvider>();
+
+    public add(provider: StatusProvider): StatusRegistry {
+        this.items.set(provider.name, provider);
+        return this;
+    }
+
+    public find(...names: Array<string>): Array<StatusProvider> {
+        const selectorIndex = names.indexOf(this.allSelector);
+        const providers = names
+            .map((name) => this.items.get(name))
+            .filter((provider) => provider != undefined);
+
+        if (selectorIndex == -1) return providers;
+        return this.expand(providers, selectorIndex);
+    }
+
+    private expand(providers: Array<StatusProvider>, index: number): Array<StatusProvider> {
+        const missing = this.items.values().filter((provider) => !providers.includes(provider));
+        providers.splice(index, 0, ...missing);
+        return providers;
+    }
+}
