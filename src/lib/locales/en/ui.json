@@ -58,5 +58,15 @@
     },
     "keygrabber": {
         "message": "Press your keys. {{keys}} when you are done"
+    },
+    "statusBar": {
+        "items": "{{count}} items",
+        "selectedItems": "{{count}} selected",
+        "stagedActions": "{{count}} staged actions",
+        "searchingBy": "Searching by: {{query}}",
+        "selectMode": {
+            "active": "Select mode: active",
+            "inactive": "Select mode: inactive"
+        }
     }
 }

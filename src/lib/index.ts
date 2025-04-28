@@ -9,6 +9,14 @@ import { configPath, userConfig, userThemes } from "$lib/services/config_manager
 import { ConfigManager, ModalManager, TabsManager, CommandRegister, Opener } from "$lib/services";
 import { TaskManager } from "./services/task_manager.svelte";
 import { maxGridSize, minGridSize } from "./utils";
+import {
+    StatusRegistry,
+    Items,
+    DeepSearch,
+    StagedActions,
+    QuickSearch,
+    SelectedItems,
+} from "./services/status";
 
 export const configManager = new ConfigManager(configPath, userConfig, userThemes);
 export const commandRegister = new CommandRegister(configManager);
@@ -16,10 +24,17 @@ export const modalManager = new ModalManager();
 export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
 export const opener = new Opener(configManager);
 export const taskManager = new TaskManager();
+export const statusRegistry = new StatusRegistry();
 export const tabsManager = new TabsManager(
     configManager.config.tabs,
     configManager.config.options.default_tab,
 );
+
+statusRegistry.add(new Items(i18n, tabsManager));
+statusRegistry.add(new StagedActions());
+statusRegistry.add(new SelectedItems());
+statusRegistry.add(new DeepSearch());
+statusRegistry.add(new QuickSearch());
 
 configManager.watch();
 commandRegister

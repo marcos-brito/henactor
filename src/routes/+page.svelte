@@ -9,6 +9,7 @@
         ExplorerTree,
         ExplorerEmpty,
     } from "$lib/components/explorer";
+    import StatusBar from "$lib/components/status-bar.svelte";
 
     let unlisten: UnlistenFn;
     let rawEntries = $state<Array<Entry>>([]);
@@ -52,4 +53,5 @@
             <ExplorerTree {entries} />
         {/if}
     {/if}
+    <StatusBar providers={statusRegistry.find(...configManager.config.status)} />
 </div>

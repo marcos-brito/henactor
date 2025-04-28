@@ -143,6 +143,7 @@ pub struct Config {
     options: Options,
     keybinds: KeyBindings,
     openers: Openers,
+    status: Vec<String>,
     tabs: Vec<Tab>,
     pins: Vec<Pin>,
 }
@@ -167,6 +168,7 @@ impl Default for Config {
             options: Options::default(),
             keybinds: KeyBindings::default(),
             openers: Openers::default(),
+            status: vec![],
             tabs: vec![],
             pins,
         }
