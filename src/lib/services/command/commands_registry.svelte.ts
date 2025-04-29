@@ -1,5 +1,5 @@
-import { SvelteMap, SvelteSet } from "svelte/reactivity";
-import { ConfigManager } from ".";
+import { SvelteMap } from "svelte/reactivity";
+import { ConfigManager } from "$lib/services";
 import { inject, injectable } from "inversify";
 
 type Class<T> = new (...args: any[]) => T;
@@ -33,7 +33,7 @@ export class CommandRegister {
     constructor(
         @inject(ConfigManager)
         private configManager: ConfigManager,
-    ) { }
+    ) {}
 
     public registerMany(...cmds: Array<Command>): void {
         for (const cmd of cmds) this.register(cmd);
