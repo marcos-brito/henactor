@@ -1,15 +1,17 @@
 <script lang="ts">
-    import { commandRegister, i18n } from "$lib";
+    import { container as diContainer, i18n, modalManager } from "$lib";
     import { type Entry } from "$lib/bindings";
     import type { Command } from "$lib/services";
-    import { parent } from "$lib/utils";
+    import { isDir, parent } from "$lib/utils";
     import type { Snippet } from "svelte";
+    import { path as pathApi } from "@tauri-apps/api";
     import {
         type Navigator,
         GridNavigator,
         RegularNavigator,
         NavigatorBase,
     } from "$lib/components/navigator";
+    import { CommandRegister } from "$lib/services/command";
 
     let {
         children,
@@ -40,19 +42,16 @@
         }
     }
 
-    function bodyIsFocused(): boolean {
-        return document.activeElement == document.body;
-    }
-
-    function toggleMark(path: string) {
-        if (selected.includes(path)) {
-            selected.splice(
-                selected.findIndex((p) => p == path),
-                1,
-            );
-        } else {
+    function toggleMark(path: string): void {
+        if (!selected.includes(path)) {
             selected.push(path);
+            return;
         }
+
+        selected.splice(
+            selected.findIndex((p) => p == path),
+            1,
+        );
     }
 
     class OpenDir implements Command {
@@ -60,9 +59,14 @@
         public name = i18n.t("explorer.OpenDir.name", { ns: "commands" });
         public desc = i18n.t("explorer.OpenDir.desc", { ns: "commands" });
         public keybinds = ["Enter"];
+        public visible = true;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
+            return isDir(entries[navigator.selected]);
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -76,9 +80,14 @@
         public name = i18n.t("explorer.CloseDir.name", { ns: "commands" });
         public desc = i18n.t("explorer.CloseDir.desc", { ns: "commands" });
         public keybinds = ["-"];
+        public visible = true;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
+            return path != pathApi.sep();
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -86,93 +95,23 @@
         }
     }
 
-    class Start implements Command {
-        public identifier = "Start";
-        public name = i18n.t("explorer.Start.name", { ns: "commands" });
-        public desc = i18n.t("explorer.Start.desc", { ns: "commands" });
-        public keybinds = ["g"];
+    class ToggleMark implements Command {
+        public name = i18n.t("explorer.ToggleMark.name", { ns: "commands" });
+        public desc = i18n.t("explorer.ToggleMark.desc", { ns: "commands" });
+        public identifier = "ToggleMark";
+        public keybinds = ["m"];
+        public visible = true;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
+            return true;
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
-            navigator.first();
-        }
-    }
-
-    class End implements Command {
-        public identifier = "End";
-        public name = i18n.t("explorer.End.name", { ns: "commands" });
-        public desc = i18n.t("explorer.End.desc", { ns: "commands" });
-        public keybinds = ["Shift+G"];
-
-        public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
-        }
-
-        public async execute(): Promise<void> {
-            navigator.last();
-        }
-    }
-
-    class PageForward implements Command {
-        public identifier = "PageForward";
-        public name = i18n.t("explorer.PageForward.name", { ns: "commands" });
-        public desc = i18n.t("explorer.PageForward.desc", { ns: "commands" });
-        public keybinds = ["Control+f"];
-
-        public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
-        }
-
-        public async execute(): Promise<void> {
-            navigator.pageForward();
-        }
-    }
-
-    class PageBackward implements Command {
-        public identifier = "PageForward";
-        public name = i18n.t("explorer.PageBackward.name", { ns: "commands" });
-        public desc = i18n.t("explorer.PageBackward.desc", { ns: "commands" });
-        public keybinds = ["Control+b"];
-
-        public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
-        }
-
-        public async execute(): Promise<void> {
-            navigator.pageBackward();
-        }
-    }
-
-    class HalfPageForward implements Command {
-        public identifier = "HalfForward";
-        public name = i18n.t("explorer.HalfPageForward.name", { ns: "commands" });
-        public desc = i18n.t("explorer.HalfPageForward.desc", { ns: "commands" });
-        public keybinds = ["Control+d"];
-
-        public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
-        }
-
-        public async execute(): Promise<void> {
-            navigator.halfPageForward();
-        }
-    }
-
-    class HalfPageBackward implements Command {
-        public identifier = "HalfBackward";
-        public name = i18n.t("explorer.HalfPageBackward.name", { ns: "commands" });
-        public desc = i18n.t("explorer.HalfPageBackward.desc", { ns: "commands" });
-        public keybinds = ["Control+u"];
-
-        public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
-        }
-
-        public async execute(): Promise<void> {
-            navigator.halfPageBackward();
+            toggleMark(entries[navigator.selected].path);
         }
     }
 
@@ -181,9 +120,14 @@
         public name = i18n.t("explorer.SelectModeOn.name", { ns: "commands" });
         public desc = i18n.t("explorer.SelectModeOn.desc", { ns: "commands" });
         public keybinds = ["v"];
+        public visible = true;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused() && !selectMode;
+            return !selectMode;
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -197,9 +141,14 @@
         public name = i18n.t("explorer.SelectModeOff.name", { ns: "commands" });
         public desc = i18n.t("explorer.SelectModeOff.desc", { ns: "commands" });
         public keybinds = ["Escape"];
+        public visible = true;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused() && selectMode;
+            return selectMode;
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -212,28 +161,18 @@
         public name = i18n.t("explorer.ClearSelection.name", { ns: "commands" });
         public desc = i18n.t("explorer.ClearSelection.desc", { ns: "commands" });
         public keybinds = ["Escape"];
+        public visible = true;
 
         public async canExecute(): Promise<boolean> {
             return !selectMode;
         }
 
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
+        }
+
         public async execute(): Promise<void> {
             selected.splice(0, selected.length);
-        }
-    }
-
-    class ToggleMark implements Command {
-        public identifier = "ToggleMark";
-        public name = i18n.t("explorer.ToggleMark.name", { ns: "commands" });
-        public desc = i18n.t("explorer.ToggleMark.desc", { ns: "commands" });
-        public keybinds = ["m"];
-
-        public async canExecute(): Promise<boolean> {
-            return true;
-        }
-
-        public async execute(): Promise<void> {
-            toggleMark(entries[navigator.selected].path);
         }
     }
 
@@ -242,9 +181,14 @@
         public name = i18n.t("explorer.Up.name", { ns: "commands" });
         public desc = i18n.t("explorer.Up.desc", { ns: "commands" });
         public keybinds = ["ArrowUp", "k"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
+            return true;
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -259,9 +203,14 @@
         public name = i18n.t("explorer.Down.name", { ns: "commands" });
         public desc = i18n.t("explorer.Down.desc", { ns: "commands" });
         public keybinds = ["ArrowDown", "j"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
+            return true;
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -276,9 +225,14 @@
         public name = i18n.t("explorer.Left.name", { ns: "commands" });
         public desc = i18n.t("explorer.Left.desc", { ns: "commands" });
         public keybinds = ["ArrowLeft", "h"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
+            return true;
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -292,9 +246,14 @@
         public name = i18n.t("explorer.Right.name", { ns: "commands" });
         public desc = i18n.t("explorer.Right.desc", { ns: "commands" });
         public keybinds = ["ArrowRight", "l"];
+        public visible = false;
 
         public async canExecute(): Promise<boolean> {
-            return bodyIsFocused();
+            return true;
+        }
+
+        public async canTrigger(): Promise<boolean> {
+            return modalManager.allClosed();
         }
 
         public async execute(): Promise<void> {
@@ -304,7 +263,8 @@
     }
 
     $effect(() => {
-        commandRegister
+        diContainer
+            .get(CommandRegister)
             .register(new Down())
             .register(new Up())
             .register(new Left())
@@ -314,15 +274,7 @@
             .register(new SelectModeOff())
             .register(new ClearSelection())
             .register(new OpenDir())
-            .register(new CloseDir())
-            // Scrolling
-            .register(new Start())
-            .register(new End())
-            .register(new PageForward())
-            .register(new PageBackward())
-            .register(new HalfPageBackward())
-            .register(new HalfPageForward())
-            .register(new HalfPageBackward());
+            .register(new CloseDir());
     });
 </script>
 

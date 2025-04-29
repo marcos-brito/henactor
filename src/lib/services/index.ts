@@ -1,18 +1,17 @@
-import { CommandRegister, type Command } from "./command_register.svelte";
+import { CommandRegister } from "./command";
 import { Executor } from "./filesystem_actions.svelte";
 import { ConfigManager } from "./config_manager.svelte";
-import { ModalManager, type Modal, type Hook } from "./modal_manager";
+import { ModalManager } from "./modal_manager";
 import { TabsManager } from "./tabs_manager.svelte";
 import { Opener } from "./opener";
+import { StatusRegistry } from "./status";
 
 export {
     CommandRegister,
-    type Command,
     Executor,
     ConfigManager,
     ModalManager,
-    type Modal,
-    type Hook,
     TabsManager,
     Opener,
+    StatusRegistry,
 };

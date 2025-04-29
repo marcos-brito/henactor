@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-    import { configManager, commandRegister, modalManager, i18n } from "$lib";
+    import { configManager, container, modalManager, i18n } from "$lib";
     import type { Command } from "$lib/services";
     import Fuse from "fuse.js";
     import Modal from "../modal.svelte";
@@ -7,6 +7,7 @@
     import type { Snippet } from "svelte";
     import SearchResult from "$lib/components/search-result.svelte";
     import { NavigatorBase, RegularNavigator } from "$lib/components/navigator";
+    import { CommandRegister } from "$lib/services/command";
 
     let {
         children,
@@ -34,7 +35,7 @@
 
     let open = $state(false);
     let input: HTMLInputElement;
-    let container = $state<HTMLElement>();
+    let parent = $state<HTMLElement>();
     let itemsRef = $state<Array<HTMLElement>>([]);
 
     $effect(() => {
@@ -131,7 +132,8 @@
     }
 
     // HACK: doing it twice so it shows on the settings before open a pallete
-    commandRegister
+    container
+        .get(CommandRegister)
         .register(new PalleteExecute())
         .register(new PalleteComplete())
         .register(new PalletePrevious())
@@ -140,7 +142,8 @@
     $effect(() => {
         if (open) {
             input.focus();
-            commandRegister
+            container
+                .get(CommandRegister)
                 .register(new PalleteExecute())
                 .register(new PalleteComplete())
                 .register(new PalletePrevious())
@@ -170,8 +173,8 @@
             placeholder={i18n.t("pallete.placeHolder", { ns: "ui" })}
             type="text"
         />
-        <NavigatorBase items={itemsRef} {container} {navigator}>
-            <ul bind:this={container} class="menu menu-md w-full flex-nowrap overflow-y-scroll">
+        <NavigatorBase items={itemsRef} container={parent} {navigator}>
+            <ul bind:this={parent} class="menu menu-md w-full flex-nowrap overflow-y-scroll">
                 {#if query}
                     {#each result as r, i}
                         <li bind:this={itemsRef[i]}>

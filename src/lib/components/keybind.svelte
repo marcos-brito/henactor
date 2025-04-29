@@ -1,14 +1,16 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
     import { findKeyAlias } from "$lib/utils";
-    import { commandRegister, i18n } from "$lib";
+    import { container, i18n } from "$lib";
     import type { Command } from "$lib/services";
+    import { CommandRegister } from "$lib/services/command";
 
     let { keybind, cmd, children }: { keybind: string; cmd?: Command; children?: Snippet } =
         $props();
 
     let conflict = $derived(
-        commandRegister
+        container
+            .get(CommandRegister)
             .find(keybind)
             .filter((c) => c.identifier != cmd?.identifier)
             .map((c) => c.name)

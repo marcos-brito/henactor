@@ -5,7 +5,7 @@
     import { type Snippet } from "svelte";
     import Tabs from "$lib/components/tab/tabs.svelte";
     import { Toaster, toast } from "svelte-sonner";
-    import { commandRegister, configManager, modalManager } from "$lib";
+    import { configManager, modalManager } from "$lib";
     import Modals from "$lib/components/modals.svelte";
     import Keylistener from "$lib/components/keylistener.svelte";
 

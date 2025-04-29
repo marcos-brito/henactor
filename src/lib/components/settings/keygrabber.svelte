@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { commandRegister, configManager, i18n } from "$lib";
-    import type { Command } from "$lib/services";
+    import { container, configManager, i18n } from "$lib";
+    import { type Command, CommandRegister } from "$lib/services/command";
     import { clickOutside } from "$lib/utils";
 
     let {
@@ -54,12 +54,12 @@
     $effect(() => {
         if (grabbing) {
             grabber.focus();
-            commandRegister.register(new QuitKeyGrabber());
+            container.get(CommandRegister).register(new QuitKeyGrabber());
         }
     });
 
     $effect(() => {
-        commandRegister.register(new QuitKeyGrabber());
+        container.get(CommandRegister).register(new QuitKeyGrabber());
     });
 </script>
 
