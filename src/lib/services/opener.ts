@@ -1,9 +1,11 @@
 import { commands } from "$lib/bindings";
 import mime from "mime";
-import type { ConfigManager } from "./config_manager.svelte";
+import { ConfigManager } from "$lib/services";
+import { injectable, inject } from "inversify";
 
+@injectable()
 export class Opener {
-    constructor(private configManager: ConfigManager) {}
+    constructor(@inject(ConfigManager) private configManager: ConfigManager) {}
 
     public async open(path: string): Promise<void> {
         const opener = this.findOpener(path);
