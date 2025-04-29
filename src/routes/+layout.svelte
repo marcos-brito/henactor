@@ -33,7 +33,7 @@
     {/if}
 </svelte:head>
 <Keylistener />
-<Modals {modalManager} />
+<Modals />
 <Toaster
     position="top-right"
     visibleToasts={1}

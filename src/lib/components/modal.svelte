@@ -2,7 +2,8 @@
     import { XIcon } from "lucide-svelte";
     import IconWithFallback from "./icon/icon-with-fallback.svelte";
     import type { Snippet } from "svelte";
-    import type { Hook, ModalManager } from "$lib/services";
+    import { type Hook } from "$lib/services/modal_manager";
+    import { modalManager } from "$lib";
 
     let {
         children,
@@ -11,7 +12,6 @@
         hook = $bindable(),
         onSubmit,
         open = $bindable(false),
-        modalManager,
         ...props
     }: {
         children: Snippet;
@@ -20,7 +20,6 @@
         hook?: Hook<any>;
         onSubmit?: () => void;
         open?: boolean;
-        modalManager: ModalManager;
         [key: string]: any;
     } = $props();
 

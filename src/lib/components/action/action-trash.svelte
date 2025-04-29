@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Hook } from "$lib/services";
     import Modal from "$lib/components/modal.svelte";
-    import { i18n, modalManager } from "$lib";
+    import { i18n } from "$lib";
     import { fileName } from "$lib/utils";
     import Truncate from "$lib/components/truncate.svelte";
 
@@ -10,7 +10,6 @@
 </script>
 
 <Modal
-    {modalManager}
     onSubmit={() => {
         if (hook && paths.length > 0) hook(paths);
     }}

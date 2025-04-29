@@ -19,7 +19,6 @@
 </script>
 
 <Modal
-    {modalManager}
     onSubmit={() => {
         if (hook && paths.length > 0) hook(paths);
     }}

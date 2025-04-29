@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-    import { configManager, container, modalManager, i18n } from "$lib";
+    import { configManager, commandRegister, i18n } from "$lib";
     import type { Command } from "$lib/services";
     import Fuse from "fuse.js";
     import Modal from "../modal.svelte";
@@ -155,7 +155,6 @@
 <Modal
     bind:open
     {name}
-    {modalManager}
     onSubmit={() => {
         if (query) {
             executor(result[navigator.selected].item);

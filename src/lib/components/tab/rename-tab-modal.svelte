@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { Hook } from "$lib/services";
+    import { type Hook } from "$lib/services/modal_manager";
     import Modal from "$lib/components/modal.svelte";
     import { i18n, modalManager } from "$lib";
-    import type { Tab } from "$lib/bindings";
+    import { type Tab } from "$lib/bindings";
 
     let tab = $state<Tab>();
     let hook = $state<Hook<string>>();
@@ -25,7 +25,6 @@
 </script>
 
 <Modal
-    {modalManager}
     onSubmit={() => {
         if (hook && value) hook(value);
     }}

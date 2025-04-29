@@ -1,16 +1,13 @@
 <script lang="ts">
     import { i18n } from "$lib";
     import Modal from "../modal.svelte";
-    import type { ModalManager } from "$lib/services";
     import { PageGeneral, PageAppearence, PageKeybinds, PageOpeners } from "./page";
-
-    let { modalManager }: { modalManager: ModalManager } = $props();
 
     const pages = ["general", "appearance", "pins", "keybinds", "openers"] as const;
     let currentPage: (typeof pages)[number] = $state("general");
 </script>
 
-<Modal name="settings" {modalManager} class="max-w-5xl">
+<Modal name="settings" class="max-w-5xl">
     <section class="mt-4 grid grid-cols-[150px_1fr]">
         <aside class="h-full overflow-auto">
             <ul class="menu">

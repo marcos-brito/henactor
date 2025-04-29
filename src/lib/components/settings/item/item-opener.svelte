@@ -22,7 +22,6 @@
         opener.new(editOpener.pattern, editOpener.app);
     }}
     name="editOpener"
-    {modalManager}
 >
     <article class="flex flex-col gap-4">
         <h1>{i18n.t("openers.form.edit", { ns: "settings" })}</h1>
