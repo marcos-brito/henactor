@@ -1,5 +1,7 @@
 import { SvelteMap } from "svelte/reactivity";
 import type { ConfigManager } from ".";
+import { ConfigManager } from ".";
+import { inject, injectable } from "inversify";
 
 export interface Command {
     identifier: string;
@@ -12,11 +14,15 @@ export interface Command {
     execute(): Promise<void>;
 }
 
+@injectable()
 export class CommandRegister {
     readonly commands = $state(new SvelteMap<string, Command>());
     private keybinds = new Map<string, Array<Command>>();
 
-    constructor(private configManager: ConfigManager) {}
+    constructor(
+        @inject(ConfigManager)
+        private configManager: ConfigManager,
+    ) { }
 
     public register(cmd: Command): CommandRegister {
         this.commands.set(cmd.identifier, cmd);

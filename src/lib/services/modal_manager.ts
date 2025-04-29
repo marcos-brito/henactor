@@ -1,3 +1,5 @@
+import { injectable } from "inversify";
+
 export type Hook<T> = (arg: T) => Promise<void>;
 
 export interface Modal<T = void> {
@@ -6,6 +8,7 @@ export interface Modal<T = void> {
     hide(): void;
 }
 
+@injectable()
 export class ModalManager {
     private modals = new Map<string, Modal>();
     private opened = new Array<string>();

@@ -1,4 +1,4 @@
-import { createInstance } from "i18next";
+import { createInstance, type i18n as i18nT } from "i18next";
 import * as tabsCommands from "./commands/tabs";
 import * as fsCommands from "./commands/fs";
 import * as miscCommands from "./commands/misc";
@@ -17,6 +17,29 @@ import {
     QuickSearch,
     SelectedItems,
 } from "./services/status";
+import { Container } from "inversify";
+import { registeredCommands } from "./config";
+
+export const container = new Container();
+
+container
+    .bind(ConfigManager)
+    .toConstantValue(new ConfigManager(configPath, userConfig, userThemes));
+
+container
+    .bind<i18nT>("i18n")
+    .toConstantValue(init(createInstance(options, (e, t) => console.log(e, t))));
+
+container.bind(CommandRegister).toSelf().inSingletonScope();
+container.bind(ModalManager).toSelf().inSingletonScope();
+container.bind(TabsManager).toSelf().inSingletonScope();
+
+container.get(CommandRegister).registerMany(
+    ...registeredCommands().map((cmd) => {
+        container.bind(cmd).toSelf();
+        return container.get(cmd);
+    }),
+);
 
 export const configManager = new ConfigManager(configPath, userConfig, userThemes);
 export const commandRegister = new CommandRegister(configManager);
@@ -25,10 +48,7 @@ export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
 export const opener = new Opener(configManager);
 export const taskManager = new TaskManager();
 export const statusRegistry = new StatusRegistry();
-export const tabsManager = new TabsManager(
-    configManager.config.tabs,
-    configManager.config.options.default_tab,
-);
+export const tabsManager = new TabsManager(configManager);
 
 statusRegistry.add(new Items(i18n, tabsManager));
 statusRegistry.add(new StagedActions());
@@ -54,11 +74,12 @@ commandRegister
     .register(new tabsCommands.NextTab(i18n, tabsManager, modalManager))
     .register(new tabsCommands.PreviousTab(i18n, tabsManager, modalManager))
     .register(new tabsCommands.RenameCurrentTab(i18n, tabsManager, modalManager))
+    .register(new tabsCommands.Commit(i18n, tabsManager, modalManager))
     // Fs
     .register(new fsCommands.Delete(i18n, modalManager, tabsManager))
     .register(new fsCommands.MoveToTrash(i18n, modalManager, tabsManager))
     .register(new fsCommands.Rename(i18n, modalManager, tabsManager))
-    .register(new fsCommands.Create(i18n, modalManager, tabsManager))
+    .register(new fsCommands.Create(i18n, modalManager, tabsManager, configManager))
     // Explorer
     .register(new explorerCommands.IncreaseGridSize(i18n, tabsManager, modalManager, maxGridSize))
     .register(new explorerCommands.DecreaseGridSize(i18n, tabsManager, modalManager, minGridSize))

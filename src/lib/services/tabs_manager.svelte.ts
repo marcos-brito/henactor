@@ -1,22 +1,25 @@
 import type { Tab } from "$lib/bindings";
-import { Executor } from ".";
+import { inject, injectable } from "inversify";
+import { ConfigManager, Executor } from ".";
 
 type InternalTab = Tab & {
     executor: Executor;
 };
 
+@injectable()
 export class TabsManager {
     public currentIdx = $state(0);
     public defaultTab: Tab;
     public tabs = $state<Array<InternalTab>>([]);
     public current = $derived(this.tabs[this.currentIdx]);
 
-    constructor(tabs: Array<Tab>, defaultTab: Tab) {
-        this.defaultTab = defaultTab;
-        this.tabs = tabs.map((tab) => {
+    constructor(@inject(ConfigManager) private configManager: ConfigManager) {
+        this.defaultTab = this.configManager.config.options.default_tab;
+        this.tabs = this.configManager.config.tabs.map((tab) => {
             return { ...tab, executor: new Executor() };
         });
-        if (tabs.length == 0) this.add();
+
+        if (this.tabs.length == 0) this.add();
     }
 
     public add(tab: Tab = { ...this.defaultTab }): void {
