@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { i18n, configManager, container } from "$lib";
+    import { i18n, commandRegister, configManager } from "$lib";
     import Fuse from "fuse.js";
     import ItemCmd from "../item/item-cmd.svelte";
     import Keygrabber from "../keygrabber.svelte";
     import { KeyboardIcon, XIcon } from "lucide-svelte";
     import { IconWithFallback } from "$lib/components/icon";
     import Keybind from "$lib/components/keybind.svelte";
-    import { CommandRegister, type Command } from "$lib/services";
+    import type { Command } from "$lib/services";
 
-    const commands = $derived(Array.from(container.get(CommandRegister).commands.values()));
+    const commands = $derived(Array.from(commandRegister.commands.values()));
 
     let keyFilters = $state<Array<string>>([]);
     let query = $state("");

@@ -36,13 +36,14 @@ container.get(CommandRegister).registerMany(
     }),
 );
 
-export const configManager = new ConfigManager(configPath, userConfig, userThemes);
-export const modalManager = new ModalManager();
-export const i18n = init(createInstance(options, (e, t) => console.log(e, t)));
-export const opener = new Opener(configManager);
+export const configManager = container.get(ConfigManager);
+export const commandRegister = container.get(CommandRegister);
+export const modalManager = container.get(ModalManager);
+export const i18n = container.get<i18nT>("i18n");
+export const opener = container.get(Opener);
+export const tabsManager = container.get(TabsManager);
 export const taskManager = new TaskManager();
 export const statusRegistry = new StatusRegistry();
-export const tabsManager = new TabsManager(configManager);
 
 statusRegistry.add(new Items(i18n, tabsManager));
 statusRegistry.add(new StagedActions());
