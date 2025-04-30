@@ -60,9 +60,8 @@ export class ConfigManager {
         if (!this.unlisten) {
             await commands.watch(this.path, true);
             this.unlisten = await events.watchEvent.listen(async (e) => {
-                if (e.payload.startsWith(this.path)) {
+                if (e.payload == this.path) {
                     const { config, themes } = await readOrDefault(this.path);
-                    console.log("changed");
                     this.config = config;
                     this.themes = themes;
                 }

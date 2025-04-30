@@ -16,7 +16,7 @@ fn create_watcher(app: AppHandle) -> anyhow::Result<RecommendedWatcher> {
         Ok(event) => {
             if should_emit(&event) {
                 for path in event.paths {
-                    if let Err(e) = WatchEvent(format!("watch::{}", path.display())).emit(&app) {
+                    if let Err(e) = WatchEvent(format!("{}", path.display())).emit(&app) {
                         warn!("Failed to emit watch event: {e}")
                     }
                 }
