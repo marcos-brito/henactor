@@ -4,7 +4,7 @@
     import Keygrabber from "../keygrabber.svelte";
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import Keybind from "$lib/components/keybind.svelte";
-    import type { Command } from "$lib/services";
+    import { type Command } from "$lib/services/command";
     import { i18n } from "$lib";
     import type { FuseResult } from "fuse.js";
 

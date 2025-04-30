@@ -6,7 +6,7 @@
     import { KeyboardIcon, XIcon } from "lucide-svelte";
     import { IconWithFallback } from "$lib/components/icon";
     import Keybind from "$lib/components/keybind.svelte";
-    import type { Command } from "$lib/services";
+    import { type Command } from "$lib/services/command";
 
     const commands = $derived(Array.from(commandRegister.commands.values()));
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { StatusProvider } from "$lib/services/status_registry.svelte";
+    import { type StatusProvider } from "$lib/services/status";
 
     let { providers }: { providers: Array<StatusProvider> } = $props();
 </script>

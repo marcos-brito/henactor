@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { container as diContainer, i18n, modalManager } from "$lib";
+    import { commandRegister, i18n, modalManager } from "$lib";
     import { type Entry } from "$lib/bindings";
-    import type { Command } from "$lib/services";
+    import { type Command } from "$lib/services/command";
     import { isDir, parent } from "$lib/utils";
     import type { Snippet } from "svelte";
     import { path as pathApi } from "@tauri-apps/api";
@@ -11,7 +11,6 @@
         RegularNavigator,
         NavigatorBase,
     } from "$lib/components/navigator";
-    import { CommandRegister } from "$lib/services/command";
 
     let {
         children,
@@ -263,8 +262,7 @@
     }
 
     $effect(() => {
-        diContainer
-            .get(CommandRegister)
+        commandRegister
             .register(new Down())
             .register(new Up())
             .register(new Left())

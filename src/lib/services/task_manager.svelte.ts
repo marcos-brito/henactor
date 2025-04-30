@@ -1,6 +1,5 @@
 import { i18n } from "$lib";
 import { commands, events, type Entry, type SearchEvent } from "$lib/bindings";
-import { taskIsRunning } from "$lib/utils";
 import { Channel } from "@tauri-apps/api/core";
 import { SvelteMap } from "svelte/reactivity";
 

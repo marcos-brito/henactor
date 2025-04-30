@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Hook } from "$lib/services";
+    import { type Hook } from "$lib/services/modal_manager";
     import Modal from "$lib/components/modal.svelte";
     import { configManager, i18n, modalManager } from "$lib";
     import { fileName } from "$lib/utils";
