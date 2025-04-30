@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
     import { configManager, commandRegister, i18n } from "$lib";
-    import type { Command } from "$lib/services";
+    import { type Command } from "$lib/services/command";
     import Fuse from "fuse.js";
     import Modal from "../modal.svelte";
     import { findKeyAlias } from "$lib/utils";

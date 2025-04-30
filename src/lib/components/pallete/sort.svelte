@@ -1,7 +1,7 @@
 <script lang="ts">
     import { i18n, tabsManager } from "$lib";
     import type { SortMethod } from "$lib/bindings";
-    import PalleteBase from "./pallete-base.svelte";
+    import Base from ".";
 
     const aliases: Record<SortMethod, string> = {
         Name: i18n.t("toolBar.sort.methods.name", { ns: "ui" }),
@@ -19,7 +19,7 @@
     });
 </script>
 
-<PalleteBase
+<Base
     name="pallete:sort"
     {items}
     getFn={(pair) => pair.alias}
@@ -32,4 +32,4 @@
             <div class="badge badge-neutral">{i18n.t("pallete.active", { ns: "ui" })}</div>
         {/if}
     {/snippet}
-</PalleteBase>
+</Base>

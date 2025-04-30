@@ -1,8 +1,10 @@
-import PalleteCommands from "./pallete-commands.svelte";
-import PalleteThemes from "./pallete-themes.svelte";
-import PalleteView from "./pallete-view.svelte";
-import PalleteSort from "./pallete-sort.svelte";
-import PalleteGoto from "./pallete-goto.svelte";
-import PalleteOpeners from "./pallete-openers.svelte";
+import Base from "./base.svelte";
+import Commands from "./commands.svelte";
+import Themes from "./themes.svelte";
+import View from "./view.svelte";
+import Sort from "./sort.svelte";
+import Goto from "./goto.svelte";
+import Openers from "./openers.svelte";
 
-export { PalleteCommands, PalleteThemes, PalleteView, PalleteSort, PalleteGoto, PalleteOpeners };
+export default Base;
+export { Commands, Themes, View, Sort, Goto, Openers };

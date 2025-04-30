@@ -3,14 +3,7 @@
     import Settings from "$lib/components/settings/settings.svelte";
     import RenameTabModal from "./tab/rename-tab-modal.svelte";
     import TasksModal from "./tasks/tasks-modal.svelte";
-    import {
-        PalleteThemes,
-        PalleteCommands,
-        PalleteView,
-        PalleteSort,
-        PalleteGoto,
-        PalleteOpeners,
-    } from "$lib/components/pallete";
+    import * as Pallete from "$lib/components/pallete";
     import {
         ActionDelete,
         ActionTrash,
@@ -21,13 +14,12 @@
     let { modalManager }: { modalManager: ModalManager } = $props();
 </script>
 
-<PalleteCommands />
-<PalleteThemes />
-<PalleteView />
-<PalleteSort />
-<PalleteGoto />
-<PalleteOpeners />
-<Settings {modalManager} />
+<Pallete.Commands />
+<Pallete.Themes />
+<Pallete.View />
+<Pallete.Sort />
+<Pallete.Goto />
+<Pallete.Openers />
 <RenameTabModal />
 <ActionDelete />
 <ActionTrash />

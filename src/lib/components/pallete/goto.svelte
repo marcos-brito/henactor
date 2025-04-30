@@ -2,7 +2,7 @@
     import { tabsManager } from "$lib";
     import { commands, type Entry } from "$lib/bindings";
     import { isDir } from "$lib/utils";
-    import PalleteBase from "./pallete-base.svelte";
+    import Base from ".";
     import { path as pathApi } from "@tauri-apps/api";
 
     let query = $state("");
@@ -33,7 +33,7 @@
     });
 </script>
 
-<PalleteBase
+<Base
     bind:query
     name="pallete:goto"
     items={entries}

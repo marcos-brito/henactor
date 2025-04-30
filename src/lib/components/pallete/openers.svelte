@@ -1,6 +1,6 @@
 <script lang="ts">
     import { opener, tabsManager } from "$lib";
-    import PalleteBase from "./pallete-base.svelte";
+    import Base from ".";
 
     let query = $state("");
     let apps = $state<Array<string>>([]);
@@ -17,7 +17,7 @@
     });
 </script>
 
-<PalleteBase
+<Base
     bind:query
     name="pallete:openers"
     {items}
@@ -25,4 +25,4 @@
     executor={async (app) => {
         await Promise.all(tabsManager.current.selected.map((path) => opener.open_with(path, app)));
     }}
-></PalleteBase>
+></Base>

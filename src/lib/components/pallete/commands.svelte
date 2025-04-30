@@ -1,10 +1,10 @@
 <script lang="ts">
     import { commandRegister, configManager } from "$lib";
     import Keybind from "../keybind.svelte";
-    import PalleteBase from "./pallete-base.svelte";
+    import Base from ".";
 </script>
 
-<PalleteBase
+<Base
     name="pallete:commands"
     items={Array.from(commandRegister.commands.values())
         .filter((cmd) => cmd.visible)
@@ -21,4 +21,4 @@
             {/each}
         </div>
     {/snippet}
-</PalleteBase>
+</Base>

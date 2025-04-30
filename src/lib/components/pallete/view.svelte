@@ -1,7 +1,7 @@
 <script lang="ts">
     import { i18n, tabsManager } from "$lib";
     import type { View } from "$lib/bindings";
-    import PalleteBase from "./pallete-base.svelte";
+    import Base from ".";
 
     const views: Array<View> = ["Grid", "List", "Tree"];
 
@@ -13,7 +13,7 @@
     });
 </script>
 
-<PalleteBase
+<Base
     name="pallete:views"
     {items}
     getFn={(pair) => pair.name}
@@ -26,4 +26,4 @@
             <div class="badge badge-neutral">{i18n.t("pallete.active", { ns: "ui" })}</div>
         {/if}
     {/snippet}
-</PalleteBase>
+</Base>

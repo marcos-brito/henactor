@@ -1,9 +1,9 @@
 <script lang="ts">
     import { configManager, i18n } from "$lib";
-    import PalleteBase from "./pallete-base.svelte";
+    import Base from ".";
 </script>
 
-<PalleteBase
+<Base
     name="pallete:themes"
     items={configManager.themes}
     getFn={(t) => t.name}
@@ -16,4 +16,4 @@
             <div class="badge badge-neutral">{i18n.t("pallete.active", { ns: "ui" })}</div>
         {/if}
     {/snippet}
-</PalleteBase>
+</Base>
