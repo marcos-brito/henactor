@@ -35,9 +35,9 @@
 
 <Toolbar
     bind:path={tabsManager.current.path}
-    bind:filter={tabsManager.current.filter}
     bind:sortBy={tabsManager.current.sort_by}
     bind:view={tabsManager.current.view}
+    bind:gridSize={tabsManager.current.grid_size}
 />
 <div class="h-[70vh] overflow-auto p-4">
     {#if rawEntries.length == 0}
