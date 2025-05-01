@@ -2,18 +2,6 @@ import { SvelteMap } from "svelte/reactivity";
 import { ConfigManager } from "$lib/services";
 import { inject, injectable } from "inversify";
 
-type Class<T> = new (...args: any[]) => T;
-
-const commands = new Set<Class<Command>>();
-
-export function command(target: Class<Command>): void {
-    commands.add(target);
-}
-
-export function allCommands(): Array<Class<Command>> {
-    return Array.from(commands);
-}
-
 export interface Command {
     identifier: string;
     name: string;
