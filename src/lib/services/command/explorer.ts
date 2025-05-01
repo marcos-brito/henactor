@@ -1,8 +1,9 @@
 import { ModalManager, TabsManager } from "$lib/services";
-import { type Command, command } from "$lib/services/command";
+import { type Command } from "./commands_registry.svelte";
+import { collect } from "$lib/collector";
 import { type i18n } from "i18next";
 
-@command
+@collect("command")
 export class IncreaseGridSize implements Command {
     public name: string;
     public desc: string;
@@ -36,7 +37,7 @@ export class IncreaseGridSize implements Command {
     }
 }
 
-@command
+@collect("command")
 export class DecreaseGridSize implements Command {
     public name: string;
     public desc: string;

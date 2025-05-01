@@ -1,5 +1,6 @@
 import { TabsManager, ModalManager, ConfigManager } from "$lib/services";
-import { type Command, command } from "$lib/services/command";
+import { type Command } from "./commands_registry.svelte";
+import { collect } from "$lib/collector";
 import type { Action } from "$lib/services/filesystem_actions.svelte";
 import * as actions from "$lib/services/filesystem_actions.svelte";
 import { type i18n } from "i18next";
@@ -32,7 +33,7 @@ function addOrElse(
     fallback();
 }
 
-@command
+@collect("command")
 export class Delete implements Command {
     public name: string;
     public desc: string;
@@ -129,7 +130,7 @@ export class MoveToTrash implements Command {
     }
 }
 
-@command
+@collect("command")
 export class Create implements Command {
     public name: string;
     public desc: string;
@@ -169,7 +170,7 @@ export class Create implements Command {
     }
 }
 
-@command
+@collect("command")
 export class Rename implements Command {
     public name: string;
     public desc: string;

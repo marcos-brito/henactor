@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { SvelteMap } from "svelte/reactivity";
 
 export interface StatusProvider {
@@ -6,11 +7,16 @@ export interface StatusProvider {
     onClick?: () => void;
 }
 
+@injectable()
 export class StatusRegistry {
     private allSelector = "*";
     readonly items = new SvelteMap<string, StatusProvider>();
 
-    public add(provider: StatusProvider): StatusRegistry {
+    public registerMany(...providers: Array<StatusProvider>): void {
+        for (const provider of providers) this.register(provider);
+    }
+
+    public register(provider: StatusProvider): StatusRegistry {
         this.items.set(provider.name, provider);
         return this;
     }

@@ -13,10 +13,10 @@ describe("StatusRegistry", () => {
         const registry = new StatusRegistry();
 
         registry
-            .add(new MockProvider("A"))
-            .add(new MockProvider("B"))
-            .add(new MockProvider("C"))
-            .add(new MockProvider("D"));
+            .register(new MockProvider("A"))
+            .register(new MockProvider("B"))
+            .register(new MockProvider("C"))
+            .register(new MockProvider("D"));
 
         expect(registry.find(...query).map((provider) => provider.name)).toEqual(query);
     });
@@ -26,11 +26,11 @@ describe("StatusRegistry", () => {
         const registry = new StatusRegistry();
 
         registry
-            .add(new MockProvider("A"))
-            .add(new MockProvider("B"))
-            .add(new MockProvider("C"))
-            .add(new MockProvider("D"))
-            .add(new MockProvider("E"));
+            .register(new MockProvider("A"))
+            .register(new MockProvider("B"))
+            .register(new MockProvider("C"))
+            .register(new MockProvider("D"))
+            .register(new MockProvider("E"));
 
         expect(registry.find(...query).map((provider) => provider.name)).toEqual([
             "A",
@@ -46,11 +46,11 @@ describe("StatusRegistry", () => {
         const registry = new StatusRegistry();
 
         registry
-            .add(new MockProvider("A"))
-            .add(new MockProvider("B"))
-            .add(new MockProvider("C"))
-            .add(new MockProvider("D"))
-            .add(new MockProvider("E"));
+            .register(new MockProvider("A"))
+            .register(new MockProvider("B"))
+            .register(new MockProvider("C"))
+            .register(new MockProvider("D"))
+            .register(new MockProvider("E"));
 
         expect(registry.find(...query).map((provider) => provider.name)).toEqual([
             "C",

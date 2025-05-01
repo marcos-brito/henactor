@@ -1,9 +1,10 @@
 import { Opener, TabsManager, ModalManager } from "$lib/services";
 import type { i18n } from "i18next";
 import { inject } from "inversify";
-import { command, type Command } from "./commands_registry.svelte";
+import { type Command } from "./commands_registry.svelte";
+import { collect } from "$lib/collector";
 
-@command
+@collect("command")
 export class OpenPallete implements Command {
     public name: string;
     public desc: string;
@@ -34,7 +35,7 @@ export class OpenPallete implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenSettings implements Command {
     public name: string;
     public desc: string;
@@ -65,7 +66,7 @@ export class OpenSettings implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenThemePicker implements Command {
     public name: string;
     public desc: string;
@@ -96,7 +97,7 @@ export class OpenThemePicker implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenViewPicker implements Command {
     public name: string;
     public desc: string;
@@ -127,7 +128,7 @@ export class OpenViewPicker implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenSortMethodPicker implements Command {
     public name: string;
     public desc: string;
@@ -158,7 +159,7 @@ export class OpenSortMethodPicker implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenDirPicker implements Command {
     public name: string;
     public desc: string;
@@ -189,7 +190,7 @@ export class OpenDirPicker implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenFile implements Command {
     public name: string;
     public desc: string;
@@ -224,7 +225,7 @@ export class OpenFile implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenFileWith implements Command {
     public name: string;
     public desc: string;
@@ -257,7 +258,7 @@ export class OpenFileWith implements Command {
     }
 }
 
-@command
+@collect("command")
 export class OpenFilter implements Command {
     public name: string;
     public desc: string;

@@ -2,9 +2,10 @@ import { TabsManager, ModalManager } from "$lib/services";
 import { Delete, Group, Rename, Trash } from "$lib/services/filesystem_actions.svelte";
 import type { i18n } from "i18next";
 import { inject } from "inversify";
-import { command, type Command } from "./commands_registry.svelte";
+import { type Command } from "./commands_registry.svelte";
+import { collect } from "$lib/collector";
 
-@command
+@collect("command")
 export class NewTab implements Command {
     public name: string;
     public desc: string;
@@ -37,7 +38,7 @@ export class NewTab implements Command {
     }
 }
 
-@command
+@collect("command")
 export class CloseTab implements Command {
     public name: string;
     public desc: string;
@@ -70,7 +71,7 @@ export class CloseTab implements Command {
     }
 }
 
-@command
+@collect("command")
 export class NextTab implements Command {
     public name: string;
     public desc: string;
@@ -103,7 +104,7 @@ export class NextTab implements Command {
     }
 }
 
-@command
+@collect("command")
 export class PreviousTab implements Command {
     public name: string;
     public desc: string;
@@ -136,7 +137,7 @@ export class PreviousTab implements Command {
     }
 }
 
-@command
+@collect("command")
 export class RenameCurrentTab implements Command {
     public name: string;
     public desc: string;
@@ -171,7 +172,7 @@ export class RenameCurrentTab implements Command {
     }
 }
 
-@command
+@collect("command")
 export class Commit implements Command {
     public name: string;
     public desc: string;

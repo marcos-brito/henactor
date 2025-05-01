@@ -1,9 +1,10 @@
 import { ConfigManager } from "$lib/services";
 import type { i18n } from "i18next";
-import { command, type Command } from "./commands_registry.svelte";
+import { type Command } from "./commands_registry.svelte";
+import { collect } from "$lib/collector";
 import { inject } from "inversify";
 
-@command
+@collect("command")
 export class SaveSettings implements Command {
     public name: string;
     public desc: string;

@@ -3,7 +3,9 @@ import type { i18n as i18nT } from "i18next";
 import { commands } from "$lib/bindings";
 import { i18n, modalManager, tabsManager } from "$lib";
 import type { StatusProvider } from "./status_registry.svelte";
+import { collect } from "$lib/collector";
 
+@collect("status")
 export class SelectedItems implements StatusProvider {
     public name = "selected";
     public status = $derived.by(() => {
@@ -21,6 +23,7 @@ export class SelectedItems implements StatusProvider {
     }
 }
 
+@collect("status")
 export class StagedActions implements StatusProvider {
     public name = "staged";
     public status = $derived.by(() => {
@@ -38,6 +41,7 @@ export class StagedActions implements StatusProvider {
     }
 }
 
+@collect("status")
 export class DeepSearch implements StatusProvider {
     public name = "DeepSearch";
     public status = $derived.by(() => {
@@ -55,6 +59,7 @@ export class DeepSearch implements StatusProvider {
     }
 }
 
+@collect("status")
 export class QuickSearch implements StatusProvider {
     public name = "QuickSearch";
     public status = $derived.by(() => {
@@ -72,6 +77,7 @@ export class QuickSearch implements StatusProvider {
     }
 }
 
+@collect("status")
 export class Items implements StatusProvider {
     public name = "items";
     public status = $state("0");
