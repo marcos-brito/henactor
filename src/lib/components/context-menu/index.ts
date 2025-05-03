@@ -1,5 +1,5 @@
-import Menu from "./context-menu.svelte";
-import Item from "./context-menu-item.svelte";
-import Sep from "./context-menu-sep.svelte";
+import Root from "./menu.svelte";
+import Item from "./item.svelte";
+import Sep from "./sep.svelte";
 
-export { Menu, Item, Sep };
+export { Root, Item, Sep };

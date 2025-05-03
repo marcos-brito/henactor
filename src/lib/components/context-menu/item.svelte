@@ -12,10 +12,8 @@
     } = $props();
 </script>
 
-<li>
-    <button {onclick} {...props}>
-        {#if children}
-            {@render children()}
-        {/if}
-    </button>
-</li>
+<button class="btn btn-ghost w-full justify-start" {onclick} {...props}>
+    {#if children}
+        {@render children()}
+    {/if}
+</button>
