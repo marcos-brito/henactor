@@ -31,6 +31,9 @@
 
 {@render trigger(showMenu)}
 <ul
+    onclick={() => {
+        menu.hidePopover();
+    }}
     popover="auto"
     bind:this={menu}
     class="rounded-box bg-base-200 w-48"
