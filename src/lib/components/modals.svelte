@@ -1,9 +1,10 @@
 <script lang="ts">
-    import type { ModalManager } from "$lib/services";
     import Settings from "$lib/components/settings/settings.svelte";
     import RenameTabModal from "./tab/rename-tab-modal.svelte";
+    import { tabsManager } from "$lib";
     import TasksModal from "./tasks/tasks-modal.svelte";
     import * as Pallete from "$lib/components/pallete";
+    import * as Search from "$lib/components/search";
     import {
         ActionDelete,
         ActionTrash,
@@ -23,5 +24,6 @@
 <RenameTabModal />
 <ActionDelete />
 <ActionTrash />
-<FilterBox bind:filter={tabsManager.current.filter} />
+<Search.Deep bind:query={tabsManager.current.query} />
+<Search.Quick bind:query={tabsManager.current.filter} />
 <TasksModal />

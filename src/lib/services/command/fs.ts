@@ -213,3 +213,65 @@ export class Rename implements Command {
         );
     }
 }
+
+@collect("command")
+export class QuickSearch implements Command {
+    public name: string;
+    public desc: string;
+    public identifier = "QuickSearch";
+    public keybinds = ["/"];
+    public visible = true;
+
+    constructor(
+        @inject("i18n")
+        private i18n: i18n,
+        @inject(ModalManager)
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("fs.QuickSearch.name", { ns: "commands" });
+        this.desc = this.i18n.t("fs.QuickSearch.desc", { ns: "commands" });
+    }
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return this.modalManager.allClosed();
+    }
+
+    public async execute(): Promise<void> {
+        this.modalManager.show("search:quick");
+    }
+}
+
+@collect("command")
+export class DeepSearch implements Command {
+    public name: string;
+    public desc: string;
+    public identifier = "DeepSearch";
+    public keybinds = ["Control+k"];
+    public visible = true;
+
+    constructor(
+        @inject("i18n")
+        private i18n: i18n,
+        @inject(ModalManager)
+        private modalManager: ModalManager,
+    ) {
+        this.name = this.i18n.t("fs.DeepSearch.name", { ns: "commands" });
+        this.desc = this.i18n.t("fs.DeepSearch.desc", { ns: "commands" });
+    }
+
+    public async canExecute(): Promise<boolean> {
+        return true;
+    }
+
+    public async canTrigger(): Promise<boolean> {
+        return this.modalManager.allClosed();
+    }
+
+    public async execute(): Promise<void> {
+        this.modalManager.show("search:deep");
+    }
+}

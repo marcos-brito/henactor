@@ -133,6 +133,14 @@
         "Create": {
             "name": "Criar",
             "desc": "Cria um novo item"
+        },
+        "DeepSearch": {
+            "name": "Busca profunda",
+            "desc": "Busca items no diretório atual e subdiretórios"
+        },
+        "QuickSearch": {
+            "name": "Busca rápida",
+            "desc": "Busca items no diretório atual"
         }
     },
     "tabs": {
@@ -167,10 +175,6 @@
         "OpenDirPicker": {
             "name": "Abrir seletor de diretório",
             "desc": "Abre o seletor de diretório"
-        },
-        "OpenFilter": {
-            "name": "Abrir filtro",
-            "desc": "Abre caixa de inserção de filtro"
         }
     },
     "keygrabber": {

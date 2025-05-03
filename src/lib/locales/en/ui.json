@@ -22,7 +22,11 @@
         }
     },
     "toolBar": {
-        "filter": "Filter",
+        "search": {
+            "title": "Search",
+            "deepSearch": "Deep search",
+            "quickSearch": "Quick search"
+        },
         "sort": {
             "title": "Sort",
             "methods": {
