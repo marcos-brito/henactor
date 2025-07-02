@@ -1,7 +1,7 @@
 import { type InitOptions, type i18n } from "i18next";
 import * as en from "$lib/locales/en";
 import * as pt from "$lib/locales/pt";
-import { initialLang } from "./config_manager.svelte";
+import { initialLang } from "./config/load";
 
 export function init(instance: i18n) {
     let i18n = $state<i18n>(instance);

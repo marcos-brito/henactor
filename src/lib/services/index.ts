@@ -1,6 +1,6 @@
 import { CommandRegister } from "./command";
 import { Executor } from "./filesystem_actions.svelte";
-import { ConfigManager } from "./config_manager.svelte";
+import { ConfigManager } from "./config/manager.svelte";
 import { ModalManager } from "./modal_manager";
 import { TabsManager } from "./tabs_manager.svelte";
 import { Opener } from "./opener";

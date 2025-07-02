@@ -1,6 +1,5 @@
 import { createInstance, type i18n as i18nT } from "i18next";
 import { init, options } from "$lib/services/locale.svelte";
-import { configPath, userConfig, userThemes } from "$lib/services/config_manager.svelte";
 import { ConfigManager, ModalManager, TabsManager, CommandRegister, Opener } from "$lib/services";
 import { allCommands } from "$lib/services/command";
 import { TaskManager } from "./services/task_manager.svelte";
@@ -12,6 +11,7 @@ import {
     QuickSearch,
     SelectedItems,
 } from "./services/status";
+import { configPath, userConfig, userThemes } from "$lib/services/config/load";
 import { Container } from "inversify";
 
 export const container = new Container();
