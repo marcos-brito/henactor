@@ -1,23 +1,32 @@
 <script lang="ts">
     import { i18n } from "$lib";
-    import Modal from "../modal.svelte";
-    import { PageGeneral, PageAppearence, PageKeybinds, PageOpeners } from "./page";
+    import Modal from "$lib/components/modal.svelte";
+    import * as Pages from "./pages";
 
-    const pages = ["general", "appearance", "pins", "keybinds", "openers"] as const;
-    let currentPage: (typeof pages)[number] = $state("general");
+    type Page = keyof typeof pages;
+
+    const pages = {
+        general: Pages.General,
+        appearence: Pages.Appearence,
+        keybinds: Pages.Keybinds,
+        openers: Pages.Openers,
+    };
+
+    let current: Page = $state("general");
+    let CurrentPage = $derived(pages[current]);
 </script>
 
 <Modal name="settings" class="max-w-5xl">
     <section class="mt-4 grid grid-cols-[150px_1fr]">
         <aside class="h-full overflow-auto">
             <ul class="menu">
-                {#each pages as page}
+                {#each Object.keys(pages) as page}
                     <li>
                         <button
-                            class:menu-active={page == currentPage}
+                            class:menu-active={page == current}
                             type="button"
-                            class={page == currentPage ? "active" : ""}
-                            onclick={() => (currentPage = page)}
+                            class={page == current ? "active" : ""}
+                            onclick={() => (current = page as Page)}
                             >{i18n.t(`settings:${page}.name`)}</button
                         >
                     </li>
@@ -25,21 +34,7 @@
             </ul>
         </aside>
         <main class="h-[80vh] overflow-auto">
-            {#if currentPage == "general"}
-                <PageGeneral />
-            {/if}
-            {#if currentPage == "appearance"}
-                <PageAppearence />
-            {/if}
-            {#if currentPage == "keybinds"}
-                <PageKeybinds />
-            {/if}
-            {#if currentPage == "pins"}
-                <h1>todo</h1>
-            {/if}
-            {#if currentPage == "openers"}
-                <PageOpeners />
-            {/if}
+            <CurrentPage />
         </main>
     </section>
 </Modal>
