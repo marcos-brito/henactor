@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
     import Modal from "$lib/components/modal.svelte";
-    import ItemBase from "./item-base.svelte";
+    import Base from ".";
     import { i18n, modalManager } from "$lib";
 
     let {
@@ -17,7 +17,7 @@
     const modalName = `settings.${name}`;
 </script>
 
-<ItemBase {name} {desc}>
+<Base {name} {desc}>
     <div>
         <button class="btn btn-sm" type="button" onclick={() => modalManager.show(modalName)}
             >{i18n.t("configure", { ns: "settings" })}</button
@@ -30,4 +30,4 @@
         </div>
         {@render children()}
     </Modal>
-</ItemBase>
+</Base>

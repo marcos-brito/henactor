@@ -1,7 +1,7 @@
 <script lang="ts">
     import { configManager, i18n, modalManager, opener } from "$lib";
     import Modal from "$lib/components/modal.svelte";
-    import { ItemOpener } from "../item";
+    import { Opener } from "../items";
 
     const openers = $derived(Object.entries(configManager.config.openers));
     let newOpener = $state({ pattern: "", app: "" });
@@ -50,7 +50,7 @@
             <h1>{i18n.t("openers.noneDefined", { ns: "settings" })}</h1>
         {/if}
         {#each openers as [pattern, app]}
-            <ItemOpener {pattern} {app} />
+            <Opener {pattern} {app} />
         {/each}
     </article>
 </section>

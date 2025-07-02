@@ -1,7 +1,7 @@
 <script lang="ts">
     import IconWithFallback from "$lib/components/icon/icon-with-fallback.svelte";
     import { PencilIcon, XIcon } from "lucide-svelte";
-    import ItemBase from "./item-base.svelte";
+    import Base from ".";
     import { i18n, modalManager, opener } from "$lib";
     import Modal from "$lib/components/modal.svelte";
 
@@ -43,7 +43,7 @@
     </article>
 </Modal>
 
-<ItemBase name={pattern} desc={i18n.t("openers.opensWith", { ns: "settings", app })}>
+<Base name={pattern} desc={i18n.t("openers.opensWith", { ns: "settings", app })}>
     <article class="flex gap-2">
         <div
             class="tooltip tooltip-bottom"
@@ -74,4 +74,4 @@
             </button>
         </div>
     </article>
-</ItemBase>
+</Base>

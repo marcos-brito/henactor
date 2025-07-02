@@ -1,7 +1,7 @@
 <script lang="ts">
     import { i18n, commandRegister, configManager } from "$lib";
     import Fuse from "fuse.js";
-    import ItemCmd from "../item/item-cmd.svelte";
+    import { Cmd } from "../items";
     import Keygrabber from "../keygrabber.svelte";
     import { KeyboardIcon, XIcon } from "lucide-svelte";
     import { IconWithFallback } from "$lib/components/icon";
@@ -111,7 +111,7 @@
     <article>
         {#if query}
             {#each results.filter((r) => shouldShow(r.item, keyFilters)) as result}
-                <ItemCmd
+                <Cmd
                     {result}
                     cmd={result.item}
                     bind:value={configManager.config.keybinds[result.item.identifier]}
@@ -119,7 +119,7 @@
             {/each}
         {:else}
             {#each commands.filter((r) => shouldShow(r, keyFilters)) as cmd}
-                <ItemCmd {cmd} bind:value={configManager.config.keybinds[cmd.identifier]} />
+                <Cmd {cmd} bind:value={configManager.config.keybinds[cmd.identifier]} />
             {/each}
         {/if}
     </article>

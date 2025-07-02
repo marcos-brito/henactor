@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ItemBase from "./item-base.svelte";
+    import Base from ".";
 
     let {
         name,
@@ -16,7 +16,7 @@
     } = $props();
 </script>
 
-<ItemBase {name} {desc}>
+<Base {name} {desc}>
     <select
         onchange={() => {
             if (onChange) {
@@ -35,4 +35,4 @@
             {/if}
         {/each}
     </select>
-</ItemBase>
+</Base>

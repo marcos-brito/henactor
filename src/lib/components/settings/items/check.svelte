@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ItemBase from "./item-base.svelte";
+    import Base from ".";
 
     let {
         name,
@@ -12,6 +12,6 @@
     } = $props();
 </script>
 
-<ItemBase {name} {desc}>
+<Base {name} {desc}>
     <input type="checkbox" bind:checked class="toggle" />
-</ItemBase>
+</Base>
