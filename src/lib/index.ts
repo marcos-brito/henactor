@@ -21,6 +21,7 @@ container.bind(services.Opener).toSelf().inSingletonScope();
 container.bind(services.CommandRegister).toSelf().inSingletonScope();
 container.bind(services.StatusRegistry).toSelf().inSingletonScope();
 container.bind(services.TaskManager).toSelf().inSingletonScope();
+container.bind(services.Observer).toSelf().inSingletonScope();
 
 container.get(services.CommandRegister).registerMany(
     ...allOf("command").map((cmd) => {
@@ -44,5 +45,6 @@ export const opener = container.get(services.Opener);
 export const tabsManager = container.get(services.TabsManager);
 export const taskManager = container.get(services.TaskManager);
 export const statusRegistry = container.get(services.StatusRegistry);
+export const observer = container.get(services.Observer);
 
 configManager.watch();
