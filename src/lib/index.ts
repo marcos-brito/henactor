@@ -1,54 +1,48 @@
 import { createInstance, type i18n as i18nT } from "i18next";
 import { init, options } from "$lib/services/locale.svelte";
-import { ConfigManager, ModalManager, TabsManager, CommandRegister, Opener } from "$lib/services";
-import { allCommands } from "$lib/services/command";
-import { TaskManager } from "./services/task_manager.svelte";
-import {
-    StatusRegistry,
-    Items,
-    DeepSearch,
-    StagedActions,
-    QuickSearch,
-    SelectedItems,
-} from "./services/status";
 import { configPath, userConfig, userThemes } from "$lib/services/config/load";
+import * as services from "$lib/services";
 import { Container } from "inversify";
+import { allOf } from "$lib/collector";
 
 export const container = new Container();
 
 container
-    .bind(ConfigManager)
-    .toConstantValue(new ConfigManager(configPath, userConfig, userThemes));
+    .bind(services.ConfigManager)
+    .toConstantValue(new services.ConfigManager(configPath, userConfig, userThemes));
 
 container
     .bind<i18nT>("i18n")
     .toConstantValue(init(createInstance(options, (e, t) => console.log(e, t))));
 
-container.bind(CommandRegister).toSelf().inSingletonScope();
-container.bind(ModalManager).toSelf().inSingletonScope();
-container.bind(TabsManager).toSelf().inSingletonScope();
-container.bind(Opener).toSelf().inSingletonScope();
+container.bind(services.ModalManager).toSelf().inSingletonScope();
+container.bind(services.TabsManager).toSelf().inSingletonScope();
+container.bind(services.Opener).toSelf().inSingletonScope();
+container.bind(services.CommandRegister).toSelf().inSingletonScope();
+container.bind(services.StatusRegistry).toSelf().inSingletonScope();
+container.bind(services.TaskManager).toSelf().inSingletonScope();
 
-container.get(CommandRegister).registerMany(
-    ...allCommands().map((cmd) => {
+container.get(services.CommandRegister).registerMany(
+    ...allOf("command").map((cmd) => {
         container.bind(cmd).toSelf();
         return container.get(cmd);
     }),
 );
 
-export const configManager = container.get(ConfigManager);
-export const commandRegister = container.get(CommandRegister);
-export const modalManager = container.get(ModalManager);
-export const i18n = container.get<i18nT>("i18n");
-export const opener = container.get(Opener);
-export const tabsManager = container.get(TabsManager);
-export const taskManager = new TaskManager();
-export const statusRegistry = new StatusRegistry();
+container.get(services.StatusRegistry).registerMany(
+    ...allOf("status").map((status) => {
+        container.bind(status).toSelf();
+        return container.get(status);
+    }),
+);
 
-statusRegistry.add(new Items(i18n, tabsManager));
-statusRegistry.add(new StagedActions());
-statusRegistry.add(new SelectedItems());
-statusRegistry.add(new DeepSearch());
-statusRegistry.add(new QuickSearch());
+export const configManager = container.get(services.ConfigManager);
+export const commandRegister = container.get(services.CommandRegister);
+export const modalManager = container.get(services.ModalManager);
+export const i18n = container.get<i18nT>("i18n");
+export const opener = container.get(services.Opener);
+export const tabsManager = container.get(services.TabsManager);
+export const taskManager = container.get(services.TaskManager);
+export const statusRegistry = container.get(services.StatusRegistry);
 
 configManager.watch();
