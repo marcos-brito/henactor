@@ -2,9 +2,15 @@ import { describe, it, expect } from "vitest";
 import { StatusRegistry, type StatusProvider } from "./registry";
 
 class MockProvider implements StatusProvider {
-    public status = "";
-
     constructor(public name: string) {}
+
+    public status(): string {
+        return "";
+    }
+
+    public isVisible(): boolean {
+        return false;
+    }
 }
 
 describe("StatusRegistry", () => {

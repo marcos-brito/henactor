@@ -37,12 +37,28 @@ class Tab {
         this.set("path", path);
     }
 
-    public get query() {
+    public get quickSearch() {
+        return this.tab.filter;
+    }
+
+    public set quickSearch(query: string) {
+        this.set("query", query);
+    }
+
+    public get deepSearch() {
         return this.tab.query;
     }
 
-    public set query(query: string) {
+    public set deepSearch(query: string) {
         this.set("query", query);
+    }
+
+    public get selected() {
+        return this.tab.selected;
+    }
+
+    public set selected(selected: Array<string>) {
+        this.tab.selected = selected;
     }
 
     private set<K extends keyof InternalTab>(prop: K, value: InternalTab[K]) {

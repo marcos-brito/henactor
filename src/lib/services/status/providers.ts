@@ -1,98 +1,142 @@
-import type { TabsManager } from "$lib/services";
+import { ModalManager, TabsManager } from "$lib/services";
 import type { i18n as i18nT } from "i18next";
 import { commands } from "$lib/bindings";
-import { i18n, modalManager, tabsManager } from "$lib";
-import type { StatusProvider } from "./status_registry.svelte";
+import type { StatusProvider } from "./registry";
 import { collect } from "$lib/collector";
+import { inject } from "inversify";
+import { type i18n } from "i18next";
+import type { CoreEvents } from "$lib/services/observer";
 
 @collect("status")
 export class SelectedItems implements StatusProvider {
-    public name = "selected";
-    public status = $derived.by(() => {
-        if (tabsManager.current.selected.length > 0)
-            return i18n.t("statusBar.selectedItems", {
-                ns: "ui",
-                count: tabsManager.current.selected.length,
-            });
+    public name = "selectedItems";
+    public events: Array<keyof CoreEvents> = ["tab:changed"];
 
-        return "";
-    });
+    constructor(
+        @inject("i18n")
+        private i18n: i18n,
+        @inject(TabsManager)
+        private tabsManager: TabsManager,
+    ) {}
+
+    public status(): string {
+        return this.i18n.t("statusBar.selectedItems", {
+            ns: "ui",
+            count: this.tabsManager.current.selected.length,
+        });
+    }
+
+    public isVisible(): boolean {
+        return this.tabsManager.current.selected.length > 0;
+    }
 
     public onClick(): void {
-        tabsManager.current.selected = [];
+        this.tabsManager.current.selected = [];
     }
 }
 
 @collect("status")
 export class StagedActions implements StatusProvider {
-    public name = "staged";
-    public status = $derived.by(() => {
-        if (tabsManager.current.executor.staged.length > 0)
-            return i18n.t("statusBar.stagedActions", {
-                ns: "ui",
-                count: tabsManager.current.executor.staged.length,
-            });
+    public name = "stagedActions";
+    public events: Array<keyof CoreEvents> = ["tab:changed"];
 
-        return "";
-    });
+    constructor(
+        @inject("i18n")
+        private i18n: i18n,
+        @inject(TabsManager)
+        private tabsManager: TabsManager,
+        @inject(ModalManager)
+        private modalManager: ModalManager,
+    ) {}
+
+    public status(): string {
+        return this.i18n.t("statusBar.stagedActions", {
+            ns: "ui",
+            count: this.tabsManager.current.executor.staged.length,
+        });
+    }
+
+    public isVisible(): boolean {
+        return this.tabsManager.current.executor.staged.length > 0;
+    }
 
     public onClick(): void {
-        modalManager.show("commit");
+        this.modalManager.show("commit");
     }
 }
 
 @collect("status")
 export class DeepSearch implements StatusProvider {
-    public name = "DeepSearch";
-    public status = $derived.by(() => {
-        if (tabsManager.current.query)
-            return i18n.t("statusBar.searchingBy", {
-                ns: "ui",
-                query: tabsManager.current.query,
-            });
+    public name = "deepSearch";
+    public events: Array<keyof CoreEvents> = ["tab:changed"];
 
-        return "";
-    });
+    constructor(
+        @inject("i18n")
+        private i18n: i18n,
+        @inject(TabsManager)
+        private tabsManager: TabsManager,
+    ) {}
+
+    public status(): string {
+        return this.i18n.t("statusBar.searchingBy", {
+            ns: "ui",
+            query: this.tabsManager.current.deepSearch,
+        });
+    }
+
+    public isVisible(): boolean {
+        return this.tabsManager.current.deepSearch.trim() != "";
+    }
 
     public onClick(): void {
-        tabsManager.current.query = "";
+        this.tabsManager.current.deepSearch = "";
     }
 }
 
 @collect("status")
 export class QuickSearch implements StatusProvider {
-    public name = "QuickSearch";
-    public status = $derived.by(() => {
-        if (tabsManager.current.filter)
-            return i18n.t("statusBar.searchingBy", {
-                ns: "ui",
-                query: tabsManager.current.filter,
-            });
+    public name = "quickSearch";
+    public events: Array<keyof CoreEvents> = ["tab:changed"];
 
-        return "";
-    });
+    constructor(
+        @inject("i18n")
+        private i18n: i18n,
+        @inject(TabsManager)
+        private tabsManager: TabsManager,
+    ) {}
+
+    public status(): string {
+        return this.i18n.t("statusBar.searchingBy", {
+            ns: "ui",
+            query: this.tabsManager.current.quickSearch,
+        });
+    }
+
+    public isVisible(): boolean {
+        return this.tabsManager.current.quickSearch.trim() != "";
+    }
 
     public onClick(): void {
-        tabsManager.current.filter = "";
+        this.tabsManager.current.quickSearch = "";
     }
 }
 
-@collect("status")
 export class Items implements StatusProvider {
     public name = "items";
-    public status = $state("0");
+    public events: Array<keyof CoreEvents> = ["tab:changed"];
 
     constructor(
         private i18n: i18nT,
         private tabsManager: TabsManager,
-    ) {
-        this.refresh();
+    ) {}
 
-        setInterval(() => this.refresh(), 1000);
+    public async status(): Promise<string> {
+        const entries = await commands.list(this.tabsManager.current.path);
+
+        return this.i18n.t("statusBar.items", { ns: "ui", count: entries.length });
     }
 
-    public async refresh(): Promise<void> {
-        const entries = await commands.list(this.tabsManager.current.path);
-        this.status = this.i18n.t("statusBar.items", { ns: "ui", count: entries.length });
+    public isVisible(): boolean {
+        return true;
     }
 }

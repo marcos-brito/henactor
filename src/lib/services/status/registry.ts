@@ -1,9 +1,13 @@
+import type { CoreEvents } from "$lib/services/observer";
 import { injectable } from "inversify";
 import { SvelteMap } from "svelte/reactivity";
 
 export interface StatusProvider {
     name: string;
-    status: string;
+    refreshRate?: number;
+    events?: Array<keyof CoreEvents>;
+    status(): string | Promise<string>;
+    isVisible(): boolean;
     onClick?: () => void;
 }
 
