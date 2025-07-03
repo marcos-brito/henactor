@@ -2,17 +2,14 @@ pub mod cache;
 pub mod config;
 pub mod fs;
 pub mod open;
+pub mod task;
 
 use notify::RecommendedWatcher;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use specta::Type;
 use specta_typescript::{BigIntExportBehavior, Typescript};
 use std::sync::Mutex;
-use tauri_specta::Event;
 use tauri_specta::{collect_commands, collect_events, Builder, ErrorHandlingMode};
-
-#[derive(Serialize, Deserialize, Debug, Type, Event, Clone)]
-pub struct TaskKillEvent(u32);
 
 type Result<T> = std::result::Result<T, Error>;
 
@@ -73,7 +70,7 @@ pub fn run() {
             open::find_openers,
             cache::download_or_find
         ])
-        .events(collect_events![fs::watch::WatchEvent, TaskKillEvent])
+        .events(collect_events![fs::watch::WatchEvent, task::TaskEvent])
         .error_handling(ErrorHandlingMode::Throw);
 
     #[cfg(debug_assertions)]
