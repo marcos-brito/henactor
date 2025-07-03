@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { StatusRegistry, type StatusProvider } from "./status_registry.svelte";
+import { StatusRegistry, type StatusProvider } from "./registry";
 
 class MockProvider implements StatusProvider {
     public status = "";

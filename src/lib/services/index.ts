@@ -4,7 +4,7 @@ import { ConfigManager } from "./config/manager.svelte";
 import { ModalManager } from "./modal_manager";
 import { TabsManager } from "./tabs_manager.svelte";
 import { Opener } from "./opener";
-import { StatusRegistry } from "./status";
+import { StatusRegistry } from "./status/registry";
 import { Observer } from "./observer";
 
 export {
