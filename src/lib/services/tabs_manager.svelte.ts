@@ -1,7 +1,14 @@
 import type { Tab as InternalTab } from "$lib/bindings";
 import { inject, injectable } from "inversify";
-import { ConfigManager, Executor } from ".";
+import { ConfigManager, Executor, Observer } from "$lib/services";
 
+declare module "$lib/services/observer" {
+    interface CoreEvents {
+        "tab:opened": { tab: Tab };
+        "tab:closed": { tab: Tab };
+        "tab:changed": { tab: Tab; change: keyof InternalTab };
+    }
+}
 
 class Tab {
     private tab: InternalTab;
@@ -40,6 +47,10 @@ class Tab {
 
     private set<K extends keyof InternalTab>(prop: K, value: InternalTab[K]) {
         this.tab[prop] = value;
+        this.observer.emit("tab:changed", {
+            tab: this,
+            change: prop,
+        });
     }
 }
 
@@ -86,6 +97,7 @@ export class TabsManager {
 
         this.tabs.push(tab);
         this.currentIdx = this.tabs.length;
+        this.observer.emit("tab:opened", { tab });
     }
 
     public duplicate(idx: number): void {
