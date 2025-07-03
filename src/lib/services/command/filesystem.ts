@@ -1,8 +1,8 @@
 import { TabsManager, ModalManager, ConfigManager } from "$lib/services";
 import { type Command } from "./commands_registry.svelte";
 import { collect } from "$lib/collector";
-import type { Action } from "$lib/services/filesystem_actions.svelte";
-import * as actions from "$lib/services/filesystem_actions.svelte";
+import type { Action } from "$lib/services/filesystem/executor.svelte";
+import * as actions from "$lib/services/filesystem/actions";
 import { type i18n } from "i18next";
 import { inject } from "inversify";
 
