@@ -12,24 +12,6 @@ pub struct Entry {
     details: EntryDetails,
 }
 
-impl TryFrom<&fs::DirEntry> for Entry {
-    type Error = anyhow::Error;
-
-    fn try_from(entry: &fs::DirEntry) -> std::result::Result<Self, Self::Error> {
-        Ok(Self {
-            name: entry.file_name().to_string_lossy().to_string(),
-            path: entry.path(),
-            entry_type: entry
-                .file_type()
-                .map(|file_type| file_type.into())
-                .with_context(|| {
-                    format!("Failed to get file type of {}", entry.path().display())
-                })?,
-            details: entry.metadata().map(|metadata| metadata.into())?,
-        })
-    }
-}
-
 impl TryFrom<PathBuf> for Entry {
     type Error = io::Error;
 
@@ -43,6 +25,14 @@ impl TryFrom<PathBuf> for Entry {
             details: metadata.into(),
             path,
         })
+    }
+}
+
+impl TryFrom<&fs::DirEntry> for Entry {
+    type Error = io::Error;
+
+    fn try_from(entry: &fs::DirEntry) -> Result<Self, Self::Error> {
+        Entry::try_from(entry.path())
     }
 }
 
