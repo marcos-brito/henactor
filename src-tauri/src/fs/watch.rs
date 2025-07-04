@@ -13,17 +13,20 @@ pub struct WatchEvent(String);
 
 fn create_watcher(app: AppHandle) -> anyhow::Result<RecommendedWatcher> {
     Ok(recommended_watcher(move |res| match res {
+    let watcher = recommended_watcher(move |res| match res {
         Ok(event) => {
             if should_emit(&event) {
                 for path in event.paths {
                     if let Err(e) = WatchEvent(format!("{}", path.display())).emit(&app) {
-                        warn!("Failed to emit watch event: {e}")
+                        warn!("failed to emit watch event: {e}")
                     }
                 }
             }
-        } // what should we do with this?
-        Err(_) => (),
-    })?)
+        }
+        Err(e) => warn!("watch error: {e}"),
+    })?;
+
+    Ok(watcher)
 }
 
 fn should_emit(event: &notify::Event) -> bool {
