@@ -9,7 +9,7 @@ use std::time::SystemTime;
 pub struct Entry {
     name: String,
     path: PathBuf,
-    entry_type: EntryType,
+    kind: Kind,
     details: EntryDetails,
 }
 
@@ -76,14 +76,14 @@ impl From<fs::Metadata> for EntryDetails {
 pub struct Permissions {}
 
 #[derive(Serialize, Deserialize, Type, Clone, PartialOrd, Ord, PartialEq, Eq, Debug)]
-pub enum EntryType {
+pub enum Kind {
     Directory,
     File,
     Symlink,
 }
 
-impl std::fmt::Display for EntryType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl fmt::Display for Kind {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Directory => write!(f, "directory"),
             Self::File => write!(f, "file"),
@@ -92,16 +92,16 @@ impl std::fmt::Display for EntryType {
     }
 }
 
-impl From<fs::FileType> for EntryType {
+impl From<fs::FileType> for Kind {
     fn from(file_type: fs::FileType) -> Self {
         if file_type.is_dir() {
-            return EntryType::Directory;
+            return Kind::Directory;
         }
 
         if file_type.is_symlink() {
-            return EntryType::Symlink;
+            return Kind::Symlink;
         }
 
-        EntryType::File
+        Kind::File
     }
 }

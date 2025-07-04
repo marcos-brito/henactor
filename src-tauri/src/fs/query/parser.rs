@@ -1,5 +1,5 @@
 use super::ast::{BinaryOperator, Expr, Property, Unary};
-use crate::fs::EntryType;
+use crate::fs::entry::Kind;
 use anyhow::Result;
 use pest::iterators::{Pair, Pairs};
 use pest::pratt_parser::{Assoc, Op, PrattParser};
@@ -72,9 +72,9 @@ pub fn convert(pairs: Pairs<Rule>) -> Expr {
 
 fn convert_entry_kind(pair: Pair<Rule>) -> Expr {
     match pair.as_rule() {
-        Rule::file => Expr::Kind(EntryType::File),
-        Rule::dir => Expr::Kind(EntryType::Directory),
-        Rule::link => Expr::Kind(EntryType::Symlink),
+        Rule::file => Expr::Kind(Kind::File),
+        Rule::dir => Expr::Kind(Kind::Directory),
+        Rule::link => Expr::Kind(Kind::Symlink),
         _ => unreachable!(),
     }
 }
@@ -183,7 +183,7 @@ mod test {
             (
                 "file and size < 2.3MB",
                 Expr::Binary {
-                    lhs: Box::new(Expr::Kind(EntryType::File)),
+                    lhs: Box::new(Expr::Kind(Kind::File)),
                     op: BinaryOperator::And,
                     rhs: Box::new(Expr::Binary {
                         lhs: Box::new(Expr::Property(Property::Size)),

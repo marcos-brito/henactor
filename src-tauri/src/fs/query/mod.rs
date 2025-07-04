@@ -1,8 +1,8 @@
-use super::Entry;
 use crate::{Result, TaskKillEvent};
 use anyhow::Context;
 use serde::Serialize;
 use specta::Type;
+use crate::fs::entry::Entry;
 use std::path::PathBuf;
 use std::sync::{
     atomic::{AtomicBool, Ordering},

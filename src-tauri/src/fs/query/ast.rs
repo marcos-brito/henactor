@@ -1,4 +1,4 @@
-use crate::fs::EntryType;
+use crate::fs::entry::Kind;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Expr {
@@ -14,7 +14,7 @@ pub enum Expr {
     Date(String),
     Word(String),
     Property(Property),
-    Kind(EntryType),
+    Kind(Kind),
     PrettyByte(String),
     Regex(String),
 }
@@ -69,5 +69,5 @@ pub trait Visitor {
     fn visit_pretty_byte(&self, _str: String) -> Self::Item;
     fn visit_regex(&self, _str: String) -> Self::Item;
     fn visit_property(&self, _prop: Property) -> Self::Item;
-    fn visit_kind(&self, _kind: EntryType) -> Self::Item;
+    fn visit_kind(&self, _kind: Kind) -> Self::Item;
 }

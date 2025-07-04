@@ -1,5 +1,5 @@
 use super::ast::{BinaryOperator, Expr, Property, Unary, Visitor};
-use crate::fs::{Entry, EntryType};
+use crate::fs::entry::{Entry, Kind};
 use anyhow::{Context, Result};
 use bytesize::ByteSize;
 use std::time::SystemTime;
@@ -278,7 +278,7 @@ impl<'a> Visitor for Evaluator<'a> {
         Ok(Literal(str).into())
     }
 
-    fn visit_kind(&self, kind: EntryType) -> Self::Item {
+    fn visit_kind(&self, kind: Kind) -> Self::Item {
         Ok(Literal(kind.to_string()).into())
     }
 
