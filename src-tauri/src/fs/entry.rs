@@ -1,9 +1,8 @@
-use anyhow::Context;
 use serde::{Deserialize, Serialize};
 use specta::Type;
-use std::fs;
 use std::path::PathBuf;
 use std::time::SystemTime;
+use std::{fmt, fs, io};
 
 #[derive(Serialize, Deserialize, Type, Clone)]
 pub struct Entry {
@@ -32,19 +31,15 @@ impl TryFrom<&fs::DirEntry> for Entry {
 }
 
 impl TryFrom<PathBuf> for Entry {
-    type Error = anyhow::Error;
+    type Error = io::Error;
 
-    fn try_from(path: PathBuf) -> std::result::Result<Self, Self::Error> {
-        let metadata = path
-            .metadata()
-            .with_context(|| format!("Failed to get metadata of {}", path.display()))?;
-
-        Ok(Self {
+    fn try_from(path: PathBuf) -> Result<Self, Self::Error> {
+        path.metadata().map(|metadata| Self {
             name: path
                 .file_name()
                 .map(|name| name.to_string_lossy().to_string())
-                .with_context(|| format!("Failed to get file name for {}", path.display()))?,
-            entry_type: metadata.file_type().into(),
+                .unwrap_or(String::new()),
+            kind: metadata.file_type().into(),
             details: metadata.into(),
             path,
         })
