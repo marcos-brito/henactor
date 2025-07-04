@@ -5,38 +5,47 @@ pub mod open;
 pub mod task;
 
 use notify::RecommendedWatcher;
-use serde::Serialize;
-use specta::Type;
+use serde::ser::{Serialize, SerializeSeq};
 use specta_typescript::{BigIntExportBehavior, Typescript};
 use std::sync::Mutex;
 use tauri_specta::{collect_commands, collect_events, Builder, ErrorHandlingMode};
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, Type, Serialize)]
-pub struct Error {
-    err: String,
-    causes: Vec<String>,
+#[derive(thiserror::Error, Debug, specta::Type)]
+pub enum Error {
+    #[specta(skip)]
+    Io(#[from] std::io::Error),
+    #[specta(skip)]
+    Request(#[from] reqwest::Error),
 }
 
-impl std::error::Error for Error {}
+impl Serialize for Error {
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: serde::ser::Serializer,
+    {
+        let causes = collect_sources(self);
+        let mut seq = serializer.serialize_seq(Some(1 + causes.len()))?;
 
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:#}", self)
-    }
-}
-
-// This actually makes required to return anyhow::Error from any command. First I thought
-// it was bad. Now I think it might be good because we want to allow users to see the error details
-// in the UI and without anyhow's context they would get less useful. For now i'm keeping it.
-impl From<anyhow::Error> for Error {
-    fn from(value: anyhow::Error) -> Self {
-        Self {
-            err: value.to_string(),
-            causes: value.chain().map(|err| err.to_string()).collect(),
+        for cause in causes {
+            seq.serialize_element(&cause)?;
         }
+
+        seq.end()
     }
+}
+
+pub fn collect_sources(err: &(dyn std::error::Error + 'static)) -> Vec<String> {
+    let mut sources = Vec::new();
+    let mut current = Some(err);
+
+    while let Some(e) = current {
+        sources.push(e.to_string());
+        current = e.source();
+    }
+
+    sources
 }
 
 pub struct AppState {
