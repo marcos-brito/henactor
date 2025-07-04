@@ -106,7 +106,7 @@ struct Date(SystemTime);
 
 impl Obj for Date {
     fn to_bool(&self, entry: &Entry) -> Bool {
-        Bool(entry.details.created.is_some_and(|c| self.0 == c))
+        Bool(entry.created_at().is_some_and(|c| self.0 == c))
     }
 }
 
@@ -132,7 +132,7 @@ struct Literal(String);
 
 impl Obj for Literal {
     fn to_bool(&self, entry: &Entry) -> Bool {
-        Bool(entry.name.to_lowercase().contains(&self.0))
+        Bool(entry.name().to_lowercase().contains(&self.0))
     }
 }
 
@@ -160,8 +160,8 @@ struct Regex(regex::Regex);
 impl Obj for Regex {
     fn to_bool(&self, entry: &Entry) -> Bool {
         Bool(
-            self.0.is_match(&entry.name)
-                || self.0.is_match(&entry.path.to_string_lossy().to_string()),
+            self.0.is_match(entry.name())
+                || self.0.is_match(&entry.path().to_string_lossy().to_string()),
         )
     }
 }
@@ -186,7 +186,7 @@ struct Number(u64);
 
 impl Obj for Number {
     fn to_bool(&self, entry: &Entry) -> Bool {
-        Bool(entry.details.size == self.0)
+        Bool(entry.size() == self.0)
     }
 }
 
@@ -256,18 +256,16 @@ impl<'a> Visitor for Evaluator<'a> {
 
     fn visit_property(&self, prop: Property) -> Self::Item {
         let obj = match prop {
-            Property::Name => Literal(self.entry.name.clone()).into(),
-            Property::Path => Literal(self.entry.path.to_string_lossy().to_string()).into(),
-            Property::Size => Number(self.entry.details.size).into(),
-            Property::Kind => Literal(self.entry.entry_type.to_string()).into(),
-            Property::Created => {
-                Date(self.entry.details.created.unwrap_or(SystemTime::now())).into()
-            }
+            Property::Name => Literal(self.entry.name().to_string()).into(),
+            Property::Path => Literal(self.entry.path().to_string_lossy().to_string()).into(),
+            Property::Size => Number(self.entry.size()).into(),
+            Property::Kind => Literal(self.entry.kind().to_string()).into(),
+            Property::Created => Date(self.entry.created_at().unwrap_or(SystemTime::now())).into(),
             Property::Modified => {
-                Date(self.entry.details.modified.unwrap_or(SystemTime::now())).into()
+                Date(self.entry.modified_at().unwrap_or(SystemTime::now())).into()
             }
             Property::Accessed => {
-                Date(self.entry.details.accessed.unwrap_or(SystemTime::now())).into()
+                Date(self.entry.accessed_at().unwrap_or(SystemTime::now())).into()
             }
         };
 

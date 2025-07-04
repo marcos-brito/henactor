@@ -15,6 +15,39 @@ pub struct Entry {
     accessed_at: Option<SystemTime>,
     modified_at: Option<SystemTime>,
 }
+
+impl Entry {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn path(&self) -> &PathBuf {
+        &self.path
+    }
+
+    pub fn kind(&self) -> &Kind {
+        &self.kind
+    }
+
+    pub fn mime(&self) -> Option<&str> {
+        self.mime.as_deref()
+    }
+
+    pub fn size(&self) -> u64 {
+        self.size.clone()
+    }
+
+    pub fn created_at(&self) -> Option<SystemTime> {
+        self.created_at.clone()
+    }
+
+    pub fn accessed_at(&self) -> Option<SystemTime> {
+        self.accessed_at.clone()
+    }
+
+    pub fn modified_at(&self) -> Option<SystemTime> {
+        self.modified_at.clone()
+    }
 }
 
 impl TryFrom<PathBuf> for Entry {
