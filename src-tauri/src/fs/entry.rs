@@ -58,7 +58,7 @@ impl TryFrom<PathBuf> for Entry {
             name: path
                 .file_name()
                 .map(|name| name.to_string_lossy().to_string())
-                .unwrap_or(String::new()),
+                .unwrap_or("..".to_string()),
             mime: mime_guess::from_path(&path)
                 .first()
                 .map(|guess| guess.to_string()),
