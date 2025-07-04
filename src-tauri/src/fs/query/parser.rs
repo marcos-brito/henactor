@@ -7,7 +7,7 @@ use pest::Parser;
 use std::sync::OnceLock;
 
 #[derive(pest_derive::Parser)]
-#[grammar = "fs/filter.pest"]
+#[grammar = "fs/query/query.pest"]
 pub struct FilterParser;
 
 fn parser() -> &'static PrattParser<Rule> {
@@ -95,7 +95,7 @@ fn convert_property(pair: Pair<Rule>) -> Expr {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::fs::filter::parser::Expr;
+    use crate::fs::query::parser::Expr;
 
     use anyhow::Result;
 
