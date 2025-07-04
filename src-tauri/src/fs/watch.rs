@@ -1,5 +1,4 @@
 use crate::{AppState, Result};
-use anyhow::Context;
 use log::warn;
 use notify::{recommended_watcher, EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 use serde::{Deserialize, Serialize};
@@ -11,8 +10,7 @@ use tauri_specta::Event;
 #[derive(Serialize, Deserialize, Debug, Type, Event, Clone)]
 pub struct WatchEvent(String);
 
-fn create_watcher(app: AppHandle) -> anyhow::Result<RecommendedWatcher> {
-    Ok(recommended_watcher(move |res| match res {
+fn create_watcher(app: AppHandle) -> Result<RecommendedWatcher> {
     let watcher = recommended_watcher(move |res| match res {
         Ok(event) => {
             if should_emit(&event) {
@@ -45,27 +43,27 @@ pub fn watch(app: AppHandle, state: State<AppState>, path: PathBuf, recursive: b
         *watcher = Some(create_watcher(app)?);
     }
 
-    watcher
-        .as_mut()
-        .unwrap()
-        .watch(
+    if let Some(watcher) = watcher.as_mut() {
+        watcher.watch(
             &path,
             match recursive {
                 true => RecursiveMode::Recursive,
                 false => RecursiveMode::NonRecursive,
             },
-        )
-        .with_context(|| format!("Failed to watch {}", path.display()))?;
+        )?;
+    }
 
     Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn unwatch(_app: AppHandle, state: State<AppState>, path: PathBuf) -> () {
+pub fn unwatch(_app: AppHandle, state: State<AppState>, path: PathBuf) -> Result<()> {
     let mut watcher = state.watcher.lock().unwrap();
 
-    watcher
-        .as_mut()
-        .and_then(|watcher| watcher.unwatch(&path).ok());
+    if let Some(watcher) = watcher.as_mut() {
+        watcher.unwatch(&path)?;
+    }
+
+    Ok(())
 }

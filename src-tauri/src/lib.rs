@@ -18,6 +18,9 @@ pub enum Error {
     Io(#[from] std::io::Error),
     #[specta(skip)]
     Request(#[from] reqwest::Error),
+    #[error(transparent)]
+    #[specta(skip)]
+    Notify(#[from] notify::Error),
 }
 
 impl Serialize for Error {
