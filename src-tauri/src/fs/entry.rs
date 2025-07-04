@@ -9,6 +9,7 @@ pub struct Entry {
     name: String,
     path: PathBuf,
     kind: Kind,
+    mime: Option<String>,
     details: EntryDetails,
 }
 
@@ -22,6 +23,9 @@ impl TryFrom<PathBuf> for Entry {
                 .map(|name| name.to_string_lossy().to_string())
                 .unwrap_or(String::new()),
             kind: metadata.file_type().into(),
+            mime: mime_guess::from_path(&path)
+                .first()
+                .map(|guess| guess.to_string()),
             details: metadata.into(),
             path,
         })
