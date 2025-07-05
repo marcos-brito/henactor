@@ -13,16 +13,10 @@ mod parser;
 
 #[tauri::command]
 #[specta::specta]
-pub fn filter(entries: Vec<Entry>, filter: String) -> Result<Vec<Entry>> {
-    Ok(parser::parse(&filter)
+pub fn matches(entry: Entry, query: String) -> Result<bool> {
+    Ok(parser::parse(&query)
         .map(|pairs| parser::convert(pairs))
-        .map(|expr| {
-            entries
-                .into_iter()
-                // TODO: Not clone. Changing the Visitor should allow to pass a reference
-                .filter(|entry| eval::eval(&entry, expr.clone()).unwrap_or(false))
-                .collect()
-        })?)
+        .and_then(|expr| eval::eval(&entry, expr))?)
 }
 
 #[tauri::command]
