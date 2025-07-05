@@ -1,5 +1,5 @@
-pub mod filter;
 pub mod entry;
+pub mod query;
 pub mod sort;
 pub mod watch;
 
