@@ -15,9 +15,14 @@ type Result<T> = std::result::Result<T, Error>;
 #[derive(thiserror::Error, Debug, specta::Type)]
 pub enum Error {
     #[specta(skip)]
+    #[error(transparent)]
     Io(#[from] std::io::Error),
     #[specta(skip)]
+    #[error(transparent)]
     Request(#[from] reqwest::Error),
+    #[error(transparent)]
+    #[specta(skip)]
+    Tauri(#[from] tauri::Error),
     #[error(transparent)]
     #[specta(skip)]
     Notify(#[from] notify::Error),

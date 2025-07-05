@@ -1,4 +1,4 @@
-use anyhow::{bail, Result};
+use crate::{Error, Result};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use specta::Type;
 use std::sync::{
@@ -62,7 +62,7 @@ impl<T: Serialize + DeserializeOwned> TaskHandle<T> {
 
     pub fn send(&self, data: T) -> Result<()> {
         if self.finished || self.killed.load(Ordering::Relaxed) {
-            bail!("unable to send data. Task was either finished or killed");
+            return Err(Error::TaskSendError);
         }
 
         let (lock, cvar) = &*self.paused;
