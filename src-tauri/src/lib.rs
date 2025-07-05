@@ -21,6 +21,17 @@ pub enum Error {
     #[error(transparent)]
     #[specta(skip)]
     Notify(#[from] notify::Error),
+    #[error(transparent)]
+    #[specta(skip)]
+    SerializeError(#[from] toml::ser::Error),
+    #[error(transparent)]
+    #[specta(skip)]
+    DeserializeError(#[from] toml::de::Error),
+    #[error(transparent)]
+    #[specta(skip)]
+    Trash(#[from] trash::Error),
+    #[error("unable to send data. Task was either finished or killed")]
+    TaskSendError,
 }
 
 impl Serialize for Error {
