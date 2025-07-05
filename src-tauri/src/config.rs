@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::collections::HashMap;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub const CONFIG_FILE: &str = "henactor.toml";
 pub const THEMES_DIR: &str = "themes";
@@ -103,8 +103,32 @@ pub struct IconsFile {
 pub struct Theme {
     name: String,
     path: PathBuf,
-    css_file: PathBuf,
+    css: Option<PathBuf>,
     icons: Option<IconsFile>,
+}
+
+impl Theme {
+    pub fn new<P: AsRef<Path>>(path: P) -> Self {
+        let path = path.as_ref().to_path_buf();
+        let name = path
+            .file_name()
+            .map(|n| n.to_string_lossy().to_string())
+            .unwrap_or(String::new());
+        let css = path
+            .join(THEME_FILE)
+            .exists()
+            .then_some(path.join(THEME_FILE));
+        let icons = fs::read_to_string(path.join(ICONS_FILE))
+            .ok()
+            .and_then(|f| toml::from_str(&f).ok());
+
+        Self {
+            path,
+            name,
+            css,
+            icons,
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -219,38 +243,19 @@ pub fn save_config(config_dir: PathBuf, config: Config) -> Result<()> {
 #[tauri::command]
 #[specta::specta]
 pub fn find_themes(config_dir: PathBuf) -> Vec<Theme> {
-    let entries = match fs::read_dir(config_dir.join(THEMES_DIR)) {
+    let themes_dir = config_dir.join(THEMES_DIR);
+    let entries = match fs::read_dir(&themes_dir) {
         Ok(entries) => entries,
         Err(err) => {
-            warn!("Failed to read {}. No themes will be loaded", err);
-            return vec![];
+            warn!("failed to read themes at {}: {}", themes_dir.display(), err);
+            return Vec::new();
         }
     };
 
     entries
-        .filter_map(|entry| {
-            let entry = entry.ok()?;
-            let theme_name = entry.file_name().to_string_lossy().to_string();
-            let css_file = entry.path().join(THEME_FILE);
-            let icons = fs::read_to_string(entry.path().join(ICONS_FILE))
-                .ok()
-                .and_then(|content| toml::from_str::<IconsFile>(&content).ok())
-                .or_else(|| {
-                    warn!("Couldn't read icons file for {theme_name}");
-                    None
-                });
-
-            if css_file.exists() {
-                return Some(Theme {
-                    name: theme_name,
-                    path: entry.path(),
-                    icons,
-                    css_file,
-                });
-            }
-
-            warn!("No css file found for theme {theme_name}",);
-            None
+        .filter_map(|entry| match entry {
+            Ok(e) => Some(Theme::new(e.path())),
+            Err(_) => None,
         })
-        .collect::<Vec<Theme>>()
+        .collect()
 }
