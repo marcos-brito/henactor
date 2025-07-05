@@ -1,6 +1,6 @@
 use super::ast::{BinaryOperator, Expr, Property, Unary, Visitor};
 use crate::fs::entry::{Entry, Kind};
-use anyhow::{Context, Result};
+use crate::{Error, Result};
 use bytesize::ByteSize;
 use std::time::SystemTime;
 
@@ -186,7 +186,7 @@ struct Number(u64);
 
 impl Obj for Number {
     fn to_bool(&self, entry: &Entry) -> Bool {
-        Bool(entry.size() == self.0)
+        Bool(entry.size().unwrap_or(0) == self.0)
     }
 }
 
@@ -223,7 +223,7 @@ pub fn eval(entry: &Entry, expr: Expr) -> Result<bool> {
 }
 
 impl<'a> Visitor for Evaluator<'a> {
-    type Item = anyhow::Result<Object>;
+    type Item = Result<Object>;
 
     fn visit_binary_expr(&self, lhs: Expr, op: BinaryOperator, rhs: Expr) -> Self::Item {
         let lobj = self.visit_expr(lhs)?;
@@ -283,20 +283,24 @@ impl<'a> Visitor for Evaluator<'a> {
     fn visit_pretty_byte(&self, str: String) -> Self::Item {
         match str.parse::<ByteSize>() {
             Ok(size) => Ok(Number(size.as_u64()).into()),
-            Err(_) => Err(anyhow::anyhow!("Bad size: {str}")),
+            Err(e) => Err(Error::new_eval_error("pretty_byte", &str, &e.to_string())),
         }
     }
 
     fn visit_date(&self, str: String) -> Self::Item {
-        humantime::parse_rfc3339_weak(&str)
-            .with_context(|| format!("Bad date: {str}"))
-            .map(|date| Date(date).into())
+        let date = humantime::parse_rfc3339_weak(&str)
+            .map_err(|e| Error::new_eval_error("date", &str, &e.to_string()))
+            .map(|date| Date(date))?;
+
+        Ok(date.into())
     }
 
     fn visit_regex(&self, str: String) -> Self::Item {
-        regex::Regex::new(&str)
-            .with_context(|| format!("Bad regex: {str}"))
-            .map(|regex| Regex(regex).into())
+        let reg = regex::Regex::new(&str)
+            .map_err(|e| Error::new_eval_error("regex", &str, &e.to_string()))
+            .map(|regex| Regex(regex))?;
+
+        Ok(reg.into())
     }
 }
 

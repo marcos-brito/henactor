@@ -1,6 +1,6 @@
 use super::ast::{BinaryOperator, Expr, Property, Unary};
 use crate::fs::entry::Kind;
-use anyhow::Result;
+use crate::Result;
 use pest::iterators::{Pair, Pairs};
 use pest::pratt_parser::{Assoc, Op, PrattParser};
 use pest::Parser;

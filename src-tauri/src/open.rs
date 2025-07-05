@@ -1,6 +1,4 @@
 use crate::Result;
-use anyhow::Context;
-use log::error;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::path::PathBuf;
@@ -14,23 +12,15 @@ pub struct Opener {
 #[tauri::command]
 #[specta::specta]
 pub fn open(path: PathBuf) -> Result<()> {
-    open::that_detached(&path)
-        .with_context(|| format!("Failed to open {}", path.display()))
-        .or_else(|err| {
-            error!("{err}");
-            Err(err.into())
-        })
+    open::that_detached(&path)?;
+    Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
 pub fn open_with(path: PathBuf, cmd: String) -> Result<()> {
-    open::with_detached(&path, &cmd)
-        .with_context(|| format!("Failed to open {} with {}", path.display(), cmd))
-        .or_else(|err| {
-            error!("{err}");
-            Err(err.into())
-        })
+    open::with_detached(&path, &cmd)?;
+    Ok(())
 }
 
 #[tauri::command]

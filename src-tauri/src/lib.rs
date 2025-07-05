@@ -4,6 +4,7 @@ pub mod fs;
 pub mod open;
 pub mod task;
 
+use crate::fs::query::Rule;
 use notify::RecommendedWatcher;
 use serde::ser::{Serialize, SerializeSeq};
 use specta_typescript::{BigIntExportBehavior, Typescript};
@@ -35,8 +36,19 @@ pub enum Error {
     #[error(transparent)]
     #[specta(skip)]
     Trash(#[from] trash::Error),
+    #[error(transparent)]
+    #[specta(skip)]
+    ParseError(#[from] pest::error::Error<Rule>),
     #[error("unable to send data. Task was either finished or killed")]
     TaskSendError,
+    #[error("unable to create {0} object from {1}: {2}")]
+    QueryEvalError(String, String, String),
+}
+
+impl Error {
+    pub fn new_eval_error(obj: &str, value: &str, cause: &str) -> Self {
+        Self::QueryEvalError(obj.to_string(), value.to_string(), cause.to_string())
+    }
 }
 
 impl Serialize for Error {
