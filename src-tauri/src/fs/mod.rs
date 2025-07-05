@@ -3,30 +3,30 @@ pub mod entry;
 pub mod sort;
 pub mod watch;
 
+use crate::task::{Message, TaskHandle};
 use crate::Result;
 use anyhow::Context;
 use entry::Entry;
 use log::{error, info, warn};
 use std::fs;
 use std::path::PathBuf;
+use tauri::{ipc::Channel, AppHandle};
 
 #[tauri::command]
 #[specta::specta]
-pub fn list(path: PathBuf) -> Result<Vec<Entry>> {
-    Ok(fs::read_dir(&path)
-        .with_context(|| format!("Failed to read {}", path.display()))?
-        .filter_map(|dir_entry| {
-            // Should this be handled?
-            let dir_entry = dir_entry.ok()?;
+pub async fn list(app: AppHandle, path: PathBuf, on_event: Channel<Message<Entry>>) -> Result<()> {
+    let mut handle = TaskHandle::new(app, on_event);
+    handle.start()?;
 
-            Entry::try_from(&dir_entry)
-                .or_else(|err| {
-                    warn!("Skipping {}. Reason: {}", dir_entry.path().display(), err);
-                    Err(err)
-                })
-                .ok()
-        })
-        .collect())
+    for entry in fs::read_dir(&path)? {
+        match entry.as_ref().map(Entry::from) {
+            Ok(entry) => handle.send(entry)?,
+            Err(e) => warn!("skipping entry from {}: {}", path.display(), e),
+        }
+    }
+
+    handle.finish()?;
+    Ok(())
 }
 
 #[tauri::command]
