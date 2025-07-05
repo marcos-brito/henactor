@@ -1,3 +1,4 @@
+use mime_guess::Mime;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::path::PathBuf;
@@ -24,9 +25,12 @@ impl Entry {
     pub fn kind(&self) -> &Kind {
         &self.metadata.kind
     }
+
+    pub fn mime(&self) -> Option<Mime> {
+        mime_guess::from_path(&self.path).first()
     }
 
-    pub fn mime(&self) -> Option<&str> {
+    pub fn mime_str(&self) -> Option<&str> {
         self.mime.as_deref()
     }
 

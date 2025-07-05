@@ -45,7 +45,7 @@ impl Default for Tab {
             view: View::Grid,
             grid_size: 4,
             list_columns: vec![],
-            sort_by: SortMethod::Natural,
+            sort_by: SortMethod::Name,
             filter: "".to_string(),
             query: "".to_string(),
             selected: vec![],
