@@ -2,18 +2,14 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::path::PathBuf;
 use std::time::SystemTime;
-use std::{fmt, fs, io};
+use std::{fmt, fs};
 
 #[derive(Serialize, Deserialize, Type, Clone)]
 pub struct Entry {
     name: String,
     path: PathBuf,
-    kind: Kind,
     mime: Option<String>,
-    size: u64,
-    created_at: Option<SystemTime>,
-    accessed_at: Option<SystemTime>,
-    modified_at: Option<SystemTime>,
+    metadata: Metadata,
 }
 
 impl Entry {
@@ -26,35 +22,36 @@ impl Entry {
     }
 
     pub fn kind(&self) -> &Kind {
-        &self.kind
+        &self.metadata.kind
+    }
     }
 
     pub fn mime(&self) -> Option<&str> {
         self.mime.as_deref()
     }
 
-    pub fn size(&self) -> u64 {
-        self.size.clone()
+    pub fn size(&self) -> Option<u64> {
+        self.metadata.size.clone()
     }
 
     pub fn created_at(&self) -> Option<SystemTime> {
-        self.created_at.clone()
+        self.metadata.created_at.clone()
     }
 
     pub fn accessed_at(&self) -> Option<SystemTime> {
-        self.accessed_at.clone()
+        self.metadata.accessed_at.clone()
     }
 
     pub fn modified_at(&self) -> Option<SystemTime> {
-        self.modified_at.clone()
+        self.metadata.modified_at.clone()
     }
 }
 
-impl TryFrom<PathBuf> for Entry {
-    type Error = io::Error;
+impl From<PathBuf> for Entry {
+    fn from(path: PathBuf) -> Self {
+        let metadata = path.metadata().ok();
 
-    fn try_from(path: PathBuf) -> Result<Self, Self::Error> {
-        path.metadata().map(|metadata| Self {
+        Self {
             name: path
                 .file_name()
                 .map(|name| name.to_string_lossy().to_string())
@@ -62,21 +59,48 @@ impl TryFrom<PathBuf> for Entry {
             mime: mime_guess::from_path(&path)
                 .first()
                 .map(|guess| guess.to_string()),
-            size: metadata.len(),
-            kind: metadata.file_type().into(),
+            metadata: metadata.map(Metadata::from).unwrap_or_default(),
             path,
-            created_at: metadata.created().ok(),
-            modified_at: metadata.modified().ok(),
-            accessed_at: metadata.accessed().ok(),
-        })
+        }
     }
 }
 
-impl TryFrom<&fs::DirEntry> for Entry {
-    type Error = io::Error;
+impl From<&fs::DirEntry> for Entry {
+    fn from(entry: &fs::DirEntry) -> Self {
+        Entry::from(entry.path())
+    }
+}
 
-    fn try_from(entry: &fs::DirEntry) -> Result<Self, Self::Error> {
-        Entry::try_from(entry.path())
+#[derive(Serialize, Deserialize, Type, Clone)]
+pub struct Metadata {
+    kind: Kind,
+    size: Option<u64>,
+    created_at: Option<SystemTime>,
+    accessed_at: Option<SystemTime>,
+    modified_at: Option<SystemTime>,
+}
+
+impl Default for Metadata {
+    fn default() -> Self {
+        Self {
+            kind: Kind::Unknown,
+            size: None,
+            created_at: None,
+            accessed_at: None,
+            modified_at: None,
+        }
+    }
+}
+
+impl From<fs::Metadata> for Metadata {
+    fn from(value: fs::Metadata) -> Self {
+        Self {
+            kind: Kind::from(value.file_type()),
+            size: Some(value.len()),
+            created_at: value.created().ok(),
+            accessed_at: value.accessed().ok(),
+            modified_at: value.modified().ok(),
+        }
     }
 }
 
@@ -85,6 +109,7 @@ pub enum Kind {
     Directory,
     File,
     Symlink,
+    Unknown,
 }
 
 impl fmt::Display for Kind {
@@ -93,6 +118,7 @@ impl fmt::Display for Kind {
             Self::Directory => write!(f, "directory"),
             Self::File => write!(f, "file"),
             Self::Symlink => write!(f, "link"),
+            Self::Unknown => write!(f, "unknown"),
         }
     }
 }

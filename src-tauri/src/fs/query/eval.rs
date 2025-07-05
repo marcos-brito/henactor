@@ -258,7 +258,7 @@ impl<'a> Visitor for Evaluator<'a> {
         let obj = match prop {
             Property::Name => Literal(self.entry.name().to_string()).into(),
             Property::Path => Literal(self.entry.path().to_string_lossy().to_string()).into(),
-            Property::Size => Number(self.entry.size()).into(),
+            Property::Size => Number(self.entry.size().unwrap_or(0)).into(),
             Property::Kind => Literal(self.entry.kind().to_string()).into(),
             Property::Created => Date(self.entry.created_at().unwrap_or(SystemTime::now())).into(),
             Property::Modified => {
