@@ -1,7 +1,6 @@
 use super::Result;
 use crate::fs::sort::SortMethod;
-use anyhow::Context;
-use log::{error, warn};
+use log::warn;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::collections::HashMap;
@@ -208,36 +207,17 @@ pub fn default_config() -> Config {
 #[tauri::command]
 #[specta::specta]
 pub fn load_config(config_dir: PathBuf) -> Result<Config> {
-    let path = config_dir.join(CONFIG_FILE);
+    let config = fs::read_to_string(config_dir.join(CONFIG_FILE))?;
 
-    fs::read_to_string(&path)
-        .with_context(|| format!("Failed to read {}", path.display()))
-        .and_then(|contents| {
-            toml::from_str::<Config>(&contents)
-                .with_context(|| format!("Failed to parse {}", path.display()))
-        })
-        .or_else(|err| {
-            error!("{err}");
-            Err(err.into())
-        })
+    Ok(toml::from_str(&config)?)
 }
 
 #[tauri::command]
 #[specta::specta]
 pub fn save_config(config_dir: PathBuf, config: Config) -> Result<()> {
-    let path = config_dir.join(CONFIG_FILE);
+    fs::write(config_dir.join(CONFIG_FILE), toml::to_string(&config)?)?;
 
-    toml::to_string(&config)
-        // This should never happen
-        .with_context(|| "Failed to parse config to a string")
-        .and_then(|config| {
-            fs::write(&path, config)
-                .with_context(|| format!("Failed to write config to {}", path.display()))
-        })
-        .or_else(|err| {
-            error!("{err}");
-            Err(err.into())
-        })
+    Ok(())
 }
 
 #[tauri::command]
