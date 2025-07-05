@@ -1,5 +1,4 @@
-use super::Result;
-use anyhow::Context;
+use crate::Result;
 use base64ct::{Base64Url, Encoding};
 use reqwest::blocking::{get, Response};
 use sha2::{Digest, Sha256};
@@ -9,53 +8,50 @@ use std::path::PathBuf;
 #[tauri::command]
 #[specta::specta]
 pub fn download_or_find(cache_dir: PathBuf, url: String) -> Result<PathBuf> {
-    let hash_str = hash_url(&url);
-    let file_path = cache_dir.join(&hash_str);
+    let hash = Base64Url::encode_string(&Sha256::digest(&url));
+    let path = cache_dir.join(&hash);
 
-    if let Some(file) = find_file(&cache_dir, &hash_str) {
+    if let Some(file) = find_file(&cache_dir, &hash) {
         return Ok(file);
     }
 
     if !cache_dir.exists() {
-        fs::create_dir(&cache_dir).with_context(|| "Failed to create cache dir")?;
+        fs::create_dir(&cache_dir)?;
     }
 
-    let res = get(&url).with_context(|| format!("Request to {url} failed"))?;
-    let ext = extract_ext(&res);
+    let res = get(&url)?;
+    let ext = ext_of(&res);
+    if let Ok(bytes) = res.bytes() {
+        fs::write(&path.with_extension(ext), &bytes)?;
+    }
 
-    res.bytes()
-        .ok()
-        .and_then(|bytes| fs::write(&file_path.with_extension(ext), &bytes).ok())
-        .with_context(|| format!("Failed to write the response of {url} to the cache"))?;
-
-    Ok(file_path)
+    Ok(path)
 }
 
-fn extract_ext(res: &Response) -> String {
+fn ext_of(res: &Response) -> String {
     res.headers()
         .get("content-type")
         .and_then(|header| header.to_str().ok())
-        .and_then(|content_type| mime_guess::get_mime_extensions_str(content_type))
+        .and_then(mime_guess::get_mime_extensions_str)
         .and_then(|guesses| guesses.first())
         .unwrap_or(&"")
         .to_string()
 }
 
 fn find_file(cache_dir: &PathBuf, hash: &str) -> Option<PathBuf> {
-    fs::read_dir(cache_dir).ok()?.find_map(|entry| {
+    for entry in fs::read_dir(cache_dir).ok()? {
         let entry = entry.ok()?;
 
-        entry
+        if entry
             .path()
             .file_stem()
             .is_some_and(|stem| stem.to_string_lossy().to_string() == hash)
-            .then_some(entry.path())
-    })
-}
+        {
+            return Some(entry.path());
+        }
+    }
 
-fn hash_url(url: &str) -> String {
-    let hash = Sha256::digest(url);
-    Base64Url::encode_string(&hash)
+    None
 }
 
 #[cfg(test)]
